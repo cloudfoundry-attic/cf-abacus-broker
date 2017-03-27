@@ -1,0 +1,49 @@
+{
+  "name": "abacus-ext-provisioning-itest",
+  "description": "Provisioning integration text",
+  "license": "Apache-2.0",
+  "version": "0.0.6-dev.8",
+  "private": true,
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/tools/cmdline",
+  "bugs": {
+    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
+  },
+  "keywords": [
+    "cf",
+    "abacus",
+    "broker"
+  ],
+  "files": [
+    ".apprc",
+    ".npmrc",
+    "manifest.yml",
+    "src/"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "itest": "eslint && mocha",
+    "lint": "eslint",
+    "pub": "publish"
+  },
+  "dependencies": {
+    "abacus-ext-cmdline": "file:../../tools/cmdline",
+    "abacus-moment": "file:../../abacus/lib/utils/moment",
+    "abacus-oauth": "file:../../abacus/lib/utils/oauth",
+    "abacus-request": "file:../../abacus/lib/utils/request",
+    "eslint-plugin-nodate": "file:../../abacus/tools/eslint-plugin-nodate",
+    "eslint-plugin-mocha": "^4.8.0",
+    "request-debug": "^0.2.0"
+  },
+  "devDependencies": {
+    "abacus-eslint": "../../abacus/tools/eslint",
+    "abacus-mocha": "../../abacus/tools/mocha"
+  },
+  "engines": {
+    "node": ">=6.10.0",
+    "npm": ">=3.10.10"
+  }
+}

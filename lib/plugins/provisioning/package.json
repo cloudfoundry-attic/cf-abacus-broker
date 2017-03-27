@@ -1,0 +1,69 @@
+{
+  "name": "abacus-ext-provisioning-plugin",
+  "description": "Plugin for a provisioning history service",
+  "license": "Apache-2.0",
+  "version": "0.0.6-dev.8",
+  "private": true,
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/lib/plugins/provisioning",
+  "bugs": {
+    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
+  },
+  "keywords": [
+    "cf",
+    "abacus",
+    "broker"
+  ],
+  "files": [
+    ".apprc",
+    ".npmrc",
+    "manifest.yml",
+    "src/"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "start": "launch webapp start",
+    "stop": "webapp stop",
+    "test": "eslint && mocha",
+    "lint": "eslint",
+    "pub": "publish",
+    "cfpack": "cfpack",
+    "cfpush": "cfpush",
+    "store-defaults": "node src/tasks/store-default-mappings.js && node src/tasks/store-default-plans.js"
+  },
+  "dependencies": {
+    "abacus-batch": "file:../../../abacus/lib/utils/batch",
+    "abacus-breaker": "file:../../../abacus/lib/utils/breaker",
+    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
+    "abacus-debug": "file:../../../abacus/lib/utils/debug",
+    "abacus-ext-plan-mappings": "file:../../config/mappings",
+    "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
+    "abacus-lock": "file:../../../abacus/lib/utils/lock",
+    "abacus-lrucache": "file:../../../abacus/lib/utils/lrucache",
+    "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
+    "abacus-partition": "file:../../../abacus/lib/utils/partition",
+    "abacus-retry": "file:../../../abacus/lib/utils/retry",
+    "abacus-router": "file:../../../abacus/lib/utils/router",
+    "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
+    "abacus-usage-schemas": "file:../../../abacus/lib/config/schemas",
+    "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
+    "abacus-yieldable": "file:../../../abacus/lib/utils/yieldable",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "abacus-cfpack": "file:../../../abacus/tools/cfpack",
+    "abacus-cfpush": "file:../../../abacus/tools/cfpush",
+    "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
+    "abacus-eslint": "file:../../../abacus/tools/eslint",
+    "abacus-mocha": "file:../../../abacus/tools/mocha",
+    "abacus-publish": "file:../../../abacus/tools/publish",
+    "abacus-request": "file:../../../abacus/lib/utils/request"
+  },
+  "engines": {
+    "node": ">=6.10.0",
+    "npm": ">=3.10.10"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "name": "abacus-ext-cf-broker",
+  "description": "CF Service Broker for Abacus",
+  "license": "Apache-2.0",
+  "version": "0.0.6-dev.8",
+  "private": true,
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/lib/cf/broker",
+  "bugs": {
+    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
+  },
+  "keywords": [
+    "cf",
+    "abacus",
+    "broker"
+  ],
+  "files": [
+    ".apprc",
+    ".npmrc",
+    "manifest.yml",
+    "src/"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "start": "launch webapp start",
+    "stop": "webapp stop",
+    "test": "eslint && mocha",
+    "lint": "eslint",
+    "pub": "publish",
+    "cfpack": "cfpack",
+    "cfpush": "cfpush"
+  },
+  "dependencies": {
+    "abacus-batch": "file:../../../abacus/lib/utils/batch",
+    "abacus-breaker": "file:../../../abacus/lib/utils/breaker",
+    "abacus-carryover": "file:../../../abacus/lib/utils/carryover",
+    "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
+    "abacus-dataflow": "file:../../../abacus/lib/utils/dataflow",
+    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
+    "abacus-debug": "file:../../../abacus/lib/utils/debug",
+    "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
+    "abacus-moment": "file:../../../abacus/lib/utils/moment",
+    "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
+    "abacus-paging": "file:../../../abacus/lib/utils/paging",
+    "abacus-partition": "file:../../../abacus/lib/utils/partition",
+    "abacus-perf": "file:../../../abacus/lib/utils/perf",
+    "abacus-report": "file:../../../abacus/lib/utils/report",
+    "abacus-request": "file:../../../abacus/lib/utils/request",
+    "abacus-retry": "file:../../../abacus/lib/utils/retry",
+    "abacus-router": "file:../../../abacus/lib/utils/router",
+    "abacus-seqid": "file:../../../abacus/lib/utils/seqid",
+    "abacus-throttle": "file:../../../abacus/lib/utils/throttle",
+    "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
+    "abacus-usage-schemas": "file:../../../abacus/lib/config/schemas",
+    "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
+    "abacus-yieldable": "file:../../../abacus/lib/utils/yieldable",
+    "http-status-codes": "^1.1.6",
+    "jsonwebtoken": "^5.0.5",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "abacus-cfpack": "file:../../../abacus/tools/cfpack",
+    "abacus-cfpush": "file:../../../abacus/tools/cfpush",
+    "abacus-eslint": "file:../../../abacus/tools/eslint",
+    "abacus-mocha": "file:../../../abacus/tools/mocha",
+    "abacus-publish": "file:../../../abacus/tools/publish"
+  },
+  "engines": {
+    "node": ">=6.10.0",
+    "npm": ">=3.10.10"
+  }
+}

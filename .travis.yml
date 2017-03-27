@@ -1,0 +1,56 @@
+language: node_js
+
+sudo: false
+
+env:
+  global:
+    - CI_TEST="true" CF_TEST="false" START_TIMEOUT=20000 TOTAL_TIMEOUT=120000
+
+matrix:
+  include:
+    - node_js: "6.10.0"
+      env: DESCRIPTION="pouchdb"
+    - node_js: "6.10.0"
+      env: DESCRIPTION="couchdb" JOBS=1 DBCLIENT=abacus-couchclient DB=http://localhost:5984
+      services:
+        - couchdb
+    - node_js: "6.10.0"
+      env: DESCRIPTION="mongodb 2.6" JOBS=1 DBCLIENT=abacus-mongoclient DB=mongodb://localhost:27017
+      addons:
+        apt:
+          sources:
+            - mongodb-upstart
+          packages:
+            - mongodb-org-server
+            - mongodb-org-shell
+      before_script:
+        - sleep 15
+    - node_js: "6.10.0"
+      env: DESCRIPTION="mongodb 3.2" JOBS=1 DBCLIENT=abacus-mongoclient DB=mongodb://localhost:27017
+      addons:
+        apt:
+          sources:
+            - mongodb-upstart
+            - mongodb-3.2-precise
+          packages:
+            - mongodb-org-server
+            - mongodb-org-shell
+      before_script:
+        - sleep 15
+
+install: echo "install"
+
+script: npm run build
+
+after_script:
+  - travis_retry npm run coveralls
+
+notifications:
+  irc:
+    use_notice: true
+    on_success: change
+    on_failure: change
+    channels:
+    - chat.freenode.net#cf-abacus
+  slack:
+    secure: ZanKYSBhluB1KMzd003+7PiASbgKKwNKl3Ucc4B3wuFWdpdNp/K4/AxPnjGTIRvFtyMtvHf+392bURxBWQMypyW+FMQXGOnJD+bVrVhzxAVc10smkT59NcemWry4gwHQlPF22MB+EoYqnsqXLFltMalEzRC+sjiXED7ZguUD7SJquRmydIlBHkU8hqbGwLg78oNS9WarhvikjsrKchNfSLe3pOMCspgpNQ4KAY+KdrUB4hAqlaul+WdUz3ivaazQZXtV4Rq9i9ADHh7WgyF1SYSWrqAQXuiM5KnwaD/m3lL01F9wxfK/NbuPH6gYg1XZhxhGBw4uT+udWZ3YFQy/G3YRu8URx1er+evI8JMhjjO+BIO1K3geEQ1Kmu1FdCeuhtbWVo0fokLkQGISVc0llgjIC1PR8NMMtDHTvUiK44F8GRONnT9tmKTyJBfRCwD23NV6oWPH2LL6uCya4CmveaKSz1G3IjulGGCdxCkIMjraw/J7fkg8INc9lhEl8Uim7pIJkDjuNp8zf4AGOTUpX1O9RMMvQkWqmpkf4Gug/JFcMAiX1WEQ6/5M3Q3HBLW3fe2DEp1H+A9RakA/QMGIytFm9oAnUGhad20wmvPlAaWxY+UpLHH/VNx7X5k/DhygSKnORuHLuR821LXCuLROEh5dtxdZckxXWFJH11xXhlw=

@@ -1,0 +1,10 @@
+default:
+  apps:
+    - lib/plugins/provisioning
+    - lib/plugins/account
+
+small:
+
+medium:
+
+large:

@@ -1,0 +1,3 @@
+[submodule "abacus"]
+	path = abacus
+	url = https://github.com/cloudfoundry-incubator/cf-abacus.git

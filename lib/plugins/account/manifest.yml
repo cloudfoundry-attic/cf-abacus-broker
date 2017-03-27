@@ -1,0 +1,16 @@
+applications:
+- name: abacus-account-plugin
+  host: abacus-account-plugin
+  path: .cfpack/app.zip
+  instances: 1
+  memory: 512M
+  disk_quota: 512M
+  env:
+    CONF: default
+    DB: abacus-pouchserver
+    DEBUG: e-abacus-*
+    EUREKA: abacus-eureka-plugin
+    NODE_MODULES_CACHE: false
+    SECURED: false
+    # JWTKEY:
+    # JWTALGO:
