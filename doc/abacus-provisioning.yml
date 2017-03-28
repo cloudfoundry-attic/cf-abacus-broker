@@ -35,6 +35,21 @@ paths:
         409:
           description: Indicates the plan has a conflict.
   /metering/plan/{plan_id}:
+    get:
+      summary: Returns resource provider metering plan.
+      description: |
+        This is an endpoint for getting resource provider metering plan. If the plan with the given id does not exist, a proper status code is returned.
+        For more details [MeteringPlan](https://github.com/cloudfoundry-incubator/cf-abacus/blob/76dabd9ecc096ca8c8098eff0e2591ba2ed8f2f7/doc/resource-provider-guide.md#metering-plan).
+      parameters:
+        - $ref: '#/parameters/planId'
+        - $ref: '#/parameters/cacheControl'
+      tags:
+        - plans
+      responses:
+        200:
+          description: Indicates plans is found
+        404:
+          description: Indicates the plan is not found
     put:
       summary: Updates existing resource provider metering plan.
       description: |
@@ -66,6 +81,21 @@ paths:
         409:
           description: Indicates the plan has a conflict.
   /pricing/plan/{plan_id}:
+    get:
+      summary: Returns resource provider pricing plan.
+      description: |
+        This is an endpoint for getting resource provider pricing plan. If the plan with the given id does not exist, a proper status code is returned.
+        For more details [PricingPlan](https://github.com/cloudfoundry-incubator/cf-abacus/blob/76dabd9ecc096ca8c8098eff0e2591ba2ed8f2f7/doc/resource-provider-guide.md#pricing-plan).
+      parameters:
+        - $ref: '#/parameters/planId'
+        - $ref: '#/parameters/cacheControl'
+      tags:
+        - plans
+      responses:
+        200:
+          description: Indicates plans is found
+        404:
+          description: Indicates the plan is not found
     put:
       summary: Updates existing resource provider pricing plan.
       description: |
@@ -97,6 +127,21 @@ paths:
         409:
           description: Indicates the plan has a conflict.
   /rating/plan/{plan_id}:
+    get:
+      summary: Returns resource provider pricing plan.
+      description: |
+        This is an endpoint for getting resource provider pricing plan. If the plan with the given id does not exist, a proper status code is returned.
+        For more details [RatingPlan](https://github.com/cloudfoundry-incubator/cf-abacus/blob/76dabd9ecc096ca8c8098eff0e2591ba2ed8f2f7/doc/resource-provider-guide.md#pricing-plan).
+      parameters:
+        - $ref: '#/parameters/planId'
+        - $ref: '#/parameters/cacheControl'
+      tags:
+        - plans
+      responses:
+        200:
+          description: Indicates plans is found
+        404:
+          description: Indicates the plan is not found
     put:
       summary: Updates existing resource provider rating plan.
       description: |
@@ -119,6 +164,12 @@ parameters:
     required: true
     type: string
     description: Resource provider plan identifier.
+  cacheControl:
+    name: Cache-Control
+    in: header
+    required: false
+    type: string
+    description: Used to specify if the backend should use caching on the required data. Pass 'no-cache' in case you do not want caching on the backend.
   pricingPlanBody:
     name: pricing_plan
     in: body
