@@ -29,7 +29,7 @@
     "lib/"
   ],
   "scripts": {
-    "bootstrap": "npm install --only=dev",
+    "bootstrap": "npm install --only=dev && cp etc/apps.rc node_modules/abacus-etc",
     "build": "npm run provision && npm test",
     "provision": "abacus/etc/versions && npm run bootstrap && npm install",
     "clean": "git clean -df",
