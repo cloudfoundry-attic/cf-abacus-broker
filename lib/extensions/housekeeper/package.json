@@ -34,12 +34,12 @@
     "cfpush": "cfpush"
   },
   "dependencies": {
+    "abacus-client": "file:../../../abacus/lib/utils/client",
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
     "abacus-debug": "file:../../../abacus/lib/utils/debug",
     "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
     "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
     "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
-    "abacus-report": "file:../../../abacus/lib/utils/report",
     "abacus-request": "file:../../../abacus/lib/utils/request",
     "abacus-router": "file:../../../abacus/lib/utils/router",
     "abacus-throttle": "file:../../../abacus/lib/utils/throttle",
