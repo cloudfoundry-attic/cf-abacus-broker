@@ -1,6 +1,6 @@
 'use strict';
 
-const execute = require('abacus-cmdline').execute;
+const execute = require('abacus-ext-cmdline').execute;
 
 const createUaaClient = (resourceId, clientSecret) => {
   try {
