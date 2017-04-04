@@ -1,5 +1,5 @@
 {
-  "name": "metering-broker",
+  "name": "abacus-ext-cf-broker",
   "description": "CF Service Broker for Abacus",
   "license": "Apache-2.0",
   "version": "0.0.6-dev.8",
