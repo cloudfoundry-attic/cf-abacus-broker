@@ -34,7 +34,6 @@
     "cfpush": "cfpush"
   },
   "dependencies": {
-    "abacus-batch": "file:../../../abacus/lib/utils/batch",
     "abacus-breaker": "file:../../../abacus/lib/utils/breaker",
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
     "abacus-debug": "file:../../../abacus/lib/utils/debug",
