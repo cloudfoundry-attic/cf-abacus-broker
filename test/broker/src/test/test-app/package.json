@@ -1,0 +1,13 @@
+{
+  "name": "hello-node",
+  "version": "0.0.2",
+  "dependencies": {
+    "express": "*"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

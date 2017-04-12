@@ -24,7 +24,7 @@ const clientSecret = process.env.CLIENT_SECRET;
 describe('Create and update plans acceptance test', () => {
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
   const uaaUtils = require('./utils/uaa-utils.js')(authServer, uaaAdminSecret);
-  const abacusUtils = require('./utils/abacus-client-utils.js')
+  const abacusUtils = require('./../../../utils/abacus-client-utils.js')
     (provisioningUrl, collectorUrl, reportingUrl);
 
   const prefix = moment.utc().valueOf();

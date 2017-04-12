@@ -1,10 +1,10 @@
 {
-  "name": "abacus-ext-provisioning-itest",
-  "description": "Provisioning integration test",
+  "name": "abacus-ext-cf-broker-smoke",
+  "description": "Abacus Broker Smoke test",
   "license": "Apache-2.0",
   "version": "0.0.6-dev.8",
   "private": true,
-  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/tools/cmdline",
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/test/broker",
   "bugs": {
     "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
   },
@@ -17,15 +17,9 @@
     "abacus",
     "broker"
   ],
-  "files": [
-    ".apprc",
-    ".npmrc",
-    "manifest.yml",
-    "src/"
-  ],
   "main": "src/index.js",
   "scripts": {
-    "itest": "eslint && mocha",
+    "smoke": "eslint && mocha",
     "lint": "eslint",
     "pub": "publish"
   },
@@ -33,14 +27,13 @@
     "abacus-ext-cmdline": "file:../../tools/cmdline",
     "abacus-moment": "file:../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../abacus/lib/utils/oauth",
-    "abacus-request": "file:../../abacus/lib/utils/request",
-    "eslint-plugin-nodate": "file:../../abacus/tools/eslint-plugin-nodate",
-    "eslint-plugin-mocha": "^4.8.0",
-    "request-debug": "^0.2.0"
+    "abacus-request": "file:../../abacus/lib/utils/request"
   },
   "devDependencies": {
-    "abacus-eslint": "../../abacus/tools/eslint",
-    "abacus-mocha": "../../abacus/tools/mocha"
+    "abacus-eslint": "file:../../abacus/tools/eslint",
+    "abacus-mocha": "file:../../abacus/tools/mocha",
+    "eslint-plugin-nodate": "file:../../abacus/tools/eslint-plugin-nodate",
+    "eslint-plugin-mocha": "^4.8.0"
   },
   "engines": {
     "node": ">=6.10.0",
