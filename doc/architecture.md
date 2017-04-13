@@ -39,11 +39,11 @@ The Abacus Broker supports the following flows:
 
 0. Create plan(s)
 
-   The plan id is equal to the service instance id. This provides the ability to discover plan ids.
+   The plan id follows the format `resource_provider/<RESOURCE_PROVIDER_ID>/plan/<ID>`. This provides the ability to discover plans.
    
 0. Access dashboard
 
-   The broker returns dashboard URL pointing to the UI and containing the service instance ID. For this to work we use a dashboard client, whose credentials are shared between broker and UI.
+   The broker returns dashboard URL pointing to the UI and containing the service instance ID. For this to work we use a dashboard client, whose credentials are shared between broker and UI. Credentials also contains a `resource_id` and list of plans associated to it. 
 
 ## Edit plan
 0. Open dashboard
