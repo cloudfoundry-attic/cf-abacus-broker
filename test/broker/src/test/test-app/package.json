@@ -1,7 +1,10 @@
 {
-  "name": "hello-node",
+  "name": "abacus-broker-test-app",
   "version": "0.0.2",
   "dependencies": {
+    "abacus-oauth": "0.0.6-dev.9",
+    "abacus-request": "0.0.6-dev.9",
+    "body-parser": "^1.17.1",
     "express": "*"
   },
   "engines": {

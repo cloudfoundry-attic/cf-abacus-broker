@@ -77,6 +77,52 @@ describe('Abacus Broker Smoke test', () => {
             done();
           });
         });
+      context('and posting usage', () => {
+        const consumerId = 'app:1fb61c1f-2db3-4235-9934-00097845b80d';
+        const resourceInstanceId = '1fb61c1f-2db3-4235-9934-00097845b80d';
+
+        let orgId;
+        let spaceId;
+        let usageBody;
+
+        let postError;
+        let postValue;
+
+        before((done) => {
+          orgId = cfUtils.getOrgId(org);
+          spaceId = cfUtils.getSpaceId(org, space);
+          const now = moment.utc().valueOf();
+          usageBody = {
+            start: now,
+            end: now,
+            organization_id: orgId,
+            space_id: spaceId,
+            resource_id: guid,
+            plan_id: 'basic',
+            consumer_id: consumerId,
+            resource_instance_id: resourceInstanceId,
+            measured_usage: [
+              {
+                measure: 'sampleName',
+                quantity: 512
+              }
+            ]
+          };
+
+          request.post(`https://${applicationName}.${appsDomain}/usage`, {
+            body: usageBody
+          }, (err, val) => {
+            postError = err;
+            postValue = val;
+            done();
+          });
+        });
+
+        it('should succeed', () => {
+          expect(postError).to.equal(undefined);
+          expect(postValue.statusCode).to.equal(201);
+        });
+      });
     });
   });
 });
