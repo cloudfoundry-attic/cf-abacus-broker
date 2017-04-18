@@ -43,16 +43,16 @@ The Abacus Broker supports the following flows:
 
 0. Service instance credentials
 
-```
-credentials: {
-  client_id: <UAA_CLIENT_ID>,
-  client_secret: <UAA_CLIENT_SECRET>,
-  collector_url: <COLLECTOR_URL>,
-  dashboard_url: <CURRENTLY_PLACEHOLDER_ONLY>,
-  resource_id: <RESOURCE_ID>,
-  plans: [resource_provider/<RESOURCE_ID>/plan/<ID>]
-}
-```
+   ```
+   credentials: {
+     client_id: <UAA_CLIENT_ID>,
+     client_secret: <UAA_CLIENT_SECRET>,
+     collector_url: <COLLECTOR_URL>,
+     dashboard_url: <CURRENTLY_PLACEHOLDER_ONLY>,
+     resource_id: <RESOURCE_ID>,
+     plans: [resource_provider/<RESOURCE_ID>/plan/<ID>]
+   }
+   ```
 
 0. Access dashboard
 
