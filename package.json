@@ -29,9 +29,8 @@
     "lib/"
   ],
   "scripts": {
-    "bootstrap": "npm install --only=dev",
     "build": "npm run provision && npm test",
-    "provision": "abacus/etc/versions && npm run bootstrap && npm install && cp etc/apps.rc node_modules/abacus-etc",
+    "provision": "abacus/etc/versions && npm install && cp etc/apps.rc node_modules/abacus-etc",
     "clean": "git clean -df",
     "rebuild": "npm run clean && npm run build",
     "lint": "foreach abacus-ext :path npm run lint",
