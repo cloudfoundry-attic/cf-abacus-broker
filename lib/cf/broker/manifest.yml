@@ -21,3 +21,4 @@ applications:
     COLLECTOR: https://abacus-usage-collector
     BROKER_USER: user
     BROKER_PASSWORD: pass
+    DASHBOARD_URI: http://localhost/dashboard/
