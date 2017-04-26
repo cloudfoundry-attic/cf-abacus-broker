@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const request = require('abacus-request');
 const oauth = require('abacus-oauth');
 const app = express();
+require('request-debug')(request);
 
 app.use(bodyParser.json());
 
@@ -11,7 +12,8 @@ const PORT = process.env.PORT || 3000;
 const servicesEnv = JSON.parse(process.env.VCAP_SERVICES);
 const applicationEnv = JSON.parse(process.env.VCAP_APPLICATION);
 
-const credentials = servicesEnv.metering[0].credentials;
+const credentials = servicesEnv[Object.keys(servicesEnv)[0]][0].credentials;
+
 const clientId = credentials.client_id;
 const clientSecret = credentials.client_secret;
 const collectorUrl = credentials.collector_url;
@@ -28,18 +30,21 @@ app.get('/', (req, res) => {
 
 app.post('/usage', (req, res) => {
   const usage = req.body;
-  request.post(`${collectorUrl}/v1/metering/collected/usage`, {
+  console.log('Posting usage %o to collector %s', usage, collectorUrl);
+  request.post(collectorUrl, {
     headers:{
       'Content-Type': 'application/json',
       'Authorization': usageToken()
     },
     body: usage
-  }, (err, val) => {
-    console.log('err', err, 'val', val);
-    if (err)
-      res.status(500).send(err);
-    else
-      res.status(val.statusCode).send();
+  }, (err, response) => {
+    if (err) {
+      console.log('An error posting usage occured: %o', err);
+      return res.status(500).send(err);
+    }
+    console.log('Collector replied with %s and %s, %o',response.statusCode,
+      response.message, response.body);
+    res.status(response.statusCode).send(response.message);
   });
 });
 

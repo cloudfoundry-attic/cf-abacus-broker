@@ -3,6 +3,7 @@
 const cmdline = require('abacus-ext-cmdline');
 const moment = require('abacus-moment');
 const request = require('abacus-request');
+const oauth = require('abacus-oauth');
 
 const api = process.env.CF_API;
 const adminUser = process.env.CF_ADMIN_USER;
@@ -10,6 +11,13 @@ const adminUserPassword = process.env.CF_ADMIN_PASSWORD;
 const org = process.env.CF_ORG;
 const space = process.env.CF_SPACE;
 const appsDomain = process.env.APPS_DOMAIN;
+const collectorUrl = process.env.COLLECTOR_URL;
+const reportingUrl = process.env.REPORTING_URL;
+const serviceName = process.env.SERVICE_NAME;
+const servicePlan = process.env.SERVICE_PLAN;
+
+const abacusUtils = require('./../../../utils/abacus-client-utils.js')
+(undefined, collectorUrl, reportingUrl);
 
 describe('Abacus Broker Smoke test', () => {
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
@@ -19,28 +27,30 @@ describe('Abacus Broker Smoke test', () => {
   const applicationManifest = './src/test/test-app/manifest.yml';
 
   before((done) => {
-    cfUtils.deployApplication(org, space, applicationName,
-      applicationManifest, '--no-start');
+    cfUtils.createSpace(org, space);
+    cfUtils.target(org, space);
+    cfUtils.deployApplication(applicationName,
+      `-f ${applicationManifest} --no-start`);
     done();
   });
 
   after((done) => {
-    cfUtils.unbindServiceInstance(org, space,
-      serviceInstanceName, applicationName);
-    cfUtils.deleteServiceInstance(org, space, serviceInstanceName);
-    cfUtils.deleteApplication(org, space, applicationName);
+    // cfUtils.unbindServiceInstance(serviceInstanceName, applicationName);
+    //cfUtils.deleteServiceInstance(serviceInstanceName);
+    // cfUtils.deleteApplication(applicationName, true);
     done();
   });
 
   context('when creating service instance', () => {
 
     before((done) => {
-      cfUtils.createServiceInstance(org, space, serviceInstanceName);
+      cfUtils.createServiceInstance(serviceName, servicePlan,
+        serviceInstanceName);
       done();
     });
 
     it('should succeed', (done) => {
-      const status = cfUtils.getServiceStatus(org, space, serviceInstanceName);
+      const status = cfUtils.getServiceStatus(serviceInstanceName);
       expect(status).to.equal('create succeeded');
       done();
     });
@@ -48,15 +58,17 @@ describe('Abacus Broker Smoke test', () => {
     context('and binding service instance to application', () => {
       let guid;
       let bindResult;
+      let clientId;
+      let clientSecret;
 
       const getApplicationEnvironment = (cb) => {
         request(`https://${applicationName}.${appsDomain}`, cb);
       };
 
       before(() => {
-        guid = cfUtils.getServiceInstanceGuid(org, space, serviceInstanceName);
-        bindResult = cfUtils.bindServiceInstance(org, space,
-          serviceInstanceName, applicationName);
+        guid = cfUtils.getServiceInstanceGuid(serviceInstanceName);
+        bindResult = cfUtils.bindServiceInstance(serviceInstanceName,
+          applicationName);
       });
 
       it('should succeed', () => {
@@ -65,12 +77,15 @@ describe('Abacus Broker Smoke test', () => {
 
       it('should set the proper variables in the application environment',
         (done) => {
-          cfUtils.startApplication(org, space, applicationName);
+          cfUtils.startApplication(applicationName);
           getApplicationEnvironment((err, response) => {
-            const credentials = response.body.metering[0].credentials;
+            const credentials = response.body[Object.keys(response.body)[0]][0]
+              .credentials;
 
             expect(credentials.client_id).to.equal(`abacus-rp-${guid}`);
+            clientId = credentials.client_id;
             expect(credentials.client_secret).to.not.equal(null);
+            clientSecret = credentials.client_secret;
             expect(credentials.collector_url)
               .to.contain('abacus-usage-collector');
             expect(credentials.dashboard_url).to.not.equal(null);
@@ -80,47 +95,105 @@ describe('Abacus Broker Smoke test', () => {
       context('and posting usage', () => {
         const consumerId = 'app:1fb61c1f-2db3-4235-9934-00097845b80d';
         const resourceInstanceId = '1fb61c1f-2db3-4235-9934-00097845b80d';
+        const planName = 'standard';
+        let planId;
 
         let orgId;
         let spaceId;
         let usageBody;
 
-        let postError;
-        let postValue;
-
         before((done) => {
           orgId = cfUtils.getOrgId(org);
-          spaceId = cfUtils.getSpaceId(org, space);
+          spaceId = cfUtils.getSpaceId(space);
           const now = moment.utc().valueOf();
+          planId = `${guid}-${guid}`
+
           usageBody = {
             start: now,
             end: now,
             organization_id: orgId,
             space_id: spaceId,
             resource_id: guid,
-            plan_id: 'basic',
+            plan_id: planName,
             consumer_id: consumerId,
             resource_instance_id: resourceInstanceId,
-            measured_usage: [
-              {
-                measure: 'sampleName',
-                quantity: 512
-              }
-            ]
+            measured_usage: [{
+              measure: 'sampleName',
+              quantity: 512
+            }]
           };
 
+          done();
+        });
+
+        it('should succeed', (done) => {
           request.post(`https://${applicationName}.${appsDomain}/usage`, {
             body: usageBody
           }, (err, val) => {
-            postError = err;
-            postValue = val;
+            expect(err).to.equal(undefined);
+            expect(val.statusCode).to.equal(201);
             done();
           });
+
         });
 
-        it('should succeed', () => {
-          expect(postError).to.equal(undefined);
-          expect(postValue.statusCode).to.equal(201);
+        context('and getting usage', () => {
+          let usageToken;
+          let systemToken;
+          before((done) => {
+            usageToken = oauth.cache(api, clientId, clientSecret,
+              `abacus.usage.${guid}.write,abacus.usage.${guid}.read`);
+            systemToken = oauth.cache(api,
+              process.env.SYSTEM_CLIENT_ID, process.env.SYSTEM_CLIENT_SECRET,
+              'abacus.usage.read');
+
+            systemToken.start(() => {
+              usageToken.start(done);
+            });
+          });
+
+          const getTimeBasedKeyProperty = (body, spaceId) => {
+            return body.spaces.filter((space) => {
+              return space.space_id === spaceId;
+            })[0].consumers.filter((consumer) => {
+              return consumer.consumer_id === consumerId;
+            })[0].resources.filter((resource) => {
+              return resource.resource_id === guid;
+            })[0].plans.filter((plan) => {
+              const key = planName + '/' + planId + '/' + planId + '/' + planId;
+              return plan.plan_id === key;
+            })[0].resource_instances[0].t;
+          };
+
+          it('should exist', (done) => {
+            abacusUtils.getOrganizationUsage(systemToken, orgId, (err, response) => {
+              const opts = {
+                org_id: orgId,
+                space_id: spaceId,
+                resource_id: guid,
+                resource_instance_id: resourceInstanceId,
+                consumer_id: consumerId,
+                plan_id: planName,
+                metering_plan_id: planId,
+                rating_plan_id: planId,
+                pricing_plan_id: planId,
+                time_based_key: getTimeBasedKeyProperty(response.body, spaceId)
+              };
+              abacusUtils.getUsage(usageToken, opts, (err, response) => {
+                expect(err).to.equal(undefined);
+                expect(response.statusCode).to.equal(200);
+
+                const metric = response.body.accumulated_usage[0].metric;
+                expect(metric).to.equal('sampleName');
+
+                const windows = response.body.accumulated_usage[0].windows;
+                const lastMonthQuantity =
+                  windows[windows.length - 1][0].quantity;
+                expect(lastMonthQuantity).to.equal(512);
+                done();
+              });
+            });
+          });
         });
       });
     });

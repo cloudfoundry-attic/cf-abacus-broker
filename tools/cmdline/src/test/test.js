@@ -1,6 +1,7 @@
 'use strict';
 
 const exec = require('../index.js').execute;
+const cfUtils = require('../cf-client-utils.js');
 
 describe('cmdline-exec-utility', () => {
   it('executes commmad that writes in stdout', () => {

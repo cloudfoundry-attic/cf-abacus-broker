@@ -5,7 +5,8 @@
     "abacus-oauth": "0.0.6-dev.9",
     "abacus-request": "0.0.6-dev.9",
     "body-parser": "^1.17.1",
-    "express": "*"
+    "express": "*",
+    "request-debug": "^0.2.0"
   },
   "engines": {
     "node": "*"

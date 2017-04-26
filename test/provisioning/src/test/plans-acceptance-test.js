@@ -242,8 +242,9 @@ describe('Create and update plans acceptance test', () => {
     let usageBody;
 
     before(() => {
+      cfUtils.target(org, space);
       orgId = cfUtils.getOrgId(org);
-      spaceId = cfUtils.getSpaceId(org, space);
+      spaceId = cfUtils.getSpaceId(space);
       const now = moment.utc().valueOf();
       usageBody = {
         start: now,

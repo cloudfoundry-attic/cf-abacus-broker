@@ -6,58 +6,54 @@ const getOrgId = (orgName) => {
   return execute(`cf org ${orgName} --guid`).toString().trim();
 };
 
-const getSpaceId = (orgName, spaceName) => {
-  execute(`cf target -o ${orgName}`);
+const getSpaceId = (spaceName) => {
   return execute(`cf space ${spaceName} --guid`).toString().trim();
 };
 
-const deployApplication = (orgName, spaceName, name, manifestPath, options) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf push  ${name} -f ${manifestPath} ${options}`);
+const createSpace = (org, space) => {
+  return execute(`cf create-space -o ${org} ${space}`);
 };
 
-const startApplication = (orgName, spaceName, name) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf start  ${name}`);
+const deployApplication = (name, options = '') => {
+  return execute(`cf push ${name} ${options}`);
 };
 
-const deleteApplication = (orgName, spaceName, name, manifestPath) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf delete -f  ${name}`);
+const startApplication = (name) => {
+  return execute(`cf start  ${name}`);
 };
 
-const createServiceInstance = (orgName, spaceName, serviceName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf create-service metering default ${serviceName}`);
+const deleteApplication = (name, deleteRoute) => {
+  return execute(`cf delete -f ${deleteRoute ? '-r' : ''} ${name}`);
 };
 
-const getServiceInstanceGuid = (orgName, spaceName, serviceName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
+const createServiceInstance = (service, plan, serviceName) => {
+  return execute(`cf create-service ${service} ${plan} ${serviceName}`);
+};
+
+const getServiceInstanceGuid = (serviceName) => {
   return execute(`cf service ${serviceName} --guid`).toString().trim();
 };
 
-const getServiceStatus = (orgName, spaceName, serviceName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
+const getServiceStatus = (serviceName) => {
   const serviceInfo = execute(`cf service ${serviceName}`).toString().trim();
-  return serviceInfo.match(/.*Status: (.*)/)[1];
+  return serviceInfo.match(/Last Operation\nStatus: (.*)/)[1];
 };
 
-const bindServiceInstance = (orgName, spaceName, serviceName, appName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  return execute(`cf bind-service ${appName} ${serviceName}`)
-    .toString().trim();
+const bindServiceInstance = (serviceName, appName) => {
+  return execute(`cf bind-service ${appName} ${serviceName}`).toString().trim();
 };
 
-const unbindServiceInstance = (orgName, spaceName, serviceName, appName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf unbind-service ${appName} ${serviceName}`);
+const unbindServiceInstance = (serviceName, appName) => {
+  return execute(`cf unbind-service ${appName} ${serviceName}`);
 };
 
-const deleteServiceInstance = (orgName, spaceName, serviceName) => {
-  execute(`cf target -o ${orgName} -s ${spaceName}`);
-  execute(`cf delete-service -f ${serviceName}`);
+const deleteServiceInstance = (serviceName) => {
+  return execute(`cf delete-service -f ${serviceName}`);
 };
 
+const target = (org, space) => {
+  return execute(`cf target -o ${org} -s ${space}`);
+};
 
 const login = (apiEndpoint, user, password) => {
   execute(`cf api ${apiEndpoint} --skip-ssl-validation`);
@@ -73,7 +69,9 @@ const login = (apiEndpoint, user, password) => {
     getServiceStatus: getServiceStatus,
     bindServiceInstance: bindServiceInstance,
     unbindServiceInstance: unbindServiceInstance,
-    deleteServiceInstance: deleteServiceInstance
+    deleteServiceInstance: deleteServiceInstance,
+    target: target,
+    createSpace: createSpace
   };
 };
 

@@ -21,6 +21,7 @@
   "scripts": {
     "smoke": "eslint && mocha",
     "lint": "eslint",
+    "test": "mocha",
     "pub": "publish"
   },
   "dependencies": {
