@@ -4,6 +4,8 @@ const cmdline = require('abacus-ext-cmdline');
 const moment = require('abacus-moment');
 const request = require('abacus-request');
 const oauth = require('abacus-oauth');
+const _ = require('underscore');
+const extend = _.extend;
 
 const api = process.env.CF_API;
 const adminUser = process.env.CF_ADMIN_USER;
@@ -18,6 +20,7 @@ const servicePlan = process.env.SERVICE_PLAN;
 
 const abacusUtils = require('./../../../utils/abacus-client-utils.js')
 (undefined, collectorUrl, reportingUrl);
+const config = require('../../../../lib/cf/broker/src/config.js');
 
 describe('Abacus Broker Smoke test', () => {
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
@@ -35,9 +38,9 @@ describe('Abacus Broker Smoke test', () => {
   });
 
   after((done) => {
-    // cfUtils.unbindServiceInstance(serviceInstanceName, applicationName);
-    //cfUtils.deleteServiceInstance(serviceInstanceName);
-    // cfUtils.deleteApplication(applicationName, true);
+    cfUtils.unbindServiceInstance(serviceInstanceName, applicationName);
+    cfUtils.deleteServiceInstance(serviceInstanceName);
+    cfUtils.deleteApplication(applicationName, true);
     done();
   });
 
@@ -82,7 +85,8 @@ describe('Abacus Broker Smoke test', () => {
             const credentials = response.body[Object.keys(response.body)[0]][0]
               .credentials;
 
-            expect(credentials.client_id).to.equal(`abacus-rp-${guid}`);
+            expect(credentials.client_id).to.equal(
+              config.prefixWithResourceProvider(guid));
             clientId = credentials.client_id;
             expect(credentials.client_secret).to.not.equal(null);
             clientSecret = credentials.client_secret;
@@ -152,34 +156,25 @@ describe('Abacus Broker Smoke test', () => {
             });
           });
 
-          const getTimeBasedKeyProperty = (body, spaceId) => {
-            return body.spaces.filter((space) => {
-              return space.space_id === spaceId;
-            })[0].consumers.filter((consumer) => {
-              return consumer.consumer_id === consumerId;
-            })[0].resources.filter((resource) => {
-              return resource.resource_id === guid;
-            })[0].plans.filter((plan) => {
-              const key = planName + '/' + planId + '/' + planId + '/' + planId;
-              return plan.plan_id === key;
-            })[0].resource_instances[0].t;
-          };
-
           it('should exist', (done) => {
             abacusUtils.getOrganizationUsage(systemToken, orgId, (err, response) => {
-              const opts = {
-                org_id: orgId,
+              const filter = {
                 space_id: spaceId,
-                resource_id: guid,
-                resource_instance_id: resourceInstanceId,
                 consumer_id: consumerId,
+                resource_id: guid,
                 plan_id: planName,
                 metering_plan_id: planId,
                 rating_plan_id: planId,
-                pricing_plan_id: planId,
-                time_based_key: getTimeBasedKeyProperty(response.body, spaceId)
+                pricing_plan_id: planId
               };
-              abacusUtils.getUsage(usageToken, opts, (err, response) => {
+              const timeBasedKey =
+                abacusUtils.getTimeBasedKeyProperty(response.body, filter);
+
+              extend(filter, {
+                org_id: orgId,
+                resource_instance_id: resourceInstanceId,
+                time_based_key: timeBasedKey });
+              abacusUtils.getUsage(usageToken, filter, (err, response) => {
                 expect(err).to.equal(undefined);
                 expect(response.statusCode).to.equal(200);
 

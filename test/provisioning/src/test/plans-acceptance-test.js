@@ -3,6 +3,8 @@
 const cmdline = require('abacus-ext-cmdline');
 const moment = require('abacus-moment');
 const oauth = require('abacus-oauth');
+const _ = require('underscore');
+const extend = _.extend;
 
 const debug = require('abacus-debug')('abacus-ext-provisioning-itest');
 
@@ -291,34 +293,26 @@ describe('Create and update plans acceptance test', () => {
       expect(lastMonthQuantity).to.equal(0.3072);
     };
 
-    const getTimeBasedKeyProperty = (body, spaceId) => {
-      return body.spaces.filter((space) => {
-        return space.space_id === spaceId;
-      })[0].consumers.filter((consumer) => {
-        return consumer.consumer_id === consumerId;
-      })[0].resources.filter((resource) => {
-        return resource.resource_id === resourceId;
-      })[0].plans.filter((plan) => {
-        return plan.plan_id === planId + '/' + meteringPlanId + '/' +
-          ratingPlanId + '/' + pricingPlanId;
-      })[0].resource_instances[0].t;
-    };
-
     it('should exist', (done) => {
       abacusUtils.getOrganizationUsage(systemToken, orgId, (err, response) => {
-        const opts = {
-          org_id: orgId,
+        const filter = {
           space_id: spaceId,
-          resource_id: resourceId,
-          resource_instance_id: resourceInstanceId,
           consumer_id: consumerId,
+          resource_id: resourceId,
           plan_id: planId,
           metering_plan_id: meteringPlanId,
           rating_plan_id: ratingPlanId,
-          pricing_plan_id: pricingPlanId,
-          time_based_key: getTimeBasedKeyProperty(response.body, spaceId)
+          pricing_plan_id: pricingPlanId
         };
-        abacusUtils.getUsage(usageToken, opts, (err, response) => {
+        const timeBasedKey =
+          abacusUtils.getTimeBasedKeyProperty(response.body, filter);
+
+        extend(filter, {
+          org_id: orgId,
+          resource_instance_id: resourceInstanceId,
+          time_based_key: timeBasedKey });
+
+        abacusUtils.getUsage(usageToken, filter, (err, response) => {
           debug('\n       GET  %s', response.request.uri.href);
           expect(err).to.equal(undefined);
           expect(response.statusCode).to.equal(200);

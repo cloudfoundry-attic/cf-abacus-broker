@@ -37,7 +37,8 @@
     "abacus-request": "file:../../abacus/lib/utils/request",
     "eslint-plugin-nodate": "file:../../abacus/tools/eslint-plugin-nodate",
     "eslint-plugin-mocha": "^4.8.0",
-    "request-debug": "^0.2.0"
+    "request-debug": "^0.2.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "abacus-eslint": "../../abacus/tools/eslint",

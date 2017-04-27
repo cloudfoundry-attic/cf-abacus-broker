@@ -28,7 +28,8 @@
     "abacus-ext-cmdline": "file:../../tools/cmdline",
     "abacus-moment": "file:../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../abacus/lib/utils/oauth",
-    "abacus-request": "file:../../abacus/lib/utils/request"
+    "abacus-request": "file:../../abacus/lib/utils/request",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "abacus-eslint": "file:../../abacus/tools/eslint",
