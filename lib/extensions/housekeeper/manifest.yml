@@ -8,6 +8,8 @@ applications:
   env:
     CONF: default
     DB: abacus-pouchserver
+    API: https://api
+    AUTH_SERVER: https://uaa
     DEBUG: e-abacus-*
     EUREKA: abacus-eureka-plugin
     NODE_MODULES_CACHE: false

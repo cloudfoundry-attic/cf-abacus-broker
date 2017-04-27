@@ -15,8 +15,8 @@ applications:
     DASHBOARD_CLIENT_ID: dashboard-client
     DASHBOARD_CLIENT_SECRET: dashboard-secret
     DASHBOARD_REDIRECT_URI: https://dashboard/redirect
-    CF_API: https://api
-    UAA_SERVER: https://uaa
+    API: https://api
+    AUTH_SERVER: https://uaa
     PROVISIONING: https://abacus-provisioning-plugin
     COLLECTOR: https://abacus-usage-collector
     BROKER_USER: user
