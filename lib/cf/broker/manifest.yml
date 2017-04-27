@@ -14,10 +14,10 @@ applications:
     METERING_BROKER_CLIENT_SECRET: secret
     DASHBOARD_CLIENT_ID: dashboard-client
     DASHBOARD_CLIENT_SECRET: dashboard-secret
-    DASHBOARD_REDIRECT_URL: https://dashboard/redirect
-    CF_API: https://api.cf.landscape-dev-sof-qual-lss.sapcloud.io
-    UAA_SERVER: https://uaa.cf.landscape-dev-sof-qual-lss.sapcloud.io
-    PROVISIONING: https://abacus-provisioning-plugin.cfapps.landscape-dev-sof-qual-lss.sapcloud.io
-    COLLECTOR: https://abacus-usage-collector.cfapps.landscape-dev-sof-qual-lss.sapcloud.io
+    DASHBOARD_REDIRECT_URI: https://dashboard/redirect
+    CF_API: https://api
+    UAA_SERVER: https://uaa
+    PROVISIONING: https://abacus-provisioning-plugin
+    COLLECTOR: https://abacus-usage-collector
     BROKER_USER: user
     BROKER_PASSWORD: pass
