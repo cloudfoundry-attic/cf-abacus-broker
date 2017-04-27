@@ -3,6 +3,7 @@
 const cmdline = require('abacus-ext-cmdline');
 const moment = require('abacus-moment');
 const request = require('abacus-request');
+
 const oauth = require('abacus-oauth');
 const _ = require('underscore');
 const extend = _.extend;
@@ -65,7 +66,7 @@ describe('Abacus Broker Smoke test', () => {
       let clientSecret;
 
       const getApplicationEnvironment = (cb) => {
-        request(`https://${applicationName}.${appsDomain}`, cb);
+        request.get(`https://${applicationName}.${appsDomain}`, cb);
       };
 
       before(() => {
