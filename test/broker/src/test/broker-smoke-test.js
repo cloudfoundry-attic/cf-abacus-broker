@@ -31,17 +31,9 @@ describe('Abacus Broker Smoke test', () => {
   const applicationManifest = './src/test/test-app/manifest.yml';
 
   before((done) => {
-    cfUtils.createSpace(org, space);
     cfUtils.target(org, space);
     cfUtils.deployApplication(applicationName,
       `-f ${applicationManifest} --no-start`);
-    done();
-  });
-
-  after((done) => {
-    cfUtils.unbindServiceInstance(serviceInstanceName, applicationName);
-    cfUtils.deleteServiceInstance(serviceInstanceName);
-    cfUtils.deleteApplication(applicationName, true);
     done();
   });
 
