@@ -8,7 +8,7 @@ const extend = _.extend;
 
 const debug = require('abacus-debug')('abacus-ext-provisioning-itest');
 
-const api = process.env.CF_API;
+const api = process.env.API;
 const authServer = process.env.AUTH_SERVER;
 const adminUser = process.env.CF_ADMIN_USER;
 const adminUserPassword = process.env.CF_ADMIN_PASSWORD;
