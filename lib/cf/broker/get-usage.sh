@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-instance_id='526c58f5-0bbe-47c2-8b74-49161f03e0bb'
 CLIENT_ID=abacus
 CLIENT_SECRET='s3cret'
 org='sap_abacus'
@@ -50,4 +49,3 @@ echo ""
 echo "Getting report for org $org ($ORG_GUID) from $URL ..."
 set +e
 curl -k -s -H "Authorization: bearer $TOKEN" -H "Content-Type: application/json" $URL | jq .
-

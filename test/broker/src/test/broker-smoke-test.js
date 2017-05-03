@@ -103,7 +103,7 @@ describe('Abacus Broker Smoke test', () => {
           orgId = cfUtils.getOrgId(org);
           spaceId = cfUtils.getSpaceId(space);
           const now = moment.utc().valueOf();
-          planId = `${guid}-${guid}`
+          planId = `${guid}-${guid}`;
 
           usageBody = {
             start: now,
@@ -150,37 +150,38 @@ describe('Abacus Broker Smoke test', () => {
           });
 
           it('should exist', (done) => {
-            abacusUtils.getOrganizationUsage(systemToken, orgId, (err, response) => {
-              const filter = {
-                space_id: spaceId,
-                consumer_id: consumerId,
-                resource_id: guid,
-                plan_id: planName,
-                metering_plan_id: planId,
-                rating_plan_id: planId,
-                pricing_plan_id: planId
-              };
-              const timeBasedKey =
-                abacusUtils.getTimeBasedKeyProperty(response.body, filter);
+            abacusUtils.getOrganizationUsage(systemToken, orgId,
+              (err, response) => {
+                const filter = {
+                  space_id: spaceId,
+                  consumer_id: consumerId,
+                  resource_id: guid,
+                  plan_id: planName,
+                  metering_plan_id: planId,
+                  rating_plan_id: planId,
+                  pricing_plan_id: planId
+                };
+                const timeBasedKey =
+                  abacusUtils.getTimeBasedKeyProperty(response.body, filter);
 
-              extend(filter, {
-                org_id: orgId,
-                resource_instance_id: resourceInstanceId,
-                time_based_key: timeBasedKey });
-              abacusUtils.getUsage(usageToken, filter, (err, response) => {
-                expect(err).to.equal(undefined);
-                expect(response.statusCode).to.equal(200);
+                extend(filter, {
+                  org_id: orgId,
+                  resource_instance_id: resourceInstanceId,
+                  time_based_key: timeBasedKey });
+                abacusUtils.getUsage(usageToken, filter, (err, response) => {
+                  expect(err).to.equal(undefined);
+                  expect(response.statusCode).to.equal(200);
 
-                const metric = response.body.accumulated_usage[0].metric;
-                expect(metric).to.equal('sampleName');
+                  const metric = response.body.accumulated_usage[0].metric;
+                  expect(metric).to.equal('sampleName');
 
-                const windows = response.body.accumulated_usage[0].windows;
-                const lastMonthQuantity =
-                  windows[windows.length - 1][0].quantity;
-                expect(lastMonthQuantity).to.equal(512);
-                done();
+                  const windows = response.body.accumulated_usage[0].windows;
+                  const lastMonthQuantity =
+                    windows[windows.length - 1][0].quantity;
+                  expect(lastMonthQuantity).to.equal(512);
+                  done();
+                });
               });
-            });
           });
         });
       });

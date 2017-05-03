@@ -40,7 +40,8 @@ app.post('/usage', (req, res) => {
   }, (err, response) => {
     if (err) {
       console.log('An error posting usage occured: %o', err);
-      return res.status(500).send(err);
+      res.status(500).send(err);
+      return;
     }
     console.log('Collector replied with %s and %s, %o',response.statusCode,
       response.message, response.body);
