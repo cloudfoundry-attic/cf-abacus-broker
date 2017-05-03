@@ -89,6 +89,7 @@ describe('Abacus Broker Smoke test', () => {
             done();
           });
         });
+        
       context('and posting usage', () => {
         const consumerId = 'app:1fb61c1f-2db3-4235-9934-00097845b80d';
         const resourceInstanceId = '1fb61c1f-2db3-4235-9934-00097845b80d';
