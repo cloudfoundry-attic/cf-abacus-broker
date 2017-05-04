@@ -1,0 +1,7 @@
+---
+applications:
+- name: abacus-broker-test-app
+  command: node app.js
+  memory: 128M
+  instances: 1
+  path: .

@@ -104,6 +104,20 @@ const getUsage = (token, opts, callback) => {
   }), callback);
 };
 
+const getTimeBasedKeyProperty = (body, filter) => {
+  return body.spaces.filter((space) => {
+    return space.space_id === filter.space_id;
+  })[0].consumers.filter((consumer) => {
+    return consumer.consumer_id === filter.consumer_id;
+  })[0].resources.filter((resource) => {
+    return resource.resource_id === filter.resource_id;
+  })[0].plans.filter((plan) => {
+    const key = filter.plan_id + '/' + filter.metering_plan_id + '/'
+      + filter.rating_plan_id + '/' + filter.pricing_plan_id;
+    return plan.plan_id === key;
+  })[0].resource_instances[0].t;
+};
+
 const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
   provisioningUrl = provisioningAppUrl;
   collectorUrl = collectorAppUrl;
@@ -116,7 +130,8 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
     updatePlan: updatePlan,
     getPlan: getPlan,
     createMapping: createMapping,
-    getMapping: getMapping
+    getMapping: getMapping,
+    getTimeBasedKeyProperty: getTimeBasedKeyProperty
   };
 };
 
