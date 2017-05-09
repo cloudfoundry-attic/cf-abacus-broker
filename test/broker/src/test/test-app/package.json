@@ -1,6 +1,6 @@
 {
   "name": "abacus-broker-test-app",
-  "version": "0.0.2",
+  "version": "0.0.6-dev.9",
   "dependencies": {
     "abacus-oauth": "0.0.6-dev.9",
     "abacus-request": "0.0.6-dev.9",
