@@ -8,6 +8,8 @@ const oauth = require('abacus-oauth');
 const _ = require('underscore');
 const extend = _.extend;
 
+const testHelper = require('abacus-ext-test-utils');
+
 const api = process.env.CF_API;
 const adminUser = process.env.CF_ADMIN_USER;
 const adminUserPassword = process.env.CF_ADMIN_PASSWORD;
@@ -19,9 +21,8 @@ const reportingUrl = process.env.REPORTING_URL;
 const serviceName = process.env.SERVICE_NAME;
 const servicePlan = process.env.SERVICE_PLAN;
 
-const abacusUtils = require('./../../../utils/abacus-client-utils.js')
-(undefined, collectorUrl, reportingUrl);
-const config = require('../../../../lib/cf/broker/src/config.js');
+const abacusUtils = testHelper(undefined, collectorUrl, reportingUrl);
+const config = require('abacus-ext-cf-broker').config;
 
 describe('Abacus Broker Smoke test', () => {
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);

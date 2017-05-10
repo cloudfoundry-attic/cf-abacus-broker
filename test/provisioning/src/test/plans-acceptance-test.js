@@ -8,6 +8,9 @@ const extend = _.extend;
 
 const debug = require('abacus-debug')('abacus-ext-provisioning-itest');
 
+const uaaHelper = require('./utils/uaa-utils.js');
+const testHelper = require('abacus-ext-test-utils');
+
 const api = process.env.API;
 const authServer = process.env.AUTH_SERVER;
 const adminUser = process.env.CF_ADMIN_USER;
@@ -22,12 +25,10 @@ const collectorUrl = process.env.COLLECTOR_URL;
 const reportingUrl = process.env.REPORTING_URL;
 const clientSecret = process.env.CLIENT_SECRET;
 
-
 describe('Create and update plans acceptance test', () => {
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
-  const uaaUtils = require('./utils/uaa-utils.js')(authServer, uaaAdminSecret);
-  const abacusUtils = require('./../../../utils/abacus-client-utils.js')
-    (provisioningUrl, collectorUrl, reportingUrl);
+  const uaaUtils = uaaHelper(authServer, uaaAdminSecret);
+  const abacusUtils = testHelper(provisioningUrl, collectorUrl, reportingUrl);
 
   const prefix = moment.utc().valueOf();
   const resourceId = `${prefix}-test-resource-id`;
