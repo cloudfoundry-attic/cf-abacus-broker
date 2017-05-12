@@ -25,7 +25,7 @@
     "pub": "publish"
   },
   "dependencies": {
-    "abacus-ext-cf-broker": "file:../../abacus/lib/cf/broker",
+    "abacus-ext-cf-broker": "file:../../lib/cf/broker",
     "abacus-ext-cmdline": "file:../../tools/cmdline",
     "abacus-ext-test-utils": "file:../test-utils",
     "abacus-moment": "file:../../abacus/lib/utils/moment",
