@@ -1,0 +1,22 @@
+{
+	"name": "abacus-service-dashboard",
+	"description": "",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"angular": "1.5.10",
+		"angular-ui-router": "0.2.13",
+		"angular-bootstrap": "2.5.0",
+		"angular-breadcrumb": "0.5.0",
+		"angular-mocks": "1.4.8",
+		"bootstrap": "3.3.7",
+		"lodash": "4.16.4",
+		"font-awesome": "4.7.0",
+		"angular-animate": "1.5.10",
+		"angular-ui-ace": "0.2.3",
+		"angular-sanitize": "1.4.8"
+	},
+	"resolutions": {
+		"angular": "1.5.10"
+	}
+}

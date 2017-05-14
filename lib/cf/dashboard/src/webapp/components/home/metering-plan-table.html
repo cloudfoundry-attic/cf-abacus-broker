@@ -1,0 +1,18 @@
+<table class="table custom-table">
+    <thead >
+        <tr>
+            <th class="col-md-2">{{messagebundle.ResourceProvider_Metering_Column_Name_HDR}}</th>
+            <th class="col-md-5">{{messagebundle.ResourceProvider_Metering_Column_Measures_HDR}}</th>
+            <th class="col-md-4">{{messagebundle.ResourceProvider_Metering_Column_Metrics_HDR}}</th>
+            <th class="col-md-1"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="plan in plans" ng-show="plans!='undefined' && plans!='null' && plans.length!=0" ui-sref="metering({plan_id:plan.plan_id,instance_id:instance_id,binding_id:binding_id})">
+            <td>{{plan.plan_id}}</td>
+            <td>{{hvc.formatMeasures(plan.measures)}}</td>
+            <td>{{hvc.formatMeasures(plan.metrics)}}</td>
+            <td class="text-right"><a ui-sref="metering({plan_id:plan.plan_id,instance_id:instance_id,binding_id:binding_id})"><i class="fa fa-angle-right fa-2x" aria-hidden="true"></i></a></td>
+        </tr>
+    </tbody>
+</table>

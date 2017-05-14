@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+
+    <title>Resource-Provider</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="dist/css/main.css">
+</head>
+
+<body class="layout-boxed" ng-controller="rootController" ng-cloak>
+    <header id="topnav" class="navbar navbar-default navbar-fixed-top layout-boxed" role="banner" ng-cloak>
+        <span class="header-title">{{messagebundle.ResourceProvider_Header_XTIT}}</span>
+    </header>
+    <div id="wrapper">
+        <div ncy-breadcrumb class="custom-breadcrumb"></div>
+        <div class="spinner" ng-show="isLoadingSpinnerActive"></div>
+        <div ui-view></div>
+    </div>
+
+    <script src="/libs/jquery/dist/jquery.js"></script>
+    <script src="libs/lodash/dist/lodash.min.js"></script>
+    <script src="libs/angular/angular.js"></script>
+    <script src="libs/angular-sanitize/angular-sanitize.js"></script>
+    <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="libs/angular-breadcrumb/release/angular-breadcrumb.min.js"></script>
+    <script src="libs/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="libs/angular-animate/angular-animate.js"></script>
+    <script src="libs/ace-builds/src-min-noconflict/ace.js"></script>
+    <script src="libs/angular-ui-ace/ui-ace.js"></script>
+    <script type="text/javascript" src="libs/ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="app.routes.js"></script>
+    <script src="app.module.js"></script>
+
+    <script src="dist/js/provider.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{
+    "name": "",
+    "build": "",
+    "support": "https://help.cf.stagingaws.hanavlab.ondemand.com",
+    "version": 0,
+    "description": "Cloud Foundry at SAP HANA Cloud Platform",
+    "authorization_endpoint": "https://login.cf.stagingaws.hanavlab.ondemand.com",
+    "token_endpoint": "https://uaa.cf.stagingaws.hanavlab.ondemand.com",
+    "min_cli_version": null,
+    "min_recommended_cli_version": null,
+    "api_version": "2.80.0",
+    "app_ssh_endpoint": "ssh.cf.stagingaws.hanavlab.ondemand.com:2222",
+    "app_ssh_host_key_fingerprint": "82:20:f7:0f:05:fd:4a:ab:e7:05:34:4f:98:43:0c:35",
+    "app_ssh_oauth_client": "ssh-proxy",
+    "logging_endpoint": "wss://loggregator.cf.stagingaws.hanavlab.ondemand.com:443",
+    "doppler_logging_endpoint": "wss://doppler.cf.stagingaws.hanavlab.ondemand.com:443"
+}
