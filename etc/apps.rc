@@ -2,6 +2,7 @@ default:
   apps:
     - lib/plugins/provisioning
     - lib/plugins/account
+    - lib/cf/dashboard
 
 small:
 
