@@ -1,7 +1,7 @@
 {
 	"name": "abacus-service-dashboard",
 	"description": "",
-	"version": "1.0.0",
+	"version": "0.0.6-dev.9",
 	"private": true,
 	"dependencies": {
 		"angular": "1.5.10",
