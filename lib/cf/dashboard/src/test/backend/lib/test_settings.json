@@ -1,11 +1,9 @@
 {
-    "CF_API_ENDPOINT": "https://api.cf.stagingaws.hanavlab.ondemand.com",
+    "API": "https://api",
     "CF_CLIENT_ID": "test_client",
     "CF_CLIENT_SECRET": "secret",
     "CF_CALLBACK_URL": "/login/callback",
     "CF_COOKIE_SECRET": "secret",
-    "CF_AUTHORIZATION_ENDPOINT": "https://login.cf.cf.stagingaws.hanavlab.ondemand.com/oauth/authorize",
-    "CF_TOKEN_ENDPOINT": "https://login.cf.cf.stagingaws.hanavlab.ondemand.com/oauth/token",
-    "CF_ABACUS_PROVISIONING_PLUGIN": "abacus-provisioning-plugin",
-    "CF_ABACUS_PROVISIONING_ENDPOINT": "https://abacus-provisioning-plugin.cfapps.stagingaws.hanavlab.ondemand.com"
+    "AUTH_SERVER": "https://login",
+    "PROVISIONING": "https://abacus-provisioning-plugin"
 }
