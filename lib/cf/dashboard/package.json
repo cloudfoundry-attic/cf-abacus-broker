@@ -26,7 +26,6 @@
 	"scripts": {
 		"start": "node src/server.js --harmony",
 		"stop": "webapp stop",
-		"test": "eslint && mocha",
 		"lint": "eslint",
 		"pub": "publish",
 		"cfpack": "cfpack",
