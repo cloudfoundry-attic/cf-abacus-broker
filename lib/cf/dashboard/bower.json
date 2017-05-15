@@ -1,5 +1,5 @@
 {
-	"name": "abacus-service-dashboard",
+	"name": "abacus-ext-service-dashboard",
 	"description": "",
 	"version": "0.0.6-dev.9",
 	"private": true,
