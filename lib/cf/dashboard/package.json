@@ -30,7 +30,7 @@
 		"pub": "publish",
 		"cfpack": "cfpack",
 		"cfpush": "cfpush",
-		"postinstall": "bower install",
+		"postinstall": "if ! bower install 2>/dev/null; then a=$(pwd); cd ../../lib/cf/dashboard; bower install; cd $a; fi",
 		"jsdoc": "jsdoc -c jsdoc.json",
 		"jshint": "jshint --exclude coverage,docs,jsdoc,node_modules,webapp,test,tmp  --reporter=node_modules/jshint-stylish .",
 		"jshint-ci": "jshint --exclude coverage,docs,jsdoc,node_modules,public,tmp --reporter=checkstyle .",
