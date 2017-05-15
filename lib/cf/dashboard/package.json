@@ -1,5 +1,5 @@
 {
-	"name": "abacus-service-dashboard",
+	"name": "abacus-ext-service-dashboard",
 	"description": "CF Service Dashboard for Abacus",
 	"license": "Apache-2.0",
 	"version": "0.0.6-dev.9",

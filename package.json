@@ -74,6 +74,7 @@
     "abacus-ext-plan-mappings": "file:lib/config/mappings",
     "abacus-ext-provisioning-plugin": "file:lib/plugins/provisioning",
     "abacus-ext-provisioning-itest": "file:test/provisioning",
+    "abacus-ext-service-dashboard": "file:lib/cf/dashboard",
     "abacus-ext-test-utils": "file:test/test-utils",
     "abacus-hystrix": "file:abacus/lib/utils/hystrix",
     "abacus-launcher": "file:abacus/lib/utils/launcher",
