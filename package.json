@@ -110,6 +110,12 @@
     "istanbul": "^0.4.5",
     "jshint": "^2.8.0",
     "jsinspect": "^0.6.1",
+    "karma": "1.5.0",
+    "karma-chrome-launcher": "2.0.0",
+    "karma-read-json": "1.1.0",
+    "karma-jasmine": "1.1.0",
+    "karma-cli": "0.1.2",
+    "karma-coverage": "1.1.1",
     "tmp": "0.0.31"
   },
   "engines": {
