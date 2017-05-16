@@ -108,6 +108,7 @@
     "abacus-publish": "file:abacus/tools/publish",
     "coveralls": "^2.11.3",
     "istanbul": "^0.4.5",
+    "jasmine-core": "2.5.2",
     "jshint": "^2.8.0",
     "jsinspect": "^0.6.1",
     "karma": "1.5.0",

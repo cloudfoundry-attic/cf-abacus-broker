@@ -1,7 +1,6 @@
-lib/**
 node_modules/**
 bower_components/**
 coverage/**
-npm-debug.logs
+npm-debug.log
 src/test/frontend/coverage/**
 src/webapp/libs/**
