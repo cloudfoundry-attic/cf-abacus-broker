@@ -58,8 +58,8 @@ describe('Create and update plans acceptance test', () => {
 
   const getPlan = (resourceType, planBody, planId, done) => {
     abacusUtils.getPlan(systemToken, resourceType, planId, (err, val) => {
-      debug('\n       GET  %s', val.request.uri.href);
       expect(err).to.equal(undefined);
+      debug('\n       GET  %s', val.request.uri.href);
       expect(val.statusCode).to.equal(200);
       expect(val.body).to.deep.equal(planBody);
       done();
@@ -68,8 +68,8 @@ describe('Create and update plans acceptance test', () => {
 
   const createPlan = (resourceType, planBody, done) => {
     abacusUtils.createPlan(systemToken, resourceType, planBody, (err, val) => {
-      debug('\n       POST %s', val.request.uri.href);
       expect(err).to.equal(undefined);
+      debug('\n       POST %s', val.request.uri.href);
       expect(val.statusCode).to.equal(201);
       done();
     });
@@ -78,8 +78,8 @@ describe('Create and update plans acceptance test', () => {
   const updatePlan = (resourceType, planBody, planId, done) => {
     abacusUtils.updatePlan(systemToken, resourceType,
       planId, planBody, (err, val) => {
-        debug('\n       PUT  %s', val.request.uri.href);
         expect(err).to.equal(undefined);
+        debug('\n       PUT  %s', val.request.uri.href);
         expect(val.statusCode).to.equal(200);
         done();
       });
@@ -88,8 +88,8 @@ describe('Create and update plans acceptance test', () => {
   const getMapping = (resourceType, planId, done) => {
     abacusUtils.getMapping(systemToken, resourceType, resourceId,
       (err, val) => {
-        debug('\n       GET  %s', val.request.uri.href);
         expect(err).to.equal(undefined);
+        debug('\n       GET  %s', val.request.uri.href);
         expect(val.statusCode).to.equal(200);
         expect(val.body.plan_id).to.equal(planId);
         done();
@@ -99,8 +99,8 @@ describe('Create and update plans acceptance test', () => {
   const createMapping = (resourceType, planId, done) => {
     abacusUtils.createMapping(systemToken, resourceType, resourceId, planId,
       (err, val) => {
-        debug('\n       POST %s', val.request.uri.href);
         expect(err).to.equal(undefined);
+        debug('\n       POST %s', val.request.uri.href);
         expect(val.statusCode).to.equal(200);
         done();
       });
@@ -269,8 +269,8 @@ describe('Create and update plans acceptance test', () => {
 
     it('should be created', (done) => {
       abacusUtils.postUsage(usageToken, usageBody, (err, val) => {
-        debug('\n       POST %s', val.request.uri.href);
         expect(err).to.equal(undefined);
+        debug('\n       POST %s', val.request.uri.href);
         expect(val.statusCode).to.equal(201);
         expect(val.body).to.equal(undefined);
         done();
@@ -314,8 +314,8 @@ describe('Create and update plans acceptance test', () => {
           time_based_key: timeBasedKey });
 
         abacusUtils.getUsage(usageToken, filter, (err, response) => {
-          debug('\n       GET  %s', response.request.uri.href);
           expect(err).to.equal(undefined);
+          debug('\n       GET  %s', response.request.uri.href);
           expect(response.statusCode).to.equal(200);
 
           validateMetric(response.body);
