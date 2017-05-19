@@ -10,8 +10,8 @@ applications:
     DEBUG: e-abacus-*
     EUREKA: abacus-eureka-plugin
     NODE_MODULES_CACHE: false
-    METERING_BROKER_CLIENT_ID: abacus-broker
-    METERING_BROKER_CLIENT_SECRET: secret
+    SERVICE_BROKER_CLIENT_ID: abacus-broker
+    SERVICE_BROKER_CLIENT_SECRET: secret
     DASHBOARD_CLIENT_ID: dashboard-client
     DASHBOARD_CLIENT_SECRET: dashboard-secret
     DASHBOARD_REDIRECT_URI: https://dashboard/redirect
