@@ -1,0 +1,6 @@
+default:
+  PORT: 9505
+  APPS: 1
+  INSTANCES: 1
+  API:
+  AUTH_SERVER:

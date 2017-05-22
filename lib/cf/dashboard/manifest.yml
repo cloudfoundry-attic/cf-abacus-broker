@@ -1,0 +1,14 @@
+applications:
+- name: metering-dashboard
+  host: metering-dashboard
+  path: .cfpack/app.zip
+  instances: 1
+  memory: 512M
+  disk_quota: 512M
+  env:
+    CF_API_ENDPOINT: https://api
+    CF_AUTHORIZATION_ENDPOINT: https://login
+    CF_CLIENT_ID: os_abacus_client
+    CF_CLIENT_SECRET: secret
+    CF_COOKIE_SECRET: secret
+    CF_ABACUS_PROVISIONING_ENDPOINT: https://abacus-provisioning-plugin
