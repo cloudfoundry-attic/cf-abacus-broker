@@ -30,7 +30,7 @@
 		"pub": "publish",
 		"cfpack": "cfpack",
 		"cfpush": "cfpush",
-		"postinstall": "if ! bower install --allow-root 2>/dev/null; then a=$(pwd); cd ../../lib/cf/dashboard; bower install --allow-root; b=$(pwd); cd $a; cp -Ru $b/src/webapp/libs $a/src/webapp/libs; fi",
+		"postinstall": "if ! bower install --allow-root 2>/dev/null; then a=$(pwd); cd ../../lib/cf/dashboard; bower install --allow-root; b=$(pwd); cd $a; cp -R $b/src/webapp/libs $a/src/webapp/libs; fi",
 		"jsdoc": "jsdoc -c jsdoc.json",
 		"jshint": "jshint --exclude coverage,docs,jsdoc,node_modules,webapp,test,tmp  --reporter=node_modules/jshint-stylish .",
 		"jshint-ci": "jshint --exclude coverage,docs,jsdoc,node_modules,public,tmp --reporter=checkstyle .",
