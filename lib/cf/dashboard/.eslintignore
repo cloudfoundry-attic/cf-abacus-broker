@@ -1,2 +1,2 @@
-src/webapp/**
-src/test/frontend
+src/webapp/libs/**
+src/webapp/dist/**
