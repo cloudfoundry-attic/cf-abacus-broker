@@ -1,9 +1,9 @@
 <div>
     <div class="row sub-header">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 metric-text">
             <span class="header-font">{{messagebundle.ResourceProvider_MetricView_HDR_XTIT}} - {{metric.name}}</span>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-right">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
             <button class="btn btn-primary" ng-show="isReadOnly" ng-click="metricsCtrl.onEditMetricClick()">{{messagebundle.ResourceProvider_Metric_Edit_XBUT_TXT}}</button>
             <button class="btn btn-primary" ng-show="isReadOnly" ng-click="metricsCtrl.onDeleteMetricClick()">{{messagebundle.ResourceProvider_Metric_Delete_XBUT_TXT}}</button>
             <button class="btn btn-primary" ng-show="!isReadOnly" ng-click="metricsCtrl.onSaveMetricClick()" ng-disabled="metricsCtrl.metricform.$invalid">{{messagebundle.ResourceProvider_Metric_Save_XBUT_TXT}}</button>
