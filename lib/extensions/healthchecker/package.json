@@ -1,16 +1,16 @@
 {
-  "name": "abacus-ext-cf-broker",
-  "description": "CF Service Broker for Abacus",
+  "name": "abacus-ext-healthchecker",
+  "description": "Abacus Healthchecker",
   "license": "Apache-2.0",
   "version": "0.0.6-dev.9",
   "private": true,
-  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/lib/cf/broker",
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/lib/extensions/healthchecker",
   "bugs": {
     "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
+    "url": "http://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
   },
   "keywords": [
     "cf",
@@ -34,26 +34,20 @@
     "cfpush": "cfpush"
   },
   "dependencies": {
-    "abacus-breaker": "file:../../../abacus/lib/utils/breaker",
+    "abacus-client": "file:../../../abacus/lib/utils/client",
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
     "abacus-debug": "file:../../../abacus/lib/utils/debug",
+    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
+    "abacus-dataflow": "file:../../../abacus/lib/utils/dataflow",
     "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
-    "abacus-moment": "file:../../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
-    "abacus-perf": "file:../../../abacus/lib/utils/perf",
-    "abacus-retry": "file:../../../abacus/lib/utils/retry",
     "abacus-request": "file:../../../abacus/lib/utils/request",
     "abacus-router": "file:../../../abacus/lib/utils/router",
     "abacus-throttle": "file:../../../abacus/lib/utils/throttle",
+    "abacus-transform": "file:../../../abacus/lib/utils/transform",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
     "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
-    "async": "^2.2.0",
-    "generate-password": "^1.3.0",
-    "http-status-codes": "^1.1.6",
-    "jsonwebtoken": "^5.0.5",
-    "passport": "^0.3.2",
-    "passport-http": "^0.3.0",
-    "request-debug": "^0.2.0",
+    "abacus-moment": "file:../../../abacus/lib/utils/moment",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
