@@ -6,7 +6,7 @@ applications:
   memory: 512M
   disk_quota: 512M
   env:
-    APPLICATION_GROUPS: '{"abacus-usage-accumulator": 1, "abacus-usage-aggregator": 1}'
+    APPLICATION_GROUPS: '{"abacus-account-plugin":1,"abacus-broker":1,"abacus-cf-bridge":1,"abacus-cf-renewer":1,"abacus-eureka-plugin":1,"abacus-housekeeper":1,"abacus-provisioning-plugin":1,"abacus-usage-accumulator":2,"abacus-usage-aggregator":2,"abacus-usage-collector":1,"abacus-usage-meter":1,"abacus-usage-reporting":1}'
     CF_API: https://api.
     CF_DOMAIN: cfapps.
     DEBUG: e-abacus-*
