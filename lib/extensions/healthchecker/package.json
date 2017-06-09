@@ -1,0 +1,64 @@
+{
+  "name": "abacus-ext-healthchecker",
+  "description": "Abacus Healthchecker",
+  "license": "Apache-2.0",
+  "version": "0.0.6-dev.9",
+  "private": true,
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/lib/extensions/healthchecker",
+  "bugs": {
+    "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cloudfoundry-incubator/cf-abacus-broker.git"
+  },
+  "keywords": [
+    "cf",
+    "abacus",
+    "broker"
+  ],
+  "files": [
+    ".apprc",
+    ".npmrc",
+    "manifest.yml",
+    "src/"
+  ],
+  "main": "src/index.js",
+  "scripts": {
+    "start": "launch webapp start",
+    "stop": "webapp stop",
+    "test": "eslint && mocha",
+    "lint": "eslint",
+    "pub": "publish",
+    "cfpack": "cfpack",
+    "cfpush": "cfpush"
+  },
+  "dependencies": {
+    "abacus-client": "file:../../../abacus/lib/utils/client",
+    "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
+    "abacus-debug": "file:../../../abacus/lib/utils/debug",
+    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
+    "abacus-dataflow": "file:../../../abacus/lib/utils/dataflow",
+    "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
+    "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
+    "abacus-request": "file:../../../abacus/lib/utils/request",
+    "abacus-router": "file:../../../abacus/lib/utils/router",
+    "abacus-throttle": "file:../../../abacus/lib/utils/throttle",
+    "abacus-transform": "file:../../../abacus/lib/utils/transform",
+    "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
+    "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
+    "abacus-moment": "file:../../../abacus/lib/utils/moment",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "abacus-cfpack": "file:../../../abacus/tools/cfpack",
+    "abacus-cfpush": "file:../../../abacus/tools/cfpush",
+    "abacus-eslint": "file:../../../abacus/tools/eslint",
+    "abacus-mocha": "file:../../../abacus/tools/mocha",
+    "abacus-publish": "file:../../../abacus/tools/publish"
+  },
+  "engines": {
+    "node": ">=6.10.0",
+    "npm": "<5.0.0"
+  }
+}
