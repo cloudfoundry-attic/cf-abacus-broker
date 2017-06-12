@@ -17,7 +17,7 @@ const credentials = servicesEnv[Object.keys(servicesEnv)[0]][0].credentials;
 const clientId = credentials.client_id;
 const clientSecret = credentials.client_secret;
 const collectorUrl = credentials.collector_url;
-const resourceId = clientId.match(/abacus-rp-(.*)/)[1];
+const resourceId = credentials.resource_id;
 
 const usageToken = oauth.cache(applicationEnv.cf_api, clientId, clientSecret,
   `abacus.usage.${resourceId}.write,abacus.usage.${resourceId}.read`);

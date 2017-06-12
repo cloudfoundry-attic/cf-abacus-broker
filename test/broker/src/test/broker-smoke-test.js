@@ -79,7 +79,7 @@ describe('Abacus Broker Smoke test', () => {
             const credentials = response.body[Object.keys(response.body)[0]][0]
               .credentials;
 
-            expect(credentials.client_id).to.equal(
+            expect(credentials.client_id).to.contain(
               config.prefixWithResourceProvider(guid));
             clientId = credentials.client_id;
             expect(credentials.client_secret).to.not.equal(null);
@@ -90,7 +90,7 @@ describe('Abacus Broker Smoke test', () => {
             done();
           });
         });
-        
+
       context('and posting usage', () => {
         const consumerId = 'app:1fb61c1f-2db3-4235-9934-00097845b80d';
         const resourceInstanceId = '1fb61c1f-2db3-4235-9934-00097845b80d';
@@ -133,7 +133,6 @@ describe('Abacus Broker Smoke test', () => {
             expect(val.statusCode).to.equal(201);
             done();
           });
-
         });
 
         context('and getting usage', () => {
