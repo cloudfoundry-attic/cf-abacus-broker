@@ -1,8 +1,11 @@
 default:
   apps:
+    - lib/cf/broker
+    - lib/cf/dashboard
+    - lib/extensions/housekeeper
+    - lib/extensions/healthchecker
     - lib/plugins/provisioning
     - lib/plugins/account
-    - lib/cf/dashboard
 
 small:
 
