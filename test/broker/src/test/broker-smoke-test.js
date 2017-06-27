@@ -5,8 +5,12 @@ const moment = require('abacus-moment');
 const request = require('abacus-request');
 
 const oauth = require('abacus-oauth');
+
+const commander = require('commander');
 const _ = require('underscore');
 const extend = _.extend;
+const clone = _.clone;
+
 
 const testHelper = require('abacus-ext-test-utils');
 
@@ -24,7 +28,20 @@ const servicePlan = process.env.SERVICE_PLAN;
 const abacusUtils = testHelper(undefined, collectorUrl, reportingUrl);
 const config = require('abacus-ext-cf-broker').config;
 
-describe('Abacus Broker Smoke test', () => {
+const argv = clone(process.argv);
+argv.splice(1, 1, 'broker-smoke');
+commander
+  .option('-x, --total-timeout <n>',
+    'test timeout in milliseconds', parseInt)
+  .allowUnknownOption(true)
+  .parse(argv);
+
+// This test timeout
+const totalTimeout = commander.totalTimeout || 300000;
+
+
+describe('Abacus Broker Smoke test', function() {
+  this.timeout(totalTimeout);
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
   const testTimestamp = moment.utc().valueOf();
   const serviceInstanceName = `test-${testTimestamp}`;
