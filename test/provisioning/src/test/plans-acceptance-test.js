@@ -37,8 +37,8 @@ describe('Create and update plans acceptance test', () => {
   const ratingPlanId = `${prefix}-rating-plan-id`;
 
   const planId = 'basic';
-  const consumerId = 'app:1fb61c1f-2db3-4235-9934-00097845b80d';
-  const resourceInstanceId = '1fb61c1f-2db3-4235-9934-00097845b80d';
+  const resourceInstanceId = `${prefix}-123-456-789-101112131415d`;
+  const consumerId = `app:${resourceInstanceId}`;
 
   const usageToken = oauth.cache(api, resourceId, clientSecret,
     `abacus.usage.${resourceId}.write,abacus.usage.${resourceId}.read`);
