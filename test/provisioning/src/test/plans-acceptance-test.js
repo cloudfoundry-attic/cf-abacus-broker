@@ -270,7 +270,6 @@ describe('Create and update plans acceptance test', () => {
     it('should be created', (done) => {
       abacusUtils.postUsage(usageToken, usageBody, (err, val) => {
         expect(err).to.equal(undefined);
-        debug('\n       POST %s', val.request.uri.href);
         expect(val.statusCode).to.equal(201);
         expect(val.body).to.equal(undefined);
         done();
