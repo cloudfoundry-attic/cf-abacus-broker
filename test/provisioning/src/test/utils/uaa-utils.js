@@ -4,7 +4,7 @@ const execute = require('abacus-ext-cmdline').execute;
 
 const createUaaClient = (resourceId, clientSecret) => {
   try {
-    execute('uaac client get ' + resourceId);
+    execute(`uaac client get ${resourceId}`);
     console.log('Skip creating UAA client. Already exists.');
   }
   catch (e) {
@@ -15,13 +15,12 @@ const createUaaClient = (resourceId, clientSecret) => {
       '--authorized_grant_types client_credentials ' +
       `--authorities abacus.usage.${resourceId}.write,` +
       `abacus.usage.${resourceId}.read`);
-    console.log(`Client ${resourceId} created ...`);
   }
 };
 
 const removeUaaClient = (resourceId) => {
   try {
-    execute('uaac client delete ' + resourceId);
+    execute(`uaac client delete ${resourceId}`);
   }
   catch (e) {
     if (e.stdout.toString().indexOf('CF::UAA::NotFound') !== -1) {
@@ -34,8 +33,8 @@ const removeUaaClient = (resourceId) => {
 };
 
 const login = (authServer, adminSecret) => {
-  execute('uaac target ' + authServer + ' --skip-ssl-validation');
-  execute('uaac token client get admin -s ' + adminSecret);
+  execute(`uaac target ${authServer} --skip-ssl-validation`);
+  execute(`uaac token client get admin -s ${adminSecret}`);
   return {
     createUaaClient: createUaaClient,
     removeUaaClient: removeUaaClient

@@ -267,12 +267,11 @@ describe('Create and update plans acceptance test', () => {
       };
     });
 
-    it('should be created', (done) => {
+    it('should be created or already exists', (done) => {
       abacusUtils.postUsage(usageToken, usageBody, (err, val) => {
         expect(err).to.equal(undefined);
         debug('\n       POST %s', val.request.uri.href);
-        expect(val.statusCode).to.equal(201);
-        expect(val.body).to.equal(undefined);
+        expect(val.statusCode).to.be.oneOf([201, 409]);
         done();
       });
     });
