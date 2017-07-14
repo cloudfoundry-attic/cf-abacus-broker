@@ -6,7 +6,7 @@
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-right">
             <button class="btn btn-primary" ng-show="isReadOnly" ng-click="metricsCtrl.onEditMetricClick()">{{messagebundle.ResourceProvider_Metric_Edit_XBUT_TXT}}</button>
             <button class="btn btn-primary" ng-show="isReadOnly" ng-click="metricsCtrl.onDeleteMetricClick()">{{messagebundle.ResourceProvider_Metric_Delete_XBUT_TXT}}</button>
-            <button class="btn btn-primary" ng-show="!isReadOnly" ng-click="metricsCtrl.onSaveMetricClick()" ng-disabled="metricsCtrl.metricform.$invalid">{{messagebundle.ResourceProvider_Metric_Save_XBUT_TXT}}</button>
+            <button class="btn btn-primary" ng-show="!isReadOnly" ng-click="metricsCtrl.onSaveMetricClick()" ng-disabled="metricsCtrl.metricform.$invalid || metricsCtrl.metricform.$pristine">{{messagebundle.ResourceProvider_Metric_Save_XBUT_TXT}}</button>
             <button class="btn btn-primary" ng-show="!isReadOnly" ng-click="metricsCtrl.onCancelMetricClick()">{{messagebundle.ResourceProvider_Metric_Canacel_XBUT_TXT}}</button>
         </div>
     </div>
