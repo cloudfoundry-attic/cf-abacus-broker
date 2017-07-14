@@ -80,6 +80,16 @@ spinner {
     margin-bottom: 0;
     height: 48px;
     background-color: @breadcrumb-bg-color;
+
+    .dropdown-menu {
+        width: auto;
+        max-height: 400px;
+        overflow-y: auto;
+        min-width: 265px;
+        >li>a{
+            width: auto;
+        }
+    }
 }
 
 .modal-header {
