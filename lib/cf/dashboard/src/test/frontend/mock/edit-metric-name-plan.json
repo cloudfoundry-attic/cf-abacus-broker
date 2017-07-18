@@ -20,7 +20,7 @@
   ],
   "metrics": [
     {
-      "name": "memory",
+      "name": "new-memory",
       "unit": "MegaByte",
       "type": "discrete"
     }
