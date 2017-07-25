@@ -147,7 +147,7 @@ describe('Abacus Broker Smoke test', function() {
             body: usageBody
           }, (err, val) => {
             expect(err).to.equal(undefined);
-            expect(val.statusCode).to.equal(201);
+            expect(val.statusCode).to.be.oneOf([201, 409]);
             done();
           });
         });

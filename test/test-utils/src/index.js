@@ -9,28 +9,10 @@ let provisioningUrl;
 let collectorUrl;
 let reportingUrl;
 
-const statistics = {
-  usage: {
-    missingToken: 0,
-    reportFailures: 0,
-    reportSuccess: 0,
-    reportConflict: 0,
-    reportBusinessError: 0
-  }
-};
-
-const errors = {
-  missingToken: false,
-  noReportEverHappened: true,
-  consecutiveReportFailures: 0,
-  lastError: '',
-  lastErrorTimestamp: ''
-};
-
 const getHeaders = (token) => {
   return {
     'Content-Type': 'application/json',
-    authorization: token()
+    'Authorization': token()
   };
 };
 
@@ -84,13 +66,11 @@ const getMapping = (token, mappingType, resourceId, callback) => {
 };
 
 const postUsage = (token, body, callback) => {
-  process.env.COLLECTOR = collectorUrl;
-  const client = require('abacus-client')(statistics, errors);
-
-  client.reportUsage(body, token, { reportBusinessError: false },
-    (error, res) => {
-      callback(error, res);
-    });
+  request.post(':collector_url/v1/metering/collected/usage', {
+    collector_url: collectorUrl,
+    headers: getHeaders(token),
+    body: body
+  }, callback);
 };
 
 const getOrganizationUsage = (token, orgId, callback) => {
