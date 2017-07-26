@@ -170,6 +170,7 @@ describe('Abacus Broker Smoke test', function() {
           it('should exist', (done) => {
             abacusUtils.getOrganizationUsage(systemToken, orgId,
               (err, response) => {
+                expect(err).to.equal(undefined);
                 const filter = {
                   space_id: spaceId,
                   consumer_id: consumerId,
