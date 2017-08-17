@@ -24,6 +24,10 @@ const collectorUrl = process.env.COLLECTOR_URL;
 const reportingUrl = process.env.REPORTING_URL;
 const serviceName = process.env.SERVICE_NAME;
 const servicePlan = process.env.SERVICE_PLAN;
+const containerClientId = process.env.CONTAINER_CLIENT_ID;
+const containerClientSecret = process.env.CONTAINER_CLIENT_SECRET;
+const systemClientId = process.env.SYSTEM_CLIENT_ID;
+const systemClientSecret = process.env.SYSTEM_CLIENT_SECRET;
 
 const abacusUtils = testHelper(undefined, collectorUrl, reportingUrl);
 const config = require('abacus-ext-cf-broker').config;
@@ -75,6 +79,17 @@ describe('Abacus Broker Smoke test', function() {
       let clientId;
       let clientSecret;
 
+      let usageToken;
+      let systemToken;
+
+      let orgId;
+      let spaceId;
+      let usageBody;
+
+      const resourceInstanceId = `${testTimestamp}-151-413-121-110987654321d`;
+      const consumerId = `app:${resourceInstanceId}`;
+      const planName = 'standard';
+
       const getApplicationEnvironment = (cb) => {
         request.get(`https://${applicationName}.${appsDomain}`, cb);
       };
@@ -109,14 +124,7 @@ describe('Abacus Broker Smoke test', function() {
         });
 
       context('and posting usage', () => {
-        const resourceInstanceId = `${testTimestamp}-151-413-121-110987654321d`;
-        const consumerId = `app:${resourceInstanceId}`;
-        const planName = 'standard';
         let planId;
-
-        let orgId;
-        let spaceId;
-        let usageBody;
 
         before((done) => {
           orgId = cfUtils.getOrgId(org);
@@ -139,7 +147,15 @@ describe('Abacus Broker Smoke test', function() {
             }]
           };
 
-          done();
+          usageToken = oauth.cache(api, clientId, clientSecret,
+            `abacus.usage.${guid}.write,abacus.usage.${guid}.read`);
+          systemToken = oauth.cache(api,
+            systemClientId, systemClientSecret,
+            'abacus.usage.read');
+
+          systemToken.start(() => {
+            usageToken.start(done);
+          });
         });
 
         it('should succeed', (done) => {
@@ -153,20 +169,6 @@ describe('Abacus Broker Smoke test', function() {
         });
 
         context('and getting usage', () => {
-          let usageToken;
-          let systemToken;
-          before((done) => {
-            usageToken = oauth.cache(api, clientId, clientSecret,
-              `abacus.usage.${guid}.write,abacus.usage.${guid}.read`);
-            systemToken = oauth.cache(api,
-              process.env.SYSTEM_CLIENT_ID, process.env.SYSTEM_CLIENT_SECRET,
-              'abacus.usage.read');
-
-            systemToken.start(() => {
-              usageToken.start(done);
-            });
-          });
-
           it('should exist', (done) => {
             abacusUtils.getOrganizationUsage(systemToken, orgId,
               (err, response) => {
@@ -190,7 +192,6 @@ describe('Abacus Broker Smoke test', function() {
                 abacusUtils.getUsage(usageToken, filter, (err, response) => {
                   expect(err).to.equal(undefined);
                   expect(response.statusCode).to.equal(200);
-
                   const metric = response.body.accumulated_usage[0].metric;
                   expect(metric).to.equal('sampleName');
 
@@ -198,10 +199,100 @@ describe('Abacus Broker Smoke test', function() {
                   const lastMonthQuantity =
                     windows[windows.length - 1][0].quantity;
                   expect(lastMonthQuantity).to.equal(512);
-                  done();
+
+                  abacusUtils.getOrganizationUsage(usageToken, orgId,
+                    (err, response) => {
+                      done();
+                    });
                 });
               });
           });
+        });
+      });
+
+      context('and posting container usage', () => {
+        let containerToken;
+
+        before((done) => {
+
+          const now = moment.utc().valueOf();
+
+          usageBody = {
+            start: now,
+            end: now,
+            organization_id: orgId,
+            space_id: spaceId,
+            resource_id: 'linux-container',
+            plan_id: 'basic',
+            consumer_id: consumerId,
+            resource_instance_id: resourceInstanceId,
+            measured_usage: [{
+              measure: 'current_instance_memory',
+              quantity: 512
+            },
+            {
+              'measure': 'current_running_instances',
+              'quantity': 1
+            },
+            {
+              'measure': 'previous_instance_memory',
+              'quantity': 0
+            },
+            {
+              'measure': 'previous_running_instances',
+              'quantity': 0
+            }]
+          };
+
+          containerToken = oauth.cache(api, containerClientId,
+            containerClientSecret,
+            'abacus.usage.linux-container.write,' +
+            'abacus.usage.linux-container.read');
+          containerToken.start(() => done());
+
+        });
+
+        it('should post linux-container usage for organization', (done) => {
+          request.post(':collector_url/v1/metering/collected/usage', {
+            collector_url: collectorUrl,
+            headers:{
+              'Content-Type': 'application/json',
+              'Authorization': containerToken()
+            },
+            body: usageBody
+          }, (err, val) => {
+            expect(err).to.equal(undefined);
+            expect(val.statusCode).to.equal(201);
+            done();
+          });
+        });
+
+        it('should get org usage with system token', (done) => {
+          abacusUtils.getOrganizationUsage(systemToken, orgId,
+            (err, response) => {
+              expect(err).to.equal(undefined);
+              expect(response.statusCode).to.equal(200);
+              expect(response.body.resources.length).to.be.gt(1);
+              expect(response.body.spaces[0].resources.length).to.be.gt(1);
+              expect(response.body.spaces[0].consumers[0].resources.length)
+                .to.be.gt(1);
+              done();
+            });
+        });
+
+        it('should get org usage with resource specific token', (done) => {
+          abacusUtils.getOrganizationUsage(usageToken, orgId,
+            (err, response) => {
+              expect(err).to.equal(undefined);
+              expect(response.statusCode).to.equal(200);
+              expect(response.body.resources.length).to.equal(1);
+              expect(response.body.resources[0].resource_id).to.equal(guid);
+              expect(response.body.spaces[0].resources.length).to.equal(1);
+              expect(response.body.spaces[0].consumers[0].resources.length)
+                .to.equal(1);
+              done();
+            });
+          done();
         });
       });
     });
