@@ -45,6 +45,7 @@
     "abacus-lrucache": "file:../../../abacus/lib/utils/lrucache",
     "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
     "abacus-partition": "file:../../../abacus/lib/utils/partition",
+    "abacus-provisioning-plugin": "file:../../../abacus/lib/plugins/provisioning",
     "abacus-retry": "file:../../../abacus/lib/utils/retry",
     "abacus-router": "file:../../../abacus/lib/utils/router",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
