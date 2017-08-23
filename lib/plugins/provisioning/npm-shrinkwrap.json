@@ -102,6 +102,16 @@
       "from": "../../../abacus/lib/utils/perf",
       "resolved": "file:../../../abacus/lib/utils/perf"
     },
+    "abacus-plan-mappings": {
+      "version": "0.0.6-dev.9",
+      "from": "../../../abacus/lib/config/mappings",
+      "resolved": "file:../../../abacus/lib/config/mappings"
+    },
+    "abacus-provisioning-plugin": {
+      "version": "0.0.6-dev.9",
+      "from": "../../../abacus/lib/plugins/provisioning",
+      "resolved": "file:../../../abacus/lib/plugins/provisioning"
+    },
     "abacus-rc": {
       "version": "0.0.6-dev.9",
       "from": "../../../abacus/lib/utils/rc",

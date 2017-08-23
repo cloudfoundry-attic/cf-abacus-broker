@@ -28,6 +28,7 @@
     "pub": "publish"
   },
   "dependencies": {
+    "abacus-plan-mappings": "file:../../../abacus/lib/config/mappings",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
