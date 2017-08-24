@@ -102,6 +102,11 @@
       "from": "../../../abacus/lib/utils/perf",
       "resolved": "file:../../../abacus/lib/utils/perf"
     },
+    "abacus-plan-mappings": {
+      "version": "0.0.6-dev.9",
+      "from": "../../../abacus/lib/config/mappings",
+      "resolved": "file:../../../abacus/lib/config/mappings"
+    },
     "abacus-rc": {
       "version": "0.0.6-dev.9",
       "from": "../../../abacus/lib/utils/rc",
@@ -1088,9 +1093,9 @@
       "resolved": "https://registry.npmjs.org/is-function-x/-/is-function-x-3.1.0.tgz"
     },
     "is-my-json-valid": {
-      "version": "2.16.0",
+      "version": "2.16.1",
       "from": "is-my-json-valid@>=2.12.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.16.0.tgz"
+      "resolved": "https://registry.npmjs.org/is-my-json-valid/-/is-my-json-valid-2.16.1.tgz"
     },
     "is-object-like-x": {
       "version": "1.5.0",
