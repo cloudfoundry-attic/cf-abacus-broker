@@ -5,10 +5,17 @@ applications:
   instances: 1
   memory: 512M
   disk_quota: 512M
+  services:
+  - db-session
   env:
-    API: https://api
-    AUTH_SERVER: https://uaa
-    CF_CLIENT_ID: abacus_db_client
-    CF_CLIENT_SECRET: secret
-    CF_COOKIE_SECRET: secret
-    PROVISIONING: abacus-provisioning-plugin
+   API: https://api
+   AUTH_SERVER: https://uaa
+   CF_CLIENT_ID: abacus_db_client
+   CF_CLIENT_SECRET: secret
+   CF_COOKIE_SECRET: secret
+   NODE_TLS_REJECT_UNAUTHORIZED: 0
+   PROVISIONING: abacus-provisioning-plugin
+   DEBUG: abacus-*
+   DBALIAS: db-session
+   DBCLIENT: abacus-mongoclient
+   AUTOREMOVEINTERVAL: 10

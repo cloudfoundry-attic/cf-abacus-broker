@@ -4,3 +4,9 @@ default:
   INSTANCES: 1
   API:
   AUTH_SERVER:
+  DBCLIENT: abacus-couchclient
+  DB: 5984
+  CF_CLIENT_ID:
+  CF_CLIENT_SECRET:
+  CF_COOKIE_SECRET:
+  PROVISIONING:
