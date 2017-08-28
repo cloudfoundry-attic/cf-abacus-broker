@@ -65,6 +65,7 @@
     "abacus-breaker": "file:abacus/lib/utils/breaker",
     "abacus-cluster": "file:abacus/lib/utils/cluster",
     "abacus-couchclient": "file:abacus/lib/utils/couchclient",
+    "abacus-couchstore": "file:abacus/lib/utils/couchstore",
     "abacus-dbclient": "file:abacus/lib/utils/dbclient",
     "abacus-debug": "file:abacus/lib/utils/debug",
     "abacus-eureka-plugin": "file:abacus/lib/plugins/eureka",
