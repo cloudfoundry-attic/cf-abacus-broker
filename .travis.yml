@@ -1,4 +1,6 @@
 language: node_js
+dist: trusty
+sudo: false
 
 sudo: false
 
@@ -28,26 +30,23 @@ matrix:
       services:
         - couchdb
     - node_js: "6.10.0"
-      env: DESCRIPTION="mongodb 2.6" JOBS=1 DBCLIENT=abacus-mongoclient DB=mongodb://localhost:27017
-      addons:
-        apt:
-          sources:
-            - mongodb-upstart
-          packages:
-            - mongodb-org-server
-            - mongodb-org-shell
+      env:
+        - DESCRIPTION="mongodb 2.6"
+        - JOBS=1
+        - DBCLIENT=abacus-mongoclient
+        - DB=mongodb://localhost:27017
+      services:
+        - mongodb
       before_script:
         - sleep 15
     - node_js: "6.10.0"
-      env: DESCRIPTION="mongodb 3.2" JOBS=1 DBCLIENT=abacus-mongoclient DB=mongodb://localhost:27017
-      addons:
-        apt:
-          sources:
-            - mongodb-upstart
-            - mongodb-3.2-precise
-          packages:
-            - mongodb-org-server
-            - mongodb-org-shell
+      env:
+        - DESCRIPTION="mongodb 3.2"
+        - JOBS=1
+        - DBCLIENT=abacus-mongoclient
+        - DB=mongodb://localhost:27017
+      services:
+        - mongodb
       before_script:
         - sleep 15
 
