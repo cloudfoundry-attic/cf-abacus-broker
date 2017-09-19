@@ -10,6 +10,7 @@ const commander = require('commander');
 const _ = require('underscore');
 const extend = _.extend;
 const clone = _.clone;
+const findWhere = _.findWhere;
 
 
 const testHelper = require('abacus-ext-test-utils');
@@ -270,11 +271,16 @@ describe('Abacus Broker Smoke test', function() {
         it('should get org usage with system token', (done) => {
           abacusUtils.getOrganizationUsage(systemToken, orgId,
             (err, response) => {
+              const expectedSpace = findWhere(
+                response.body.spaces, { space_id: spaceId });
+              const expectedConsumer = findWhere(
+                expectedSpace.consumers, { consumer_id: consumerId });
+
               expect(err).to.equal(undefined);
               expect(response.statusCode).to.equal(200);
               expect(response.body.resources.length).to.be.gt(1);
-              expect(response.body.spaces[0].resources.length).to.be.gt(1);
-              expect(response.body.spaces[0].consumers[0].resources.length)
+              expect(expectedSpace.resources.length).to.be.gt(1);
+              expect(expectedConsumer.resources.length)
                 .to.be.gt(1);
               done();
             });
@@ -283,12 +289,19 @@ describe('Abacus Broker Smoke test', function() {
         it('should get org usage with resource specific token', (done) => {
           abacusUtils.getOrganizationUsage(usageToken, orgId,
             (err, response) => {
+              const expectedSpace = findWhere(
+                response.body.spaces, { space_id: spaceId });
+              const expectedConsumer = findWhere(
+                expectedSpace.consumers, { consumer_id: consumerId });
+              const expectedResources = findWhere(
+                response.body.resources, { resource_id: guid });
+
               expect(err).to.equal(undefined);
               expect(response.statusCode).to.equal(200);
               expect(response.body.resources.length).to.equal(1);
-              expect(response.body.resources[0].resource_id).to.equal(guid);
-              expect(response.body.spaces[0].resources.length).to.equal(1);
-              expect(response.body.spaces[0].consumers[0].resources.length)
+              expect(expectedResources.resource_id).to.equal(guid);
+              expect(expectedSpace.resources.length).to.equal(1);
+              expect(expectedConsumer.resources.length)
                 .to.equal(1);
               done();
             });
