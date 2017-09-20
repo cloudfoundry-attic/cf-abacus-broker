@@ -26,8 +26,11 @@ const deleteApplication = (name, deleteRoute) => {
   return execute(`cf delete -f ${deleteRoute ? '-r' : ''} ${name}`);
 };
 
-const createServiceInstance = (service, plan, serviceName) => {
-  return execute(`cf create-service ${service} ${plan} ${serviceName}`);
+const createServiceInstance = (service, plan, serviceName, parameters) => {
+  let cmd = `cf create-service ${service} ${plan} ${serviceName}`;
+  if(parameters)
+    cmd += ` -c ${parameters}`;
+  return execute(cmd);
 };
 
 const getServiceInstanceGuid = (serviceName) => {
