@@ -1,217 +1,228 @@
 /**
  * Create UI with UI5
  */
-sap.ui.getCore().attachInit(function () {
+sap.ui.getCore().attachInit(function() {
 
-	// --------------------------------------------------------------------------------
-	// Create a text area that we will use to output results of triggered actions
-	// --------------------------------------------------------------------------------
+  var usageModelData = [
+    {'measure': 'api_calls', 'quantity': 250}
+  ];
+  var usageReportAggregatesData = [
+    {'metric': 'api_calls', 'quantity': 'unknown'}
+  ];
 
-	// Create text area that will be used to show responses from Abacus
-	var area = new sap.m.TextArea("idTextArea", {
-		rows: 20,
-		cols: 140,
-		editable: false,
-		placeholder: "Click on either of the tiles to perform an action."
-	});
-	//area.addStyleClass("customTextAreaStyle");
+  // ---------------------------------------------------------------------------
+  // Create a text area that we will use to output results of triggered actions
+  // ---------------------------------------------------------------------------
 
-	// --------------------------------------------------------------------------------
-	// Create tiles that can be used to trigger actions (sending and receiving data from Abacus)
-	// --------------------------------------------------------------------------------
+  var area = new sap.m.TextArea('idTextArea', {
+    rows: 20,
+    cols: 140,
+    editable: false,
+    placeholder: 'Click on either of the tiles to perform an action.'
+  });
 
-	// Create a tile that can be used to trigger sending usage data to Abacus via the backend
-	var sendPost = new sap.m.StandardTile({
-		title : "1. Create and send usage document to Abacus",
-		icon: "sap-icon://action",
-		number: 1,
-		press : function() {
-			area.setValue("Sending usage data to Abacus via backend...");
+  // ---------------------------------------------------------------------------
+  // Create tiles that can be used to trigger actions
+  // ---------------------------------------------------------------------------
 
-			$.ajax({
-				type : "POST",
-				url : "/sendusage",
-				contentType : "application/json",
-				dataType : "json",
-				data : JSON.stringify(usageModelData),
-				success : function(data,textStatus,jqXHR) {
-					console.log("POST to backend: Success");
-					area.setValue("Abacus return code: " + data[0] + "\n\nUsage document sent to Abacus:\n" + JSON.stringify(data[1], null, 2));
-				},
-				error : function(jqXHR,textStatus,errorThrown) {
-					console.log("POST to backend: Error " + textStatus + " - " + errorThrown);
-				}
-			});
-		}
-	});
-	sendPost.addStyleClass("customTileFontStyle");
+  // tile for sending usage data to Abacus via the backend
+  var sendPost = new sap.m.StandardTile({
+    title: '1. Create and send usage document to Abacus',
+    icon: 'sap-icon://action',
+    number: 1,
+    press: function() {
+      area.setValue('Sending usage data to Abacus via backend...');
 
-	// Create a tile that can be used to trigger receiving usage report data from Abacus via the backend
-	var sendGet = new sap.m.StandardTile({
-		title : "2. Get Consumption Report from Abacus",
-		icon: "sap-icon://cause",
-		number: 2,
-		press : function() {
-			area.setValue("Requesting usage report for organization from Abacus via backend...");
+      $.ajax({
+        type: 'POST',
+        url: '/sendusage',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(usageModelData),
+        success: function(data, textStatus, jqXHR) {
+          console.log('POST to backend: Success');
+          area.setValue('Abacus return code: ' + data[0] +
+            '\n\nUsage document sent to Abacus:\n' +
+            JSON.stringify(data[1], null, 2));
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log('POST to backend: Error ' + textStatus +
+            ' - ' + errorThrown);
+        }
+      });
+    }
+  });
+  sendPost.addStyleClass('customTileFontStyle');
 
-			$.ajax({
-				type : "GET",
-				contentType : "application/json",
-				url : "/getusage",
-				dataType : "json",
-				success : function(data,textStatus,jqXHR) {
-					console.log("GET from backend: Success");
-					area.setValue("Abacus return code: " + data[0] + "\n\nAggregated monthly usage for whole organization:\n" + JSON.stringify(data[1], null, 2)+ "\n\nRaw response from Abacus:\n" + JSON.stringify(data[2], null, 2));
-					usageReportAggregatesData = data[1];
-					oUsageReportAggregatesModel.setData(usageReportAggregatesData);
-				},
-				error : function(jqXHR,textStatus,errorThrown) {
-					console.log("GET from backend: Error " + textStatus + " - " + errorThrown);
-				}
-			});
-		}
-	});
-	sendGet.addStyleClass("customTileFontStyle");
+  //tile for receiving usage report data from Abacus via the backend
+  var sendGet = new sap.m.StandardTile({
+    title: '2. Get Consumption Report from Abacus',
+    icon: 'sap-icon://cause',
+    number: 2,
+    press: function() {
+      area.setValue('Requesting usage report for organization from Abacus ' +
+        'via backend...');
 
-	// --------------------------------------------------------------------------------
-	// Create table that shows the usage data to be passed to Abacus
-	// --------------------------------------------------------------------------------
-	var usageModelData = [
-		{"measure": "api_calls", "quantity": 250}
-	];
-	var oUsageModel = new sap.ui.model.json.JSONModel();
-	oUsageModel.setData(usageModelData);
+      $.ajax({
+        type: 'GET',
+        contentType: 'application/json',
+        url: '/getusage',
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR) {
+          console.log('GET from backend: Success');
+          area.setValue('Abacus return code: ' + data[0] +
+            '\n\nAggregated monthly usage for whole organization:\n' +
+            JSON.stringify(data[1], null, 2) +
+            '\n\nRaw response from Abacus:\n' +
+            JSON.stringify(data[2], null, 2));
+          usageReportAggregatesData = data[1];
+          oUsageReportAggregatesModel.setData(usageReportAggregatesData);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log('GET from backend: Error ' + textStatus +
+            ' - ' + errorThrown);
+        }
+      });
+    }
+  });
+  sendGet.addStyleClass('customTileFontStyle');
 
-	// Instantiate the table
-	var oTableUsage = new sap.ui.table.Table({
-		title: "Usage Data to send",
-		selectionMode: sap.ui.table.SelectionMode.Single,
-		visibleRowCount : 3
-	});
+  // ---------------------------------------------------------------------------
+  // Create table that shows the usage data to be passed to Abacus
+  // ---------------------------------------------------------------------------
+  var oUsageModel = new sap.ui.model.json.JSONModel();
+  oUsageModel.setData(usageModelData);
 
-	// Define the Table columns and the binding values
-	oTableUsage.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Measure"}),
-		template: new sap.ui.commons.TextView({text:"{measure}"})
-	}));
+  // Instantiate the table
+  var oTableUsage = new sap.ui.table.Table({
+    title: 'Usage Data to send',
+    selectionMode: sap.ui.table.SelectionMode.Single,
+    visibleRowCount: 3
+  });
 
-	oTableUsage.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Quantity"}),
-		template: new sap.ui.commons.TextField({value: "{quantity}"})
-	}));
+  // Define the Table columns and the binding values
+  oTableUsage.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Measure'}),
+    template: new sap.ui.commons.TextView({text: '{measure}'})
+  }));
 
-	oTableUsage.setModel(oUsageModel);
-	oTableUsage.bindRows("/");
+  oTableUsage.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Quantity'}),
+    template: new sap.ui.commons.TextField({value: '{quantity}'})
+  }));
 
-	// --------------------------------------------------------------------------------
-	// Create table that shows the data passed by the backend (AppId, SpaceId, OrgId)
-	// --------------------------------------------------------------------------------
-	var oDetailsModel = new sap.ui.model.json.JSONModel();
-	oDetailsModel.setData(detailsModelData);
+  oTableUsage.setModel(oUsageModel);
+  oTableUsage.bindRows('/');
 
-	// Instantiate the table
-	var oTable = new sap.ui.table.Table({
-		title: "App Details from CF Runtime",
-		selectionMode: sap.ui.table.SelectionMode.Single,
-		visibleRowCount : 3
-	});
+  // ---------------------------------------------------------------------------
+  // Create table that shows the data passed by the backend
+  // (AppId, SpaceId, OrgId)
+  // ---------------------------------------------------------------------------
+  var oDetailsModel = new sap.ui.model.json.JSONModel();
+  oDetailsModel.setData(detailsModelData);
 
-	// Define the Table columns and the binding values
-	oTable.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Name"}),
-		template: new sap.ui.commons.TextView({text:"{key}"})
-	}));
+  // Instantiate the table
+  var oTable = new sap.ui.table.Table({
+    title: 'App Details from CF Runtime',
+    selectionMode: sap.ui.table.SelectionMode.Single,
+    visibleRowCount: 3
+  });
 
-	oTable.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Value"}),
-		template: new sap.ui.commons.TextField({value: "{value}", editable:false})
-	}));
+  // Define the Table columns and the binding values
+  oTable.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Name'}),
+    template: new sap.ui.commons.TextView({text: '{key}'})
+  }));
 
-	oTable.setEditable(false);
-	oTable.setModel(oDetailsModel);
-	oTable.bindRows("/");
+  oTable.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Value'}),
+    template: new sap.ui.commons.TextField({value: '{value}', editable: false})
+  }));
 
-	// --------------------------------------------------------------------------------
-	// Create table that shows aggregated metrics parsed from Abacus report result
-	// --------------------------------------------------------------------------------
-	var usageReportAggregatesData = [
-		{"metric": "api_calls", "quantity": "unknown"}
-	];
-	var oUsageReportAggregatesModel = new sap.ui.model.json.JSONModel();
-	oUsageReportAggregatesModel.setData(usageReportAggregatesData);
+  oTable.setEditable(false);
+  oTable.setModel(oDetailsModel);
+  oTable.bindRows('/');
 
-	// Instantiate the table
-	var oTableAggregatedUsage = new sap.ui.table.Table({
-		title: "Monthly Aggregates for Organization",
-		selectionMode: sap.ui.table.SelectionMode.Single,
-		visibleRowCount : 3
-	});
+  // ---------------------------------------------------------------------------
+  // Create table that shows aggregated metrics parsed from Abacus report result
+  // ---------------------------------------------------------------------------
+  var oUsageReportAggregatesModel = new sap.ui.model.json.JSONModel();
+  oUsageReportAggregatesModel.setData(usageReportAggregatesData);
 
-	// Define the Table columns and the binding values
-	oTableAggregatedUsage.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Metric"}),
-		template: new sap.ui.commons.TextView({text:"{metric}"})
-	}));
+  // Instantiate the table
+  var oTableAggregatedUsage = new sap.ui.table.Table({
+    title: 'Monthly Aggregates for Organization',
+    selectionMode: sap.ui.table.SelectionMode.Single,
+    visibleRowCount: 3
+  });
 
-	oTableAggregatedUsage.addColumn(new sap.ui.table.Column({
-		label: new sap.ui.commons.Label({text: "Quantity"}),
-		template: new sap.ui.commons.TextField({value: "{quantity}"})
-	}));
+  // Define the Table columns and the binding values
+  oTableAggregatedUsage.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Metric'}),
+    template: new sap.ui.commons.TextView({text: '{metric}'})
+  }));
 
-	oTableAggregatedUsage.setEditable(false);
-	oTableAggregatedUsage.setModel(oUsageReportAggregatesModel);
-	oTableAggregatedUsage.bindRows("/");
+  oTableAggregatedUsage.addColumn(new sap.ui.table.Column({
+    label: new sap.ui.commons.Label({text: 'Quantity'}),
+    template: new sap.ui.commons.TextField({value: '{quantity}'})
+  }));
 
-	// --------------------------------------------------------------------------------
-	// Assemble layout and elements to show in UI
-	// --------------------------------------------------------------------------------
+  oTableAggregatedUsage.setEditable(false);
+  oTableAggregatedUsage.setModel(oUsageReportAggregatesModel);
+  oTableAggregatedUsage.bindRows('/');
 
-	// Box as container for upper part of the UI showing the tables with information
-	var box1 = new sap.m.FlexBox({
-		width  : "100%",
-		alignContent : sap.m.FlexAlignContent.Center,
-		justifyContent : sap.m.FlexJustifyContent.Center,
-		items : [oTableUsage, oTable, oTableAggregatedUsage]
-	});
+  // ---------------------------------------------------------------------------
+  // Assemble layout and elements to show in UI
+  // ---------------------------------------------------------------------------
 
-	// Box as container for middle part of the screen containing the tiles for the sending and receiving action
-	var box = new sap.m.FlexBox({
-		width  : "100%",
-		alignContent : sap.m.FlexAlignContent.Center,
-		justifyContent : sap.m.FlexJustifyContent.Center,
-		items : [sendPost, sendGet]
-	});
+  // Box as container for upper part of the UI showing the tables with info
+  var box1 = new sap.m.FlexBox({
+    width: '100%',
+    alignContent: sap.m.FlexAlignContent.Center,
+    justifyContent: sap.m.FlexJustifyContent.Center,
+    items: [oTableUsage, oTable, oTableAggregatedUsage]
+  });
 
-	// Box as container for lower part of the screen with message box showing results of performed actions
-	var box2 = new sap.m.FlexBox({
-		height : "50%",
-		width  : "100%",
-		alignContent : sap.m.FlexAlignContent.Center,
-		justifyContent : sap.m.FlexJustifyContent.Center,
-		items : [area]
-	});
+  // Box as container for middle part of the screen containing the tiles for
+  // the sending and receiving action
+  var box = new sap.m.FlexBox({
+    width: '100%',
+    alignContent: sap.m.FlexAlignContent.Center,
+    justifyContent: sap.m.FlexJustifyContent.Center,
+    items: [sendPost, sendGet]
+  });
 
-	// Create simple breakline to separate sections in the UI
-	var breakline = new sap.m.Text({
-		text : "\n"
-	});
+  // Box as container for lower part of the screen with message box showing
+  // results of performed actions
+  var box2 = new sap.m.FlexBox({
+    height: '50%',
+    width: '100%',
+    alignContent: sap.m.FlexAlignContent.Center,
+    justifyContent: sap.m.FlexJustifyContent.Center,
+    items: [area]
+  });
 
-	// Create the first page containing all the boxes we defined
-	var page1 = new sap.m.Page("page1", {
-		title : "Metering on Cloud Foundry - Simple Demo",
-		showNavButton : false,
-		content : [box1, box, breakline, box2]
-	});
+  // Create simple breakline to separate sections in the UI
+  var breakline = new sap.m.Text({
+    text: '\n'
+  });
 
-	// Create simple app that initially just shows page1
-	var app = new sap.m.App("myApp", {
-		initialPage : "page1"
-	});
+  // Create the first page containing all the boxes we defined
+  var page1 = new sap.m.Page('page1', {
+    title: 'Metering on Cloud Foundry - Simple Demo',
+    showNavButton: false,
+    content: [box1, box, breakline, box2]
+  });
 
-	// Add page to the app
-	app.addPage(page1);
+  // Create simple app that initially just shows page1
+  var app = new sap.m.App('myApp', {
+    initialPage: 'page1'
+  });
 
-	// Place the app into the HTML document
-	app.placeAt("content");
+  // Add page to the app
+  app.addPage(page1);
+
+  // Place the app into the HTML document
+  app.placeAt('content');
 
 });
