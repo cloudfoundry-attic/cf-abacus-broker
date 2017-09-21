@@ -9,6 +9,7 @@ cache:
     - travis_phantomjs
 
 before_install:
+  - npm i -g npm@latest-4
   # Upgrade PhantomJS to v2.1.1.
   - "export PHANTOMJS_VERSION=2.1.1"
   - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
@@ -19,29 +20,26 @@ before_install:
 
 env:
   global:
-    - CI_TEST="true" CF_TEST="false" START_TIMEOUT=20000 TOTAL_TIMEOUT=120000
+    - CI_TEST="true"
+    - CF_TEST="false"
+    - START_TIMEOUT=20000
+    - TOTAL_TIMEOUT=120000
 
 matrix:
   include:
-    - node_js: "6.10.0"
+    - node_js: "8.1.3"
       env: DESCRIPTION="pouchdb"
-    - node_js: "6.10.0"
-      env: DESCRIPTION="couchdb" JOBS=1 DBCLIENT=abacus-couchclient DB=http://localhost:5984
+    - node_js: "8.1.3"
+      env:
+        - DESCRIPTION="couchdb"
+        - JOBS=1
+        - DBCLIENT=abacus-couchclient
+        - DB=http://localhost:5984
       services:
         - couchdb
-    - node_js: "6.10.0"
+    - node_js: "8.1.3"
       env:
-        - DESCRIPTION="mongodb 2.6"
-        - JOBS=1
-        - DBCLIENT=abacus-mongoclient
-        - DB=mongodb://localhost:27017
-      services:
-        - mongodb
-      before_script:
-        - sleep 15
-    - node_js: "6.10.0"
-      env:
-        - DESCRIPTION="mongodb 3.2"
+        - DESCRIPTION="mongodb"
         - JOBS=1
         - DBCLIENT=abacus-mongoclient
         - DB=mongodb://localhost:27017
