@@ -2,6 +2,7 @@ package com.metering.cf.demo.controllers;
 
 import java.time.Instant;
 import java.util.List;
+import java.net.URL;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -88,7 +89,7 @@ public class MainController {
     sentDocument = jsonFactory.pojoNode(abacusUsageDocument);
 
     // Send the generated document to Abacus
-    WebClient webClient = WebClient.create(Configuration.ABACUS_USAGE_COLLECTOR_URL).accept(MediaType.APPLICATION_JSON_TYPE);
+    WebClient webClient = WebClient.create(config.getAbacusUsageCollectorUrl()).accept(MediaType.APPLICATION_JSON_TYPE);
     webClient.header("Content-Type", "application/json");
     webClient.header("Authorization", config.getAbacusOperationToken());
     Response response = webClient.post(abacusUsageDocumentString);
@@ -127,10 +128,16 @@ public class MainController {
 
     try {
       // Get report on organization's usage from Abacus Reporting
-      String requestUrlString = Configuration.ABACUS_REPORTING_URL + Configuration.getInstance().getOrgId();
+
+
+      String requestUrlString = Configuration.ABACUS_REPORTING_URL + "/" + Configuration.getInstance().getOrgId();
       requestUrlString += "/aggregated/usage/" + Instant.now().toEpochMilli();
       logger.debug("Getting aggregated usage report for organization from Abacus. Using following URL: " + requestUrlString);
-      WebClient webClient = WebClient.create(requestUrlString).accept(MediaType.APPLICATION_JSON_TYPE);
+
+      // Fix if missing thrailing slash or added double slashes
+      URL url = new URL(requestUrlString);
+
+      WebClient webClient = WebClient.create(url.toString()).accept(MediaType.APPLICATION_JSON_TYPE);
       webClient.header("Authorization", config.getAbacusOperationToken());
       Response response = webClient.get();
       responseCode = response.getStatus();

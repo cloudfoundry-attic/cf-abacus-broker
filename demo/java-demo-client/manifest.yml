@@ -7,5 +7,4 @@ applications:
   path: target/ROOT.war
   env:
     ORG_GUID: your-org-guid-here
-    COLLECTOR_URL: abacus-usage-collector-url-here
     REPORTING_URL: abacus-usage-reporting-url-here
