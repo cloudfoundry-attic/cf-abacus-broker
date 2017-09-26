@@ -29,7 +29,6 @@ public class Configuration {
   public static final String ENV_VAR_NAME_REPORTING_URL = "REPORTING_URL";
 
   // Abacus endpoint URLs to call
-  public static final String ABACUS_USAGE_COLLECTOR_URL = System.getenv(ENV_VAR_NAME_COLLECTOR_URL);
   public static final String ABACUS_REPORTING_URL = System.getenv(ENV_VAR_NAME_REPORTING_URL);
 
   // --------------------------------------------------------------------------------
@@ -45,6 +44,7 @@ public class Configuration {
   protected String abacusOperationPassword = null;
   protected OAuthToken abacusOperationToken = null;
   protected String resourceId = null;
+  protected String abacusUsageCollectorUrl = null;
 
   // --------------------------------------------------------------------------------
   // Singleton
@@ -141,6 +141,14 @@ public class Configuration {
     this.cfTokenUrl = cfTokenUrl;
   }
 
+  public String getAbacusUsageCollectorUrl() {
+    return abacusUsageCollectorUrl;
+  }
+
+  public void setAbacusUsageCollectorUrl(String abacusUsageCollectorUrl) {
+    this.abacusUsageCollectorUrl = abacusUsageCollectorUrl;
+  }
+
   // --------------------------------------------------------------------------------
   // Methods / Functions
   // --------------------------------------------------------------------------------
@@ -183,6 +191,7 @@ public class Configuration {
         this.setAbacusOperationUser(jsonArr.findValue("client_id").asText());
         this.setAbacusOperationPassword(jsonArr.findValue("client_secret").asText());
         this.setResourceId(jsonArr.findValue("resource_id").asText());
+        this.setAbacusUsageCollectorUrl(jsonArr.findValue("collector_url").asText());
 
       } else {
         // If there is no VCAP_APPLICATION environment variable set
