@@ -12,7 +12,8 @@ let reportingUrl;
 const getHeaders = (token) => {
   return {
     'Content-Type': 'application/json',
-    'Authorization': token()
+    'Authorization': token(),
+    'cache-control': 'no-cache'
   };
 };
 
@@ -135,4 +136,21 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
   };
 };
 
+const readTestEnvironmentConfig = () => ({
+  api: process.env.CF_API,
+  user: process.env.CF_ADMIN_USER,
+  password: process.env.CF_ADMIN_PASSWORD,
+  org: process.env.BROKER_TEST_ORG,
+  space: process.env.CF_SPACE,
+  appsDomain: process.env.APPS_DOMAIN,
+  collectorUrl: process.env.COLLECTOR_URL,
+  reportingUrl: process.env.REPORTING_URL,
+  provisioningUrl: process.env.PROVISIONING_URL,
+  serviceName: process.env.SERVICE_NAME,
+  servicePlan: process.env.SERVICE_PLAN,
+  objectStorageClient: process.env.OBJECT_STORAGE_CLIENT_ID,
+  objectStorageSecret: process.env.OBJECT_STORAGE_CLIENT_SECRET
+});
+
 module.exports = abacus;
+module.exports.envConfig = readTestEnvironmentConfig();

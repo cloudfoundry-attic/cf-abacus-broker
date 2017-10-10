@@ -1,37 +1,24 @@
 'use strict';
 
-const cmdline = require('abacus-ext-cmdline');
 const moment = require('abacus-moment');
-const request = require('abacus-request');
-
 const oauth = require('abacus-oauth');
 
 const commander = require('commander');
 const _ = require('underscore');
-const extend = _.extend;
 const clone = _.clone;
 const findWhere = _.findWhere;
-
+const first = _.first;
+const last = _.last;
 
 const testHelper = require('abacus-ext-test-utils');
+const appUtils = require('abacus-ext-test-app-utils')();
 
-const api = process.env.CF_API;
-const adminUser = process.env.CF_ADMIN_USER;
-const adminUserPassword = process.env.CF_ADMIN_PASSWORD;
-const org = process.env.BROKER_TEST_ORG;
-const space = process.env.CF_SPACE;
-const appsDomain = process.env.APPS_DOMAIN;
-const collectorUrl = process.env.COLLECTOR_URL;
-const reportingUrl = process.env.REPORTING_URL;
-const serviceName = process.env.SERVICE_NAME;
-const servicePlan = process.env.SERVICE_PLAN;
-const containerClientId = process.env.CONTAINER_CLIENT_ID;
-const containerClientSecret = process.env.CONTAINER_CLIENT_SECRET;
-const systemClientId = process.env.SYSTEM_CLIENT_ID;
-const systemClientSecret = process.env.SYSTEM_CLIENT_SECRET;
+const TestApp = appUtils.App;
+const TestService = appUtils.Service;
 
-const abacusUtils = testHelper(undefined, collectorUrl, reportingUrl);
-const config = require('abacus-ext-cf-broker').config;
+const testEnv = testHelper.envConfig;
+const abacusUtils = testHelper(undefined, testEnv.collectorUrl,
+  testEnv.reportingUrl);
 
 const argv = clone(process.argv);
 argv.splice(1, 1, 'broker-smoke');
@@ -41,273 +28,102 @@ commander
   .allowUnknownOption(true)
   .parse(argv);
 
-// This test timeout
 const totalTimeout = commander.totalTimeout || 300000;
 
+describe('Abacus Broker Smoke test', () => {
+  const app = TestApp();
+  const standardInstance = TestService();
 
-describe('Abacus Broker Smoke test', function() {
-  this.timeout(totalTimeout);
-  const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
-  const testTimestamp = moment.utc().valueOf();
-  const serviceInstanceName = `test-${testTimestamp}`;
-  const applicationName = `${testTimestamp}-test-app`;
-  const applicationManifest = './src/test/test-app/manifest.yml';
+  const now = moment.utc().valueOf();
+  const resourceInstanceId = `${now}-151-413-121-110987654321d`;
+  const consumerId = `app:${resourceInstanceId}`;
+  const orgId = app.orgGuid();
+  const spaceId = app.spaceGuid();
+  const expectedQuantity = 512;
 
-  before((done) => {
-    cfUtils.target(org, space);
-    cfUtils.deployApplication(applicationName,
-      `-f ${applicationManifest} --no-start`);
-    done();
+  before(() => app.deploy());
+
+  it('should successfully create standard service instance', () => {
+    const createResult = standardInstance.create().trim();
+    expect(createResult.endsWith('OK')).to.equal(true);
+
+    const status = standardInstance.status();
+    expect(status).to.equal('create succeeded');
   });
 
-  context('when creating service instance', () => {
+  context('when test app tries to use the instance', () => {
+    let resourceId;
+    let usageToken;
 
-    before((done) => {
-      cfUtils.createServiceInstance(serviceName, servicePlan,
-        serviceInstanceName);
-      done();
+    before(() => {
+      standardInstance.bind(app.appName);
+      app.restart();
     });
 
-    it('should succeed', (done) => {
-      const status = cfUtils.getServiceStatus(serviceInstanceName);
-      expect(status).to.equal('create succeeded');
-      done();
-    });
+    it('should set proper variables in the application environment', (done) => {
+      app.getCredentials((err, credentials) => {
+        expect(credentials).to.have.property('client_id');
+        const clientId = credentials.client_id;
+        expect(credentials).to.have.property('client_secret');
+        const clientSecret = credentials.client_secret;
+        expect(credentials).to.have.property('resource_id');
+        resourceId = credentials.resource_id;
+        expect(credentials.collector_url).to.contain('abacus-usage-collector');
 
-    context('and binding service instance to application', () => {
-      let guid;
-      let bindResult;
-      let clientId;
-      let clientSecret;
-
-      let usageToken;
-      let systemToken;
-
-      let orgId;
-      let spaceId;
-      let usageBody;
-
-      const resourceInstanceId = `${testTimestamp}-151-413-121-110987654321d`;
-      const consumerId = `app:${resourceInstanceId}`;
-      const planName = 'standard';
-
-      const getApplicationEnvironment = (cb) => {
-        request.get(`https://${applicationName}.${appsDomain}`, cb);
-      };
-
-      before(() => {
-        guid = cfUtils.getServiceInstanceGuid(serviceInstanceName);
-        bindResult = cfUtils.bindServiceInstance(serviceInstanceName,
-          applicationName);
-      });
-
-      it('should succeed', () => {
-        expect(bindResult).to.contain('OK');
-      });
-
-      it('should set the proper variables in the application environment',
-        (done) => {
-          cfUtils.startApplication(applicationName);
-          getApplicationEnvironment((err, response) => {
-            const credentials = response.body[Object.keys(response.body)[0]][0]
-              .credentials;
-
-            expect(credentials.client_id).to.contain(
-              config.prefixWithResourceProvider(guid));
-            clientId = credentials.client_id;
-            expect(credentials.client_secret).to.not.equal(null);
-            clientSecret = credentials.client_secret;
-            expect(credentials.collector_url)
-              .to.contain('abacus-usage-collector');
-            expect(credentials.dashboard_url).to.not.equal(null);
-            done();
-          });
-        });
-
-      context('and posting usage', () => {
-        let planId;
-
-        before((done) => {
-          orgId = cfUtils.getOrgId(org);
-          spaceId = cfUtils.getSpaceId(space);
-          const now = moment.utc().valueOf();
-          planId = `${guid}-${guid}`;
-
-          usageBody = {
-            start: now,
-            end: now,
-            organization_id: orgId,
-            space_id: spaceId,
-            resource_id: guid,
-            plan_id: planName,
-            consumer_id: consumerId,
-            resource_instance_id: resourceInstanceId,
-            measured_usage: [{
-              measure: 'sampleName',
-              quantity: 512
-            }]
-          };
-
-          usageToken = oauth.cache(api, clientId, clientSecret,
-            `abacus.usage.${guid}.write,abacus.usage.${guid}.read`);
-          systemToken = oauth.cache(api,
-            systemClientId, systemClientSecret,
-            'abacus.usage.read');
-
-          systemToken.start(() => {
-            usageToken.start(done);
-          });
-        });
-
-        it('should succeed', (done) => {
-          request.post(`https://${applicationName}.${appsDomain}/usage`, {
-            body: usageBody
-          }, (err, val) => {
-            expect(err).to.equal(undefined);
-            expect(val.statusCode).to.be.oneOf([201, 409]);
-            done();
-          });
-        });
-
-        context('and getting usage', () => {
-          it('should exist', (done) => {
-            abacusUtils.getOrganizationUsage(systemToken, orgId,
-              (err, response) => {
-                expect(err).to.equal(undefined);
-                const filter = {
-                  space_id: spaceId,
-                  consumer_id: consumerId,
-                  resource_id: guid,
-                  plan_id: planName,
-                  metering_plan_id: planId,
-                  rating_plan_id: planId,
-                  pricing_plan_id: planId
-                };
-                const timeBasedKey =
-                  abacusUtils.getTimeBasedKeyProperty(response.body, filter);
-
-                extend(filter, {
-                  org_id: orgId,
-                  resource_instance_id: resourceInstanceId,
-                  time_based_key: timeBasedKey });
-                abacusUtils.getUsage(usageToken, filter, (err, response) => {
-                  expect(err).to.equal(undefined);
-                  expect(response.statusCode).to.equal(200);
-                  const metric = response.body.accumulated_usage[0].metric;
-                  expect(metric).to.equal('sampleName');
-
-                  const windows = response.body.accumulated_usage[0].windows;
-                  const lastMonthQuantity =
-                    windows[windows.length - 1][0].quantity;
-                  expect(lastMonthQuantity).to.equal(512);
-
-                  abacusUtils.getOrganizationUsage(usageToken, orgId,
-                    (err, response) => {
-                      done();
-                    });
-                });
-              });
-          });
-        });
-      });
-
-      context('and posting container usage', () => {
-        let containerToken;
-
-        before((done) => {
-
-          const now = moment.utc().valueOf();
-
-          usageBody = {
-            start: now,
-            end: now,
-            organization_id: orgId,
-            space_id: spaceId,
-            resource_id: 'linux-container',
-            plan_id: 'basic',
-            consumer_id: consumerId,
-            resource_instance_id: resourceInstanceId,
-            measured_usage: [{
-              measure: 'current_instance_memory',
-              quantity: 512
-            },
-            {
-              'measure': 'current_running_instances',
-              'quantity': 1
-            },
-            {
-              'measure': 'previous_instance_memory',
-              'quantity': 0
-            },
-            {
-              'measure': 'previous_running_instances',
-              'quantity': 0
-            }]
-          };
-
-          containerToken = oauth.cache(api, containerClientId,
-            containerClientSecret,
-            'abacus.usage.linux-container.write,' +
-            'abacus.usage.linux-container.read');
-          containerToken.start(() => done());
-
-        });
-
-        it('should post linux-container usage for organization', (done) => {
-          request.post(':collector_url/v1/metering/collected/usage', {
-            collector_url: collectorUrl,
-            headers:{
-              'Content-Type': 'application/json',
-              'Authorization': containerToken()
-            },
-            body: usageBody
-          }, (err, val) => {
-            expect(err).to.equal(undefined);
-            expect(val.statusCode).to.equal(201);
-            done();
-          });
-        });
-
-        it('should get org usage with system token', (done) => {
-          abacusUtils.getOrganizationUsage(systemToken, orgId,
-            (err, response) => {
-              const expectedSpace = findWhere(
-                response.body.spaces, { space_id: spaceId });
-              const expectedConsumer = findWhere(
-                expectedSpace.consumers, { consumer_id: consumerId });
-
-              expect(err).to.equal(undefined);
-              expect(response.statusCode).to.equal(200);
-              expect(response.body.resources.length).to.be.gt(1);
-              expect(expectedSpace.resources.length).to.be.gt(1);
-              expect(expectedConsumer.resources.length)
-                .to.be.gt(1);
-              done();
-            });
-        });
-
-        it('should get org usage with resource specific token', (done) => {
-          abacusUtils.getOrganizationUsage(usageToken, orgId,
-            (err, response) => {
-              const expectedSpace = findWhere(
-                response.body.spaces, { space_id: spaceId });
-              const expectedConsumer = findWhere(
-                expectedSpace.consumers, { consumer_id: consumerId });
-              const expectedResources = findWhere(
-                response.body.resources, { resource_id: guid });
-
-              expect(err).to.equal(undefined);
-              expect(response.statusCode).to.equal(200);
-              expect(response.body.resources.length).to.equal(1);
-              expect(expectedResources.resource_id).to.equal(guid);
-              expect(expectedSpace.resources.length).to.equal(1);
-              expect(expectedConsumer.resources.length)
-                .to.equal(1);
-              done();
-            });
+        usageToken = oauth.cache(testEnv.api, clientId, clientSecret,
+          `abacus.usage.${resourceId}.write,abacus.usage.${resourceId}.read`);
+        usageToken.start((err) => {
+          expect(err).to.equal(undefined);
           done();
         });
       });
     });
+
+    it('should successfully submit usage document', (done) => {
+      const usageBody = {
+        start: now,
+        end: now,
+        organization_id: orgId,
+        space_id: spaceId,
+        resource_id: resourceId,
+        plan_id: 'standard',
+        consumer_id: consumerId,
+        resource_instance_id: resourceInstanceId,
+        measured_usage: [{
+          measure: 'sampleName',
+          quantity: expectedQuantity
+        }]
+      };
+
+      app.postUsage(usageBody, (err, val) => {
+        expect(err).to.equal(undefined);
+        expect(val.statusCode).to.be.oneOf([201, 409]);
+        done();
+      });
+    });
+
+    it('should successfully get usage with resource specific token', (done) => {
+      abacusUtils.getOrganizationUsage(usageToken, orgId,
+        (err, response) => {
+          expect(err).to.equal(undefined);
+          expect(response.statusCode).to.equal(200);
+          expect(response.body.resources.length).to.equal(1);
+
+          const expectedSpace = findWhere(
+            response.body.spaces, { space_id: spaceId });
+          const expectedConsumer = findWhere(
+            expectedSpace.consumers, { consumer_id: consumerId });
+          const expectedResources = findWhere(
+            response.body.resources, { resource_id: resourceId });
+          expect(expectedResources.resource_id).to.equal(resourceId);
+          expect(expectedSpace.resources.length).to.equal(1);
+          expect(expectedConsumer.resources.length).to.equal(1);
+
+          const monthlyQty = (first(last(first(first(expectedResources.plans)
+            .aggregated_usage).windows))).quantity;
+          expect(monthlyQty).to.equal(expectedQuantity);
+          done();
+        });
+    });
   });
-});
+}).timeout(totalTimeout);
