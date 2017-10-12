@@ -28,7 +28,8 @@ app.get('/', (req, res) => {
 
 app.post('/usage', (req, res) => {
   const usage = req.body;
-  console.log('Posting usage %s to collector %s', usage, collectorUrl);
+  console.log('Posting usage %s to collector %s', JSON.stringify(usage),
+    collectorUrl);
   request.post(collectorUrl, {
     headers:{
       'Content-Type': 'application/json',

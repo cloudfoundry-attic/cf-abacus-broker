@@ -39,7 +39,7 @@ const sampleMeteringPlan = {
               .div(1073741824).toNumber()).toString(),
             accumulate: ((a, qty, start, end, from, to, twCell) =>
               end < from || end >= to ? null : Math.max(a, qty))
-                .toString()
+              .toString()
           }]
       }
     }
@@ -168,35 +168,35 @@ describe('Abacus Broker Acceptance test', () => {
 
   context('when service configuration parameters are provided', () =>
     it('should execute the steps needed to validate the instances',
-    yieldable.functioncb(function *() {
-      const createResult = createdInstance.create(sampleMeteringPlan).trim();
-      expect(createResult.endsWith('OK')).to.be.true;
-      let status = createdInstance.status();
-      expect(status).to.equal('create succeeded');
+      yieldable.functioncb(function *() {
+        const createResult = createdInstance.create(sampleMeteringPlan).trim();
+        expect(createResult.endsWith('OK')).to.be.true;
+        let status = createdInstance.status();
+        expect(status).to.equal('create succeeded');
 
-      updatedInstance.create(sampleMeteringPlan);
-      const updateResult = updatedInstance.update(complexMeteringPlan).trim();
-      expect(updateResult.endsWith('OK')).to.be.true;
-      status = updatedInstance.status();
-      expect(status).to.equal('update succeeded');
+        updatedInstance.create(sampleMeteringPlan);
+        const updateResult = updatedInstance.update(complexMeteringPlan).trim();
+        expect(updateResult.endsWith('OK')).to.be.true;
+        status = updatedInstance.status();
+        expect(status).to.equal('update succeeded');
 
-      yield validateInstance(createdInstance,
-        [{
-          measure: 'storage',
-          quantity: 1073741824
-        }]);
+        yield validateInstance(createdInstance,
+          [{
+            measure: 'storage',
+            quantity: 1073741824
+          }]);
 
-      yield validateInstance(updatedInstance,
-        [{
-          measure: 'storage',
-          quantity: 1073741824
-        }, {
-          measure: 'light_api_calls',
-          quantity: 1000
-        }, {
-          measure: 'heavy_api_calls',
-          quantity: 100
-        }]);
+        yield validateInstance(updatedInstance,
+          [{
+            measure: 'storage',
+            quantity: 1073741824
+          }, {
+            measure: 'light_api_calls',
+            quantity: 1000
+          }, {
+            measure: 'heavy_api_calls',
+            quantity: 100
+          }]);
 
-    })).timeout(totalTimeout));
+      })).timeout(totalTimeout));
 });

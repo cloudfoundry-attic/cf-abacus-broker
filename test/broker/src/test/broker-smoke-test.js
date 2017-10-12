@@ -119,8 +119,8 @@ describe('Abacus Broker Smoke test', () => {
           expect(expectedSpace.resources.length).to.equal(1);
           expect(expectedConsumer.resources.length).to.equal(1);
 
-          const monthlyQty = (first(last(first(first(expectedResources.plans)
-            .aggregated_usage).windows))).quantity;
+          const monthlyQty = first(last(first(first(expectedResources.plans)
+            .aggregated_usage).windows)).quantity;
           expect(monthlyQty).to.equal(expectedQuantity);
           done();
         });
