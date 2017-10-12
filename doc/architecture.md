@@ -95,7 +95,7 @@ The Abacus Broker supports the following flows:
       Since the service instance id is also the plan id we can directly reach Abacus to fetch the plan and display/edit it.
 1. Via command line
 
-    Use the update-service command and provide the configuration parameters matching the format of the [create plans](#create-plans) above.
+    Use the update-service command and provide the configuration parameters matching the format of the [create plans](#provision-resource-provider) above.
 
 ## De-provision Resource Provider
 1. Delete service instance
