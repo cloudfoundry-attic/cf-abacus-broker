@@ -2,14 +2,15 @@
   "name": "abacus-broker-test-app",
   "version": "0.0.6-dev.9",
   "dependencies": {
-    "abacus-oauth": "0.0.6-dev.9",
-    "abacus-request": "0.0.6-dev.9",
+    "abacus-oauth": "1.0.0",
+    "abacus-request": "1.0.0",
     "body-parser": "^1.17.1",
-    "express": "*",
+    "express": "4.15.5",
     "request-debug": "^0.2.0"
   },
   "engines": {
-    "node": "*"
+    "node": "8.2.1",
+    "npm": "5.3.0"
   },
   "scripts": {
     "start": "node app.js"

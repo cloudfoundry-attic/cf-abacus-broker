@@ -12,7 +12,8 @@ let reportingUrl;
 const getHeaders = (token) => {
   return {
     'Content-Type': 'application/json',
-    'Authorization': token()
+    'Authorization': token(),
+    'cache-control': 'no-cache'
   };
 };
 
@@ -47,22 +48,22 @@ const getPlan = (token, resourceType, planId, callback) => {
 const createMapping = (token, mappingType, resourceId, planId, callback) => {
   request.post(':provisioning_url/v1/provisioning/mappings/:mapping_type' +
     '/resources/:resource_id/plans/basic/:plan_id', {
-      provisioning_url: provisioningUrl,
-      mapping_type: mappingType,
-      resource_id: resourceId,
-      plan_id: planId,
-      headers: getHeaders(token)
-    }, callback);
+    provisioning_url: provisioningUrl,
+    mapping_type: mappingType,
+    resource_id: resourceId,
+    plan_id: planId,
+    headers: getHeaders(token)
+  }, callback);
 };
 
 const getMapping = (token, mappingType, resourceId, callback) => {
   request.get(':provisioning_url/v1/provisioning/mappings/:mapping_type' +
     '/resources/:resource_id/plans/basic', {
-      provisioning_url: provisioningUrl,
-      mapping_type: mappingType,
-      resource_id: resourceId,
-      headers: getHeaders(token)
-    }, callback);
+    provisioning_url: provisioningUrl,
+    mapping_type: mappingType,
+    resource_id: resourceId,
+    headers: getHeaders(token)
+  }, callback);
 };
 
 const postUsage = (token, body, callback) => {
@@ -135,4 +136,21 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
   };
 };
 
+const readTestEnvironmentConfig = () => ({
+  api: process.env.CF_API,
+  user: process.env.CF_ADMIN_USER,
+  password: process.env.CF_ADMIN_PASSWORD,
+  org: process.env.BROKER_TEST_ORG,
+  space: process.env.CF_SPACE,
+  appsDomain: process.env.APPS_DOMAIN,
+  collectorUrl: process.env.COLLECTOR_URL,
+  reportingUrl: process.env.REPORTING_URL,
+  provisioningUrl: process.env.PROVISIONING_URL,
+  serviceName: process.env.SERVICE_NAME,
+  servicePlan: process.env.SERVICE_PLAN,
+  objectStorageClient: process.env.OBJECT_STORAGE_CLIENT_ID,
+  objectStorageSecret: process.env.OBJECT_STORAGE_CLIENT_SECRET
+});
+
 module.exports = abacus;
+module.exports.envConfig = readTestEnvironmentConfig();
