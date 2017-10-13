@@ -147,9 +147,7 @@ const readTestEnvironmentConfig = () => ({
   reportingUrl: process.env.REPORTING_URL,
   provisioningUrl: process.env.PROVISIONING_URL,
   serviceName: process.env.SERVICE_NAME,
-  servicePlan: process.env.SERVICE_PLAN,
-  objectStorageClient: process.env.OBJECT_STORAGE_CLIENT_ID,
-  objectStorageSecret: process.env.OBJECT_STORAGE_CLIENT_SECRET
+  servicePlan: process.env.SERVICE_PLAN
 });
 
 module.exports = abacus;
