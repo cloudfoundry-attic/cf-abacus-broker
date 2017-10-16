@@ -31,7 +31,9 @@ commander
 
 const totalTimeout = commander.totalTimeout || 300000;
 
-describe('Abacus Broker Smoke test', () => {
+describe('Abacus Broker Smoke test', function() {
+  this.timeout(totalTimeout);
+
   const app = TestApp();
   const standardInstance = TestService();
 
@@ -119,5 +121,5 @@ describe('Abacus Broker Smoke test', () => {
 
       standardInstance.unbind(app.appName);
       standardInstance.destroy();
-    })).timeout(totalTimeout);
+    }));
 });
