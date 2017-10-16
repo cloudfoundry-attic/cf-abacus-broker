@@ -96,7 +96,9 @@ const complexMeteringPlan = {
   ]
 };
 
-describe('Abacus Broker Acceptance test', () => {
+describe('Abacus Broker Acceptance test', function() {
+  this.timeout(totalTimeout);
+
   const app = TestApp();
   const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
   const updatedInstance = TestService(`updated-${moment.utc().valueOf()}`);
@@ -198,5 +200,5 @@ describe('Abacus Broker Acceptance test', () => {
             quantity: 100
           }]);
 
-      })).timeout(totalTimeout));
+      })));
 });
