@@ -2340,6 +2340,11 @@
       "version": "3.10.0",
       "from": "yargs@>=3.10.0 <3.11.0",
       "resolved": "https://registry.npmjs.org/yargs/-/yargs-3.10.0.tgz"
+    },
+    "yarn": {
+      "version": "1.0.2",
+      "from": "yarn@1.0.2",
+      "resolved": "https://registry.npmjs.org/yarn/-/yarn-1.0.2.tgz"
     }
   }
 }
