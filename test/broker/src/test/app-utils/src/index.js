@@ -19,8 +19,10 @@ module.exports = (testEnvironment) => {
       const appManifest = manifest ||
         `${__dirname}/../test-app/manifest.yml`;
 
+      const getUrl = () => `https://${appName}.${testEnv.appsDomain}`;
+
       const getEnvironment = (cb) =>
-        request.get(`https://${appName}.${testEnv.appsDomain}`, cb);
+        request.get(getUrl(), cb);
 
       const getCredentials = (cb) =>
         getEnvironment((err, response) => {
@@ -50,6 +52,7 @@ module.exports = (testEnvironment) => {
         }, cb);
 
       return {
+        getUrl,
         getEnvironment,
         getCredentials,
         deploy,

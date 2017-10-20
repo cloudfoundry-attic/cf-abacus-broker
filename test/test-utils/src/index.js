@@ -48,22 +48,22 @@ const getPlan = (token, resourceType, planId, callback) => {
 const createMapping = (token, mappingType, resourceId, planId, callback) => {
   request.post(':provisioning_url/v1/provisioning/mappings/:mapping_type' +
     '/resources/:resource_id/plans/basic/:plan_id', {
-    provisioning_url: provisioningUrl,
-    mapping_type: mappingType,
-    resource_id: resourceId,
-    plan_id: planId,
-    headers: getHeaders(token)
-  }, callback);
+      provisioning_url: provisioningUrl,
+      mapping_type: mappingType,
+      resource_id: resourceId,
+      plan_id: planId,
+      headers: getHeaders(token)
+    }, callback);
 };
 
 const getMapping = (token, mappingType, resourceId, callback) => {
   request.get(':provisioning_url/v1/provisioning/mappings/:mapping_type' +
     '/resources/:resource_id/plans/basic', {
-    provisioning_url: provisioningUrl,
-    mapping_type: mappingType,
-    resource_id: resourceId,
-    headers: getHeaders(token)
-  }, callback);
+      provisioning_url: provisioningUrl,
+      mapping_type: mappingType,
+      resource_id: resourceId,
+      headers: getHeaders(token)
+    }, callback);
 };
 
 const postUsage = (token, body, callback) => {
@@ -81,6 +81,12 @@ const getOrganizationUsage = (token, orgId, callback) => {
       org_id: orgId,
       headers: getHeaders(token)
     }, callback);
+};
+
+const getServiceMappings = (callback) => {
+  request.get(':url/v1/provisioning/mappings/services', {
+    url: process.env.MAPPING_API
+  }, callback);
 };
 
 const getUsage = (token, opts, callback) => {
@@ -132,7 +138,8 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
     getPlan: getPlan,
     createMapping: createMapping,
     getMapping: getMapping,
-    getTimeBasedKeyProperty: getTimeBasedKeyProperty
+    getTimeBasedKeyProperty: getTimeBasedKeyProperty,
+    getServiceMappings: getServiceMappings
   };
 };
 
