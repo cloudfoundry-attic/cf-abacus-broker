@@ -25,7 +25,8 @@ app.post(
     const resource = req.params.resource;
     const plan = req.params.plan;
 
-    console.log('Service mapping api is created', resource, plan);
+    console.log(`Test mapping api POST :
+      resource: ${resource} and plan: ${plan}`);
 
     const body = req.body;
 
@@ -44,7 +45,7 @@ app.post(
   });
 
 app.get('/v1/provisioning/mappings/services', (req, res) => {
-  console.log('>>>', data);
+  console.log(`Test mapping api GET : current data: ${data}`);
   res.status(200).send(data);
 });
 

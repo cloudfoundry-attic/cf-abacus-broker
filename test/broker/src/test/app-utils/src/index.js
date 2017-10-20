@@ -40,6 +40,10 @@ module.exports = (testEnvironment) => {
         cfUtils.deployApplication(appName, `-f ${appManifest} ${opts}`);
       };
 
+      const destroy = () => {
+        cfUtils.deleteApplication(appName, true);
+      };
+
       const orgGuid = () => cfUtils.getOrgId(testEnv.org);
 
       const spaceGuid = () => cfUtils.getSpaceId(testEnv.space);
@@ -56,6 +60,7 @@ module.exports = (testEnvironment) => {
         getEnvironment,
         getCredentials,
         deploy,
+        destroy,
         start,
         restart,
         appName,

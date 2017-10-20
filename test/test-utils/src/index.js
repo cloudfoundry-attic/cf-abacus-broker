@@ -138,7 +138,12 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
     getPlan: getPlan,
     createMapping: createMapping,
     getMapping: getMapping,
-    getTimeBasedKeyProperty: getTimeBasedKeyProperty,
+    getTimeBasedKeyProperty: getTimeBasedKeyProperty
+  };
+};
+
+const mappingApi = () => {
+  return {
     getServiceMappings: getServiceMappings
   };
 };
@@ -153,9 +158,11 @@ const readTestEnvironmentConfig = () => ({
   collectorUrl: process.env.COLLECTOR_URL,
   reportingUrl: process.env.REPORTING_URL,
   provisioningUrl: process.env.PROVISIONING_URL,
+  mappingApiUrl: process.env.MAPPING_API,
   serviceName: process.env.SERVICE_NAME,
   servicePlan: process.env.SERVICE_PLAN
 });
 
 module.exports = abacus;
 module.exports.envConfig = readTestEnvironmentConfig();
+module.exports.mappingApi = mappingApi;
