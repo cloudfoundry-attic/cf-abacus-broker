@@ -20,8 +20,9 @@ const getStatus = (object, properties) => {
 
 app.post(
   '/v1/provisioning/mappings/services/resource' +
-  '/:resource/plan/:plan([A-Za-z0-9\-\/]+)',
+  '/:resource/plan/:plan',
   (req, res) => {
+
     const resource = req.params.resource;
     const plan = req.params.plan;
 
@@ -45,7 +46,7 @@ app.post(
   });
 
 app.get('/v1/provisioning/mappings/services', (req, res) => {
-  console.log(`Test mapping api GET : current data: ${data}`);
+  console.log('Test mapping api GET : current data: %j', data);
   res.status(200).send(data);
 });
 
