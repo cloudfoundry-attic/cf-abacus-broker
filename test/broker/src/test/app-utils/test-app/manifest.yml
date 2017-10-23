@@ -1,6 +1,7 @@
 ---
 applications:
 - name: abacus-broker-test-app
+  buildpack: https://github.com/cloudfoundry/nodejs-buildpack.git#v1.6.1
   command: node app.js
   memory: 128M
   instances: 1
