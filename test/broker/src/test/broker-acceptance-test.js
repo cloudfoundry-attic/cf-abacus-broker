@@ -19,31 +19,31 @@ const testEnv = testUtils.envConfig;
 const abacusUtils = testUtils(testEnv.provisioningUrl, testEnv.collectorUrl,
   testEnv.reportingUrl);
 
+const abacusPrefix = process.env.ABACUS_PREFIX;
+
 const totalTimeout = process.env.TOTAL_TIMEOUT || 300000;
 
-const sampleMeteringPlan = {
-  plans: [
+const testPlan = {
+  measures: [
     {
-      plan: {
-        measures: [
-          {
-            name: 'storage',
-            unit: 'BYTE'
-          }],
-        metrics: [
-          {
-            name: 'storage',
-            unit: 'GIGABYTE',
-            type: 'discrete',
-            meter: ((m) => new BigNumber(m.storage)
-              .div(1073741824).toNumber()).toString(),
-            accumulate: ((a, qty, start, end, from, to, twCell) =>
-              end < from || end >= to ? null : Math.max(a, qty))
-              .toString()
-          }]
-      }
-    }
-  ]
+      name: 'storage',
+      unit: 'BYTE'
+    }],
+  metrics: [
+    {
+      name: 'storage',
+      unit: 'GIGABYTE',
+      type: 'discrete',
+      meter: ((m) => new BigNumber(m.storage)
+        .div(1073741824).toNumber()).toString(),
+      accumulate: ((a, qty, start, end, from, to, twCell) =>
+        end < from || end >= to ? null : Math.max(a, qty))
+        .toString()
+    }]
+};
+
+const sampleMeteringPlan = {
+  plans: [{ plan: testPlan }]
 };
 
 const complexMeteringPlan = {
@@ -91,6 +91,21 @@ const complexMeteringPlan = {
             type: 'discrete',
             meter: ((m) => m.heavy_api_calls).toString()
           }]
+      }
+    }
+  ]
+};
+
+const testServiceName = 'test-service';
+const testServicePlanName = 'test-service-plan-name';
+
+const serviceMappingMeteringPlan = {
+  plans: [
+    {
+      plan: testPlan,
+      resource_provider: {
+        service_name: testServiceName,
+        service_plan_name: testServicePlanName
       }
     }
   ]
@@ -168,6 +183,31 @@ describe('Abacus Broker Acceptance test', function() {
     instance.destroy();
   };
 
+  const validateMapping = function *(instance, resourceProvider) {
+    const getResponse =
+      yield yieldable(testUtils.mappingApi().getServiceMappings);
+    expect(getResponse.statusCode).to.equal(200);
+
+    const data = getResponse.body;
+    expect(data.length).to.be.above(0);
+
+    const mappingKey = data[0][0];
+    const mappingValue = data[0][1];
+
+    expect(mappingKey.resource).to.equal(`${abacusPrefix}metering`);
+
+    const plans = mappingKey.plan.split('/');
+    expect(plans.length).to.equal(4);
+    expect(plans[0]).to.equal('standard');
+
+    expect(mappingValue).to.deep.equal({
+      'organization_guid': orgId,
+      'space_guid': spaceId,
+      'service_name': testServiceName,
+      'service_plan_name': testServicePlanName
+    });
+  };
+
   context('when service configuration parameters are provided', () =>
     it('should execute the steps needed to validate the instances',
       yieldable.functioncb(function *() {
@@ -201,4 +241,33 @@ describe('Abacus Broker Acceptance test', function() {
           }]);
 
       })));
+
+  context('when service configuration parameters are provided', () => {
+
+    let mappingApp;
+
+    before(() => {
+      mappingApp = appUtils.App('service-mapping-test-app',
+        `${__dirname}/app-utils/test-mapping-app/manifest.yml`);
+      mappingApp.deploy();
+      mappingApp.start('service-mapping-test-app');
+    });
+
+    after(() => {
+      createdInstance.destroy();
+      mappingApp.destroy();
+    });
+
+    it('should create metering plan and service mapping',
+      yieldable.functioncb(function *() {
+        const createResult =
+          createdInstance.create(serviceMappingMeteringPlan).trim();
+        expect(createResult.endsWith('OK')).to.be.true;
+        let status = createdInstance.status();
+        expect(status).to.equal('create succeeded');
+
+        yield validateMapping(createdInstance,
+          serviceMappingMeteringPlan.resource_provider);
+      }));
+  });
 });
