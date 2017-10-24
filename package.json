@@ -75,6 +75,7 @@
     "abacus-ext-cf-broker": "file:lib/cf/broker",
     "abacus-ext-cmdline": "file:tools/cmdline",
     "abacus-ext-housekeeper": "file:lib/extensions/housekeeper",
+    "abacus-ext-healthchecker": "file:lib/extensions/healthchecker",
     "abacus-ext-plan-mappings": "file:lib/config/mappings",
     "abacus-ext-provisioning-itest": "file:test/provisioning",
     "abacus-ext-provisioning-plugin": "file:lib/plugins/provisioning",
