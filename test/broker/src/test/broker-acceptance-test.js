@@ -123,6 +123,10 @@ describe('Abacus Broker Acceptance test', function() {
   let now = moment.utc().valueOf();
 
   before(() => app.deploy());
+  afterEach(() => {
+    createdInstance.unbind(app.appName);
+    createdInstance.destroy();
+  });
 
   const validateInstance = function *(instance, measuredUsage) {
     instance.bind(app.appName);
@@ -179,8 +183,6 @@ describe('Abacus Broker Acceptance test', function() {
       getResponse.body.resources, { resource_id: resourceId });
     expect(expectedResources.resource_id).to.equal(resourceId);
 
-    instance.unbind(app.appName);
-    instance.destroy();
   };
 
   const validateMapping = function *(instance, resourceProvider) {
@@ -208,7 +210,12 @@ describe('Abacus Broker Acceptance test', function() {
     });
   };
 
-  context('when service configuration parameters are provided', () =>
+  context('when service configuration parameters are provided', () => {
+    after(() => {
+      updatedInstance.unbind(app.appName);
+      updatedInstance.destroy();
+    });
+
     it('should execute the steps needed to validate the instances',
       yieldable.functioncb(function *() {
         const createResult = createdInstance.create(sampleMeteringPlan).trim();
@@ -240,7 +247,8 @@ describe('Abacus Broker Acceptance test', function() {
             quantity: 100
           }]);
 
-      })));
+      }));
+  });
 
   context('when service configuration parameters are provided', () => {
 
@@ -250,11 +258,10 @@ describe('Abacus Broker Acceptance test', function() {
       mappingApp = appUtils.App('service-mapping-test-app',
         `${__dirname}/app-utils/test-mapping-app/manifest.yml`);
       mappingApp.deploy();
-      mappingApp.start('service-mapping-test-app');
+      mappingApp.start();
     });
 
     after(() => {
-      createdInstance.destroy();
       mappingApp.destroy();
     });
 
@@ -263,7 +270,7 @@ describe('Abacus Broker Acceptance test', function() {
         const createResult =
           createdInstance.create(serviceMappingMeteringPlan).trim();
         expect(createResult.endsWith('OK')).to.be.true;
-        let status = createdInstance.status();
+        const status = createdInstance.status();
         expect(status).to.equal('create succeeded');
 
         yield validateMapping(createdInstance,
