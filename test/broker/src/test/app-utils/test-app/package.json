@@ -8,6 +8,10 @@
     "express": "4.15.5",
     "request-debug": "^0.2.0"
   },
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=4.0.0"
+  },
   "scripts": {
     "start": "node app.js"
   }
