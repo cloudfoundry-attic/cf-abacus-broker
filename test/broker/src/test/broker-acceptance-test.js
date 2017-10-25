@@ -19,8 +19,6 @@ const testEnv = testUtils.envConfig;
 const abacusUtils = testUtils(testEnv.provisioningUrl, testEnv.collectorUrl,
   testEnv.reportingUrl);
 
-const abacusPrefix = process.env.ABACUS_PREFIX;
-
 const totalTimeout = process.env.TOTAL_TIMEOUT || 300000;
 
 const testPlan = {
@@ -164,7 +162,7 @@ describe('Abacus Broker Acceptance test', function() {
     };
 
     const postResponse = yield yieldable(app.postUsage)(usageBody);
-    expect(postResponse.statusCode).to.equal(201);
+    expect(postResponse.statusCode).to.be.oneOf([201, 409]);
 
     const getResponse =
       yield yieldable(abacusUtils.getOrganizationUsage)(usageToken, orgId);
@@ -191,16 +189,9 @@ describe('Abacus Broker Acceptance test', function() {
     expect(getResponse.statusCode).to.equal(200);
 
     const data = getResponse.body;
-    expect(data.length).to.be.above(0);
+    expect(data.length).to.equal(1);
 
-    const mappingKey = data[0][0];
     const mappingValue = data[0][1];
-
-    expect(mappingKey.resource).to.equal(`${abacusPrefix}metering`);
-
-    const plans = mappingKey.plan.split('/');
-    expect(plans.length).to.equal(4);
-    expect(plans[0]).to.equal('standard');
 
     expect(mappingValue).to.deep.equal({
       'organization_guid': orgId,
