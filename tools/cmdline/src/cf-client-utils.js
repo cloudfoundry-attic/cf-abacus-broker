@@ -1,5 +1,7 @@
 'use strict';
 
+/* istanbul ignore file */
+
 const execute = require('./cmdline.js').execute;
 
 const getOrgId = (orgName) =>
