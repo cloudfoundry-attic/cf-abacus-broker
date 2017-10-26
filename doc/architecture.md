@@ -65,8 +65,7 @@ The Abacus Broker supports the following flows:
         {
           "plan": {
             ...
-          }
-
+          },
           "resource_provider": {
             "service_name": "ML",
             "service_plan_name": "small"
@@ -75,7 +74,7 @@ The Abacus Broker supports the following flows:
       ]
     }
    ```
-    In order to use this functionality you should implement Service plugin (API is described [here](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/master/lib/plugins/provisioning/src/index.js)). 
+    In order to use this functionality you should implement Service plugin (API is described [here](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/7fc9d3e1e7880c8078e03ffb11d585b36655db0e/lib/plugins/provisioning/src/index.js#L308-L361)). 
     In case the parameter is not supplied, all plans are filled with default sample values.
 
 1. Create UAA client
