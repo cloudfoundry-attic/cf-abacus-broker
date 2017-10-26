@@ -58,8 +58,24 @@ The Abacus Broker supports the following flows:
       ]
     }
    ```
-   :exclamation: With the current version only one metering plan is supported. For rating and pricing default sample plans are created. The field `plan_id` is required, but not used yet.
+   :exclamation: With the current version only one metering plan is supported. For rating and pricing default sample plans are created. The field `plan_id` is required, but not used yet. In addition to the plan you could also include resource provider specific information. The resource provider section may look like this : 
+    ```json
+    {
+      "plans": [
+        {
+          "plan": {
+            ...
+          }
 
+          "resource_provider": {
+            "service_name": "ML",
+            "service_plan_name": "small"
+          }
+        }
+      ]
+    }
+   ```
+    In order to use this functionality you should implement Service plugin (API is described [here](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/master/lib/plugins/provisioning/src/index.js)). 
     In case the parameter is not supplied, all plans are filled with default sample values.
 
 1. Create UAA client
