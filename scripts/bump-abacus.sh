@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+
+set -e
 
 pushd abacus
   git pull -r origin master
@@ -6,7 +8,7 @@ pushd abacus
 popd
 git add abacus
 
-diff=$(git submodule status | awk '{print $2}' | xargs git diff --cached --submodule)
+diff=$(git submodule status | awk '{print $2}' | xargs git diff --cached --submodule | awk 'NR==1 { print }; NR>1 { $1="*"; print }')
 
 (echo "Bump Abacus" && echo "" && echo "$diff") | git commit --file -
 git log -1
