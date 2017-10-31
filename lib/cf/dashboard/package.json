@@ -63,7 +63,8 @@
     "pug": "2.0.0-beta3",
     "request": "2.81.0",
     "winston": "2.3.1",
-    "yarn": "1.0.2"
+    "yarn": "1.0.2",
+    "helmet": "3.8.0"
   },
   "devDependencies": {
     "abacus-cfpack": "file:../../../abacus/tools/cfpack",
