@@ -64,13 +64,11 @@ Prerequisites
 	You will have to replace the following variables in the `manifest.yml`:
   ```
   ORG_GUID: your-org-guid-here
-  COLLECTOR_URL: abacus-usage-collector-url-here
   REPORTING_URL: abacus-usage-reporting-url-here
   ```
   You can access your org guid by executing `cf org <name> --guid` or you can put a random guid-like string there.
   For collector and reporting urls you will need the full host + URI to whom you will be sending usage and getting it:
   ```
-  COLLECTOR_URL: https://<cf host here>/v1/metering/collected/usage
   REPORTING_URL: https://<cf host here>/v1/metering/organizations  
   ```
   If you want to send different kind of usage you can configure it from `webapp/App.js`,
