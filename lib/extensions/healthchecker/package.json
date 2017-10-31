@@ -36,10 +36,11 @@
   "dependencies": {
     "abacus-client": "file:../../../abacus/lib/utils/client",
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
-    "abacus-debug": "file:../../../abacus/lib/utils/debug",
-    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
     "abacus-dataflow": "file:../../../abacus/lib/utils/dataflow",
+    "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
+    "abacus-debug": "file:../../../abacus/lib/utils/debug",
     "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
+    "abacus-moment": "file:../../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../../abacus/lib/utils/oauth",
     "abacus-request": "file:../../../abacus/lib/utils/request",
     "abacus-router": "file:../../../abacus/lib/utils/router",
@@ -47,7 +48,7 @@
     "abacus-transform": "file:../../../abacus/lib/utils/transform",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
     "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
-    "abacus-moment": "file:../../../abacus/lib/utils/moment",
+    "http-status-codes": "^1.3.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
