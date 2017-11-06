@@ -44,6 +44,7 @@
     "abacus-retry": "file:../../../abacus/lib/utils/retry",
     "abacus-request": "file:../../../abacus/lib/utils/request",
     "abacus-router": "file:../../../abacus/lib/utils/router",
+    "abacus-transform": "file:../../../abacus/lib/utils/transform",
     "abacus-throttle": "file:../../../abacus/lib/utils/throttle",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
     "abacus-webapp": "file:../../../abacus/lib/utils/webapp",
