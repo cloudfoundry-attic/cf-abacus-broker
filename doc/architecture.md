@@ -99,6 +99,8 @@ The Abacus Broker supports the following flows:
 
    The broker returns dashboard URL pointing to the UI and containing the service instance ID. For this to work we use a dashboard client, whose credentials are shared between broker and UI. Credentials also contains a `resource_id` and list of plans associated to it.
 
+You can also check a [demo video](https://www.youtube.com/watch?v=mJilszUPsWY&t=3s) of the above flow.
+
 ## Edit plan
 1. Via dashboard
 
