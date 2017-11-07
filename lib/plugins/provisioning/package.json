@@ -61,7 +61,8 @@
     "abacus-eslint": "file:../../../abacus/tools/eslint",
     "abacus-mocha": "file:../../../abacus/tools/mocha",
     "abacus-publish": "file:../../../abacus/tools/publish",
-    "abacus-request": "file:../../../abacus/lib/utils/request"
+    "abacus-request": "file:../../../abacus/lib/utils/request",
+    "jsonwebtoken": "^5.0.5"
   },
   "engines": {
     "node": "<=8.1.3",
