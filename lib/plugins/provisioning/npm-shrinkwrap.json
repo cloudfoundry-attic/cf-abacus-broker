@@ -281,9 +281,9 @@
       "dev": true,
       "dependencies": {
         "async": {
-          "version": "2.5.0",
+          "version": "2.6.0",
           "from": "async@>=2.1.4 <3.0.0",
-          "resolved": "https://registry.npmjs.org/async/-/async-2.5.0.tgz",
+          "resolved": "https://registry.npmjs.org/async/-/async-2.6.0.tgz",
           "dev": true
         },
         "debug": {
@@ -762,9 +762,9 @@
       "resolved": "https://registry.npmjs.org/code-point-at/-/code-point-at-1.1.0.tgz"
     },
     "color-convert": {
-      "version": "1.9.0",
+      "version": "1.9.1",
       "from": "color-convert@>=1.9.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-1.9.0.tgz",
+      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-1.9.1.tgz",
       "dev": true
     },
     "color-name": {
