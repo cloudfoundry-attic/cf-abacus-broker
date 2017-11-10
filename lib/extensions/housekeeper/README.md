@@ -1,2 +1,2 @@
-abacus-housekeeping-plugin
+abacus-housekeeper
 ===
