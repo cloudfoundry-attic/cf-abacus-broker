@@ -14,7 +14,8 @@ const createUaaClient = (resourceId, clientSecret) => {
       `abacus.usage.${resourceId}.read ` +
       '--authorized_grant_types client_credentials ' +
       `--authorities abacus.usage.${resourceId}.write,` +
-      `abacus.usage.${resourceId}.read`);
+      `abacus.usage.${resourceId}.read`, 
+      false);
   }
 };
 
@@ -34,7 +35,7 @@ const removeUaaClient = (resourceId) => {
 
 const login = (authServer, adminSecret) => {
   execute(`uaac target ${authServer} --skip-ssl-validation`);
-  execute(`uaac token client get admin -s ${adminSecret}`);
+  execute(`uaac token client get admin -s ${adminSecret}`, false);
   return {
     createUaaClient: createUaaClient,
     removeUaaClient: removeUaaClient
