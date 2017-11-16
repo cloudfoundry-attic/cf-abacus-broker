@@ -59,7 +59,7 @@ const target = (org, space) =>
 
 const login = (apiEndpoint, user, password) => {
   execute(`cf api ${apiEndpoint} --skip-ssl-validation`);
-  execute(`cf auth ${user} ${password}`);
+  execute(`cf auth ${user} ${password}`, false);
   return {
     getOrgId: getOrgId,
     getSpaceId: getSpaceId,
