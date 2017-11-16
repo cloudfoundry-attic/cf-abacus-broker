@@ -15,7 +15,7 @@ const createUaaClient = (resourceId, clientSecret) => {
       '--authorized_grant_types client_credentials ' +
       `--authorities abacus.usage.${resourceId}.write,` +
       `abacus.usage.${resourceId}.read`, 
-      false);
+    false);
   }
 };
 
