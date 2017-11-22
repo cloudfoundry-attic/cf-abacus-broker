@@ -26,15 +26,16 @@ const reportingUrl = process.env.REPORTING_URL;
 const clientSecret = process.env.CLIENT_SECRET;
 
 describe('Create and update plans acceptance test', () => {
+
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
   const uaaUtils = uaaHelper(authServer, uaaAdminSecret);
   const abacusUtils = testHelper(provisioningUrl, collectorUrl, reportingUrl);
 
   const prefix = moment.utc().valueOf();
   const resourceId = `${prefix}-test-resource-id`;
-  const meteringPlanId = `${prefix}-metering-plan-id`;
-  const pricingPlanId = `${prefix}-pricing-plan-id`;
-  const ratingPlanId = `${prefix}-rating-plan-id`;
+  const meteringPlanId = `${prefix}-metering-plan-id-${resourceId}`;
+  const pricingPlanId = `${prefix}-pricing-plan-id-${resourceId}`;
+  const ratingPlanId = `${prefix}-rating-plan-id-${resourceId}`;
 
   const planId = 'basic';
   const resourceInstanceId = `${prefix}-123-456-789-101112131415d`;
