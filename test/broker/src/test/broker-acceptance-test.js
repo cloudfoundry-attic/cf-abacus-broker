@@ -241,7 +241,7 @@ describe('Abacus Broker Acceptance test', function() {
       }));
   });
 
-  context('when service configuration parameters are provided', () => {
+  context('when service mapping API is configured', () => {
 
     let mappingApp;
 
