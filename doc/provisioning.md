@@ -6,15 +6,12 @@ A provisioning plugin provides REST APIs for manipulation and retrieving informa
 
 The requests MUST authenticate with the Abacus provisioning plugin via oAuth token (the `Authorization: ` header) on every request. The provisioning plugin is responsible for validating the oAuth token and returning a `401 Unauthorized` message if the token is invalid. oAuth token MUST include scopes. More information can be found in [Abacus Authentication-and-Authorization.](https://github.com/cloudfoundry-incubator/cf-abacus/wiki/Authentication-and-Authorization)
 
-## Plans Management
+## Plans
 
-### Request for creation
-This is an endpoint for creating a resource provider metering, rating or pricing plan.
-
-#### Route
+### Create
 `POST /v1/:plan_type/plans`
 
-The :plan_type MUST be one of the following types: `metering`, `rating`, `pricing`.
+The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`.
 
 ##### Body
 | Request field | Type | Description |
@@ -30,14 +27,10 @@ The :plan_type MUST be one of the following types: `metering`, `rating`, `pricin
 | 403 Forbidden | When no system write scope is provided or resource specific write scope is provided. |
 | 409 Conflict | When the plan has a conflict. |
 
-### Request for updating
-This is an endpoint for updating an existing resource provider metering, rating or pricing plan.
-
-#### Route
+### Update
 `PUT /v1/:plan_type/plans/:plan_id`
 
-The :plan_type MUST be one of the following types: `metering`, `rating`, `pricing`.
-The plan_id is a string and MUST be an existing plan.
+The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be an existing plan.
 
 ##### Body
 | Request field | Type | Description |
@@ -53,15 +46,12 @@ The plan_id is a string and MUST be an existing plan.
 | 403 Forbidden | When no system write scope is provided or resource specific write scope is provided. |
 | 404 Not found | When the plan is not found. |
 
-### Request for information
-This is an endpoint for getting resource provider metering, rating or pricing plan. If the plan with the given id does not exist, a proper status code is returned.
-
-#### Route
+### Get
 `GET /v1/:plan_type/plans/:plan_id`
 
-The :plan_type MUST be one of the following types: `metering`, `rating`, `pricing`.
-The plan_id is a string and MUST be id of existing plan.
-Cache-Control parameter in header is used to specify if the backend should use caching on the required data. Pass 'no-cache' in case you do not want caching on the backend.
+The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be id of existing plan.
+
+Pass `Cache-Control: no-cache` header to specify that the backend should not use caching. 
 
 ### Response
 | Status Code | Description |
@@ -75,6 +65,7 @@ Cache-Control parameter in header is used to specify if the backend should use c
 The body contains requested plan details. The structure of plan in the body is described below.
 
 ## Object definitions
+
 ### MeteringPlan
 The metering plan defines the metering part of the calculations that Abacus will execute.
 
