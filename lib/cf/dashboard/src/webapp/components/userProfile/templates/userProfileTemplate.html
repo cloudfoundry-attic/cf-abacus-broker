@@ -1,0 +1,17 @@
+<div class="btn-group pull-right user-profile" dropdown>
+  <button class="btn btn-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="fa fa-cog" aria-hidden="true"></span>
+        <span class="caret"></span>
+        <span class="sr-only">Split button!</span>
+      </button>
+  <ul class="dropdown-menu">
+    <!--<li>
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    </li>-->
+    <li><a href="#" class="no-event"><span class="glyphicon glyphicon-user user-profile-menu" aria-hidden="true"></span>{{UPC.userProfile.email}}</a></li>
+    <li class="divider"></li>
+    <li data-ng-controller="themeController as TC"  data-ng-click="TC.showModalDialog()"><a name="myanchor" id ="myTheme" href=""><span class="glyphicon glyphicon-upload user-profile-menu"></span>Themes</a></li>
+    <!--<li class="divider"></li>
+    <li><a href="#"><span class="glyphicon glyphicon-log-out user-profile-menu"></span>Log Out</a></li>-->
+  </ul>
+</div>

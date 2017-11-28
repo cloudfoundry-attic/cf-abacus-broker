@@ -64,7 +64,11 @@
     "pug": "2.0.0-beta3",
     "request": "2.83.0",
     "winston": "2.3.1",
-    "yarn": "1.0.2"
+    "yarn": "1.0.2",
+    "formidable": "1.1.1",
+    "css": "2.2.1",
+    "nano": "6.4.2",
+    "uuid": "3.1.0"
   },
   "devDependencies": {
     "abacus-cfpack": "file:../../../abacus/tools/cfpack",

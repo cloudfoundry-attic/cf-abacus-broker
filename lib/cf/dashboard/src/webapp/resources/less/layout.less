@@ -1,22 +1,6 @@
-@header-color: #222222;
-@header-font-color: #ffffff;
-@background-color: #ffffff;
-@font-family: 'Arial',
-'Helvetica',
-'sans-serif';
-@font-size: 14px;
 @line-height: 1.45;
-@border-color: #e5e5e5;
-@breadcrumb-bg-color: #ededed;
-@nav-tabs-bg-color: @breadcrumb-bg-color;
-@nav-tabs-border-color: black;
-@nav-tabs-active-color: #427eac;
-@nav-tabs-inactive-color: #666666;
-@modal-spinner-bg-color: #666;
-@font-icon-color: #666666;
 @ace-editor-bg-color: #fafafa;
-@ace-editor-box-shadow-color: #bfbfbf;
-@alert-box-border-bottom-color: #ee0000;
+
 html {
     height: 100%;
 }
@@ -63,45 +47,19 @@ spinner {
     z-index: 10000000;
     opacity: 0.4;
     background: url(/resources/images/ajax-loader.gif) center center no-repeat;
-    background-color: @modal-spinner-bg-color
 }
-
-#spinner-modal .modal-dialog,
-#spinner-modal .modal-content,
-#spinner-modal .modal-body {
-    background: transparent;
-    color: rgba(255, 255, 255, 1);
-    box-shadow: none;
-    border: none;
-}
-
 .breadcrumb.custom-breadcrumb {
     padding-top: 14px;
     margin-bottom: 0;
     height: 48px;
-    background-color: @breadcrumb-bg-color;
-
-    .dropdown-menu {
-        width: auto;
-        max-height: 400px;
-        overflow-y: auto;
-        min-width: 265px;
-        >li>a{
-            width: auto;
-        }
-    }
 }
 
 .modal-header {
     text-align: center;
-    &.alert-header {
-        box-shadow: inset 0 -0.125rem @alert-box-border-bottom-color;
-    }
     >.modal-header-div {
         display: inline-block;
     }
     .modal-header-span {
-        color: @alert-box-border-bottom-color;
         vertical-align: middle;
         .fa-exclamation-circle {
             font-size: 1.5em;
@@ -114,17 +72,12 @@ spinner {
 
 .custom-table {
     &.table {
-        >thead {
-            background-color: @breadcrumb-bg-color;
-        }
         >tbody>tr>td,
         >tbody>tr>th,
         >tfoot>tr>td,
         >tfoot>tr>th,
         >thead>tr>td,
         >thead>tr>th {
-            border-color: @border-color;
-            border-bottom: 1px solid @border-color;
             vertical-align: middle;
         }
     }
@@ -161,25 +114,17 @@ spinner {
 }
 
 body {
-    background-color: @background-color;
-    font-family: @font-family;
     line-height: @line-height;
-    font-size: @font-size;
     margin: 0;
     height: 100%;
-    border: 1px solid #ccc; //tobe remo
     #topnav {
-        background-color: @header-color;
+        text-align: center;
         >span {
             margin: 0 auto;
-            color: @header-font-color;
-            font-size: 16px;
-            display: table;
-            margin-top: 12px;
+            line-height: 46px;
         }
     }
     #wrapper {
-        background: @background-color;
         padding-top: 50px !important;
         position: relative;
     }
@@ -188,57 +133,37 @@ body {
     }
     .tabs-advanced {
         &.nav-tabs {
-            background-color: @nav-tabs-bg-color;
             padding-left: 15px;
-            a {
-                color: @nav-tabs-inactive-color;
-                border: none;
+            >li>a {
+              padding-left: 0px;
+              padding-right: 0px;
+              margin-right: 15px;
             }
             >li.active>a,
             >li.active>a:focus,
             li.active>a:hover {
                 border-width: 0px 0px 2px 0px;
-                background-color: @nav-tabs-bg-color;
                 border-style: solid;
-                color: @nav-tabs-active-color;
-                border-color: @nav-tabs-border-color;
             }
             li>a:hover {
                 border: 0px;
-            }
-            &.nav>li>a:focus,
-            &.nav>li>a:hover {
-                background-color: @nav-tabs-bg-color;
             }
         }
     }
     .sub-header {
         line-height: 30px;
         height: 30px;
-        background-color: @breadcrumb-bg-color;
         margin-left: 0;
         margin-right: 0;
     }
     .ace_editor {
         height: 400px;
-        background-color: @ace-editor-bg-color;
-        &.editor_mode {
-            box-shadow: 1px 1px 4px @ace-editor-box-shadow-color;
-        }
     }
     span.font-icon {
         padding: 5px;
     }
-    .fa-2x {
-        font-size: 2rem;
-        color: @font-icon-color;
-    }
-    .showIcon {}
     .hideIcon {
         display: none;
-    }
-    .header-font {
-        font-size: 16px;
     }
     .metric-text {
         white-space: nowrap;

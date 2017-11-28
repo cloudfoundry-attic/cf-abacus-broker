@@ -15,7 +15,9 @@ applications:
     CF_COOKIE_SECRET: secret
     NODE_TLS_REJECT_UNAUTHORIZED: 0
     PROVISIONING: abacus-provisioning-plugin
-    DEBUG: abacus-*
+    DEBUG: e-abacus*
     DBALIAS: db-session
     DBCLIENT: abacus-mongoclient
     AUTO_REMOVE_INTERVAL: 10
+    PRE_PROVIDED_DEFAULT_THEME_NAME: Default
+    ENABLE_UPLOAD_THEME_FEATURE: false
