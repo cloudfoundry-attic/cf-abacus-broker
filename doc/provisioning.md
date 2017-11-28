@@ -11,7 +11,7 @@ The requests MUST authenticate with the Abacus provisioning plugin via oAuth tok
 ### Create
 `POST /v1/:plan_type/plans`
 
-The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`.
+Create plan. The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`.
 
 ##### Body
 | Request field | Type | Description |
@@ -21,7 +21,7 @@ The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pric
 ### Response
 | Status Code | Description |
 | --- | --- |
-| 201 Created | MUST be returned upon successful processing of this request. |
+| 201 Created | Returned upon successful processing of this request. |
 | 400 Bad Request | When plan id is missing. |
 | 401 Unauthorized | When oAuth token is not valid. |
 | 403 Forbidden | When no system write scope is provided or resource specific write scope is provided. |
@@ -30,7 +30,7 @@ The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pric
 ### Update
 `PUT /v1/:plan_type/plans/:plan_id`
 
-The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be an existing plan.
+Update plan. The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be an existing plan id.
 
 ##### Body
 | Request field | Type | Description |
@@ -40,7 +40,7 @@ The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pric
 ### Response
 | Status Code | Description |
 | --- | --- |
-| 200 OK | MUST be returned upon successful processing of this request. |
+| 200 OK | Returned upon successful processing of this request. |
 | 400 Bad Request | When plan id is missing or plan id from the mody does not match plan_id parameter in the route.|
 | 401 Unauthorized | When oAuth token is not valid. |
 | 403 Forbidden | When no system write scope is provided or resource specific write scope is provided. |
@@ -49,14 +49,14 @@ The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pric
 ### Get
 `GET /v1/:plan_type/plans/:plan_id`
 
-The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be id of existing plan.
+Retrieve existing plan. The `:plan_type` MUST be one of the following types: `metering`, `rating`, `pricing`. The `plan_id` is a string and MUST be an existing plan id.
 
 Pass `Cache-Control: no-cache` header to specify that the backend should not use caching. 
 
 ### Response
 | Status Code | Description |
 | --- | --- |
-| 200 OK | MUST be returned upon successful processing of this request. |
+| 200 OK | Returned upon successful processing of this request. |
 | 401 Unauthorized | When oAuth token is not valid. |
 | 403 Forbidden | When no system read scope is provided or resource specific read scope is provided. |
 | 404 Not found | When the plan is not found. |
