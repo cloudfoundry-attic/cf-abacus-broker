@@ -9,12 +9,14 @@
     <!-- CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/node_modules/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="dist/css/main.css">
+    <link rel="stylesheet" href="userProfile/getDefaultThemeFile">
+    <link rel="stylesheet" href="dist/css/layout.css">
 </head>
 
 <body class="layout-boxed" ng-controller="rootController" ng-cloak>
     <header id="topnav" class="navbar navbar-default navbar-fixed-top layout-boxed" role="banner" ng-cloak>
         <span class="header-title">{{messagebundle.ResourceProvider_Header_XTIT}}</span>
+        <user-profile></user-profile>
     </header>
     <div id="wrapper">
         <div ncy-breadcrumb class="custom-breadcrumb"></div>

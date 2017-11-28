@@ -1,0 +1,11 @@
+{
+  "ThemeModal_Header_XTIT": "Change Theme",
+
+  "ThemeModal_Tab_1_XTIT": "Default Themes",
+  "ThemeModal_Tab_1_SubHeader_1_XTIT": "Select a Theme to Apply",
+
+  "ThemeModal_Tab_2_XTIT": "Custom Themes",
+
+  "ThemeModal_Apply_Button_XTIT": "Apply",
+  "ThemeModal_Cancel_Button_XTIT": "Cancel"
+}
