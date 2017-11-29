@@ -18,7 +18,6 @@ Contents
   * [Prerequisites](#prerequisites)
   * [Building](#building)
   * [Deploying](#deploying)
-  * [Configuring](#configuration)
 * [Using the demo app](#using-the-demo-app)
   * [App details from CF runtime](#app-details-from-cf-runtime)
   * [Usage data to send](#usage-data-to-send)
