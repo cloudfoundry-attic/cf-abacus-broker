@@ -23,7 +23,7 @@ Notes:
   * [Monthly aggregates for organization](#monthly-aggregates-for-organization)
   * [Testing the abacus roundtrip](#testing-the-abacus-roundtrip)
 * [REST API](#rest-api)
-  * [/](#)
+  * [/](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/master/demo/java-demo-client/README.md#)
   * [/sendusage](#sendusage)
   * [/getusage](#getusage)
 * [Additional information](#additional-information)
