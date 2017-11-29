@@ -23,7 +23,7 @@ Notes:
   * [Monthly aggregates for organization](#monthly-aggregates-for-organization)
   * [Testing the abacus roundtrip](#testing-the-abacus-roundtrip)
 * [REST API](#rest-api)
-  * [/](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/master/demo/java-demo-client/README.md#)
+  * [/](#root)
   * [/sendusage](#sendusage)
   * [/getusage](#getusage)
 * [Additional information](#additional-information)
@@ -192,7 +192,7 @@ In the following, let's assume that `$BASE_URL` is the URL where the web app has
 Now let's go through the REST endpoints and the functionality that is made available via those.
 
 
-### /
+### / (root)
 HTTP GET to this URL returns an HTML document with JavaScript that provides the UI5-based UI.
 
 This endpoint is intended to be called with a browser to access the UI of the demo. The controller will fetch the HTML template contained in `src\main\resources\templates\index.html`, will pass the `com.metering.cf.demo.config.Configuration` singleton to the model, which is then used by the Thymeleaf template engine to insert some detected configuration details to JavaScript variables. The values passed to variables are the IDs of the app, the space, and the organization. The values of these variables are then used to build up the content shown in table "App Details from CF Runtime" of the UI.
