@@ -1,18 +1,16 @@
-Metering with Abacus - Simple Demo
-=========================================================
+# Metering with Abacus - Simple Demo
 
 This project is a simple demo of how to send usage data to Abacus (the metering solution of Cloud Foundry) to meter the usage of a service or application.
 
 This README.md will explain what the demo is doing, how to build and run it, how to use its UI, some hints on implementations, as well as some basic information about Abacus and the most important terms related to the submission of usage data.
 
-Notes
+Notes:
 * The simple demo here is intended for people that are interested in having a look at how usage data can be sent to Abacus using a Java application.
 * If you are looking for a demo in JavaScript, please have a look at the [official Abacus JavaScript client demo](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/demo/client/src/test/test.js).
 * If you simply want to get you usage via bash script you can check [this script](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/demo/scripts/abacus-get-usage.sh).
 
 
-Contents
-========
+## Contents
 
 * [Building, deploying, and configuring the demo](#building-deploying-and-configuring-the-demo)
   * [Prerequisites](#prerequisites)
@@ -31,84 +29,55 @@ Contents
   * [Submitting in demo application](#submitting-in-demo-application)
 
 
+## Building, deploying, and configuring the demo
+In this section we'll explain how to build, deploy and configure the demo. Additionally there is a section describing how to run the demo app on your local machine.
+
+## Prerequisites
+* a recent version of [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Apache Maven](http://maven.apache.org/) installed and available on the path
+* a recent version of [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) installed and available on the path
 
 
-Building, deploying, and configuring the demo
-=============================================
+### Building
+Clone or download the demo app from this git repository to a directory of your choice. To do a fresh build of the app, issue the following command on the commandline in the root of the project dir:
 
-In the following three sections this document explains how to
+```bash
+mvn clean package
+```
 
-1. build
-2. deploy
-3. configure
+### Configuration
+Replace the following variables in the `manifest.yml`:
+```
+ORG_GUID: your-org-guid-here
+REPORTING_URL: https://abacus-usage-reporting.<domain>/v1/metering/organizations
+```
 
-the demo.
+You can access your org guid by executing `cf org <name> --guid` or you can put a random guid-like string there.
 
-Additionally there is a forth section describing how to run the demo app on your local machine.
+If you want to send different kind of usage you can configure it from `webapp/App.js`, by replacing the following variable: `usageModelData`.
 
-
-Prerequisites
--------------
-
-1. Building
-
-	You need to have a recent version of [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html) as well as a recent version of [Apache Maven](http://maven.apache.org/) installed and available on the path, so that you can successfully issue the command `mvn` on the commandline regardless of the directory you're currently in.
-
-2. Deploying
-
-	You need to have a recent version of [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) installed and available on the path, so that you can issue the command `cf` on the commandline regardless of the directory you're currently in.
-
-3. Configuration
-
-	You will have to replace the following variables in the `manifest.yml`:
-  ```
-  ORG_GUID: your-org-guid-here
-  REPORTING_URL: abacus-usage-reporting-url-here
-  ```
-  You can access your org guid by executing `cf org <name> --guid` or you can put a random guid-like string there.
-  For collector and reporting urls you will need the full host + URI to whom you will be sending usage and getting it:
-  ```
-  REPORTING_URL: https://<cf host here>/v1/metering/organizations  
-  ```
-  If you want to send different kind of usage you can configure it from `webapp/App.js`,
-  by replacing the following variable: `usageModelData`.
-
-  In order to send usage via this demo app you need to create a metering service from the cf-abacus-broker.
-  You will have to open the service dashboard and define your own measures and metrics.
-  By default the app sends:
+By default the app sends:
   ```
   [
     {"measure": "api_calls", "quantity": 250}
   ]
   ```
-  After deploying the app you need to bind the created service to it.
 
-Building
---------
+### Deploying
+At this point you will have to have configured the `manifest.yml`. You can deploy the app to a Cloud Foundry space of your choice with
+```bash
+cf push
+```
+After deploying the demo app:
+* create a metering service from the cf-abacus-broker
+* bind the created service to the app
+* open the service dashboard and define your own measures and metrics.
 
-Clone or download the demo app from this git repository to a directory of your choice. To do a fresh build of the app, issue the following command on the commandline in the root of the project dir:
-
-	mvn clean package
-
-
-Deploying
----------
-
-After having built the app, you can deploy the app to a Cloud Foundry space of your choice.
-
-At this point you will have to have configured the `manifest.yml`
-
-Deploying the app via `cf push`
-
-
-Using the demo app
-==================
-
+## Using the demo app
 After opening the UI of the demo app in your browser, you will see three tables on the top of the screen. We will discuss each of them in a separate section in the following. In each section we describe the information shown in the table, what it is used for, where does it come from, and what actions can be triggered. After this walk through you are able to understand the information shown and the basic functionality of the demo app.
 
 
-App details from CF runtime
----------------------------
+## App details from CF runtime
 
 **Table: App Details from CF Runtime**
 
@@ -123,8 +92,7 @@ The table shows IDs that the CF runtime environment issued to the demo app, the 
 The app ID and the space ID are provided by the CF runtime environment in the `VCAP_APPLICATION` environment variable. The organization ID is provided as `User-Provided` variable (The one we put in the manifest).
 
 
-Usage data to send
-------------------
+## Usage data to send
 
 **Table: Usage Data to send**
 
@@ -164,9 +132,7 @@ Usage document sent to Abacus:
 }
 ```
 
-
-Monthly Aggregates for Organization
------------------------------------
+## Monthly Aggregates for Organization
 
 **Table: Monthly Aggregates for Organization**
 
@@ -202,8 +168,7 @@ Raw response from Abacus:
 
 Please note, that the `metrics` received from Abacus are different from the `measures` sent to Abacus. Metrics are calculated based on the measures sent to Abacus. How this is done is defined by the used `plan`.
 
-Testing the Abacus roundtrip
-----------------------------
+## Testing the Abacus roundtrip
 
 To test the Abacus roundtrip, i.e. sending updates on the usage/consumption of your resource and then requesting the updated aggregates, do the following:
 * Submit multiple usage documents by pressing the tile "Create and send usage document to Abacus" (you can modify the reported usage by adjusting the values in the table "Usage Data to send").
@@ -214,9 +179,7 @@ If this "roundtrip" works, then your demo application is properly configured (e.
 After having played with the demo app for a while, it would be a good time to look at the source of the demo app to see how you could assemble your own usage documents in your own app and send these to Abacus.
 
 
-REST API
-========
-
+## REST API
 The demo application provides a minimalistic REST API that is used by the UI.
 
 In the following, let's assume that `$BASE_URL` is the URL where the web app has been deployed to.
@@ -224,9 +187,7 @@ In the following, let's assume that `$BASE_URL` is the URL where the web app has
 Now let's go through the REST endpoints and the functionality that is made available via those.
 
 
-$BASE_URL/
-----------
-
+### $BASE_URL/
 Any HTTP GET to this URL returns an HTML document with JavaScript that provides the UI5-based UI.
 
 This endpoint is intended to be called with a browser to access the UI of the demo. The controller will fetch the HTML template contained in `src\main\resources\templates\index.html`, will pass the `com.metering.cf.demo.config.Configuration` singleton to the model, which is then used by the Thymeleaf template engine to insert some detected configuration details to JavaScript variables. The values passed to variables are the IDs of the app, the space, and the organization. The values of these variables are then used to build up the content shown in table "App Details from CF Runtime" of the UI.
@@ -235,10 +196,7 @@ REST implementation:
  - Controller: `com.metering.cf.demo.controllers.MainController`
  - Function: `String index(Model model)`
 
-
-$BASE_URL/sendusage
--------------------
-
+### $BASE_URL/sendusage
 Send submitted measures and quantities in a usage document to Abacus.
 
 An HTTP POST to this URL with a JSON array holding measure and quantity tuple objects will instruct the backend to create a usage document that includes these values, to sent it to Abacus and return the HTML response code, as well as the sent usage document.
@@ -258,8 +216,7 @@ REST implementation:
  - Function: `JsonNode sendUsage(Model model, @RequestBody List<AbacusUsageDocumentMeasuredUsage> measuredUsageList)`
 
 
-$BASE_URL/getusage
-------------------
+### $BASE_URL/getusage
 
 Get current monthly aggregated usage report for the organization the demo app is running in.
 
@@ -275,13 +232,9 @@ REST implementation:
  - Function: `JsonNode getUsageReport()`
 
 
-Additional Information
-======================
+## Additional Information
 
-
-Abacus pipeline, plan, measure, metrics
----------------------------------------
-
+### Abacus pipeline, plan, measure, metrics
 Abacus is a Metering Service used to meter the usage of "resources" (e.g. services or applications) that run on Cloud Foundry. The provider of the resource is responsible for defining how usage is metered, accumulated, aggregated, and summarized via the service broker dashboard.
 
 One part of the resource configuration is the definition of `plan`(s) for metering the resource. A plan is technically a JSON document that contains (amongst other things) a set of Javascript functions. The Abacus processing pipeline consists of a set of micro services, and each service in this [pipeline](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/doc/resource-provider-guide.md#abacus-pipeline-concepts) will call a function defined in the plan to process the submitted usage data as it flows through the pipeline.
@@ -297,8 +250,7 @@ Note: Other functions, like `rate()`, `summarize()` and `charge()` deal e.g. wit
 For more details please refer to sections "[Pipeline Concepts](https://github.com/cloudfoundry-incubator/cf-abacus/wiki/Pipeline-Concepts)", "[Measures](https://github.com/cloudfoundry-incubator/cf-abacus/wiki/Measures)" and "[Metrics](https://github.com/cloudfoundry-incubator/cf-abacus/wiki/Metrics)".
 
 
-Submitting in demo application
-------------------------------
+### Submitting in demo application
 
 The demo application allows you to define the measures to submit as usage to Abacus via the UI in table "[Usage Data to send](#usage-data-to-send)", and to trigger the actual submission via a click on an UI tile. When actually sending the usage data, a `resource usage document` describing the usage for our imaginary instance of the resource is created according to the measures defined in the plan. In the source of our demo application see function
 
@@ -310,10 +262,8 @@ After we created the usage document, we submit it to Abacus using its "Resource 
 
 	com.metering.cf.demo.controllers.MainController.sendUsage(...)
 
-Appendix
-========
+## Appendix
 
-Usage Summary Report
---------------------
+### Usage Summary Report
 
 When pressing the tile "Get Consumption Report from Abacus" in the UI, a usage summary report will be requested from Abacus. The raw response from Abacus is part of the details shown in the text area in the lower part of the screen. We omitted the raw report returned by Abacus in previous sections due to its size.
