@@ -15,6 +15,7 @@ Notes:
 * [Building, deploying, and configuring the demo](#building-deploying-and-configuring-the-demo)
   * [Prerequisites](#prerequisites)
   * [Building](#building)
+  * [Configuration](#configuration)
   * [Deploying](#deploying)
 * [Using the demo app](#using-the-demo-app)
   * [App details from CF runtime](#app-details-from-cf-runtime)
@@ -22,8 +23,9 @@ Notes:
   * [Monthly aggregates for organization](#monthly-aggregates-for-organization)
   * [Testing the abacus roundtrip](#testing-the-abacus-roundtrip)
 * [REST API](#rest-api)
-  * [$BASE_URL/sendusage](#base_url-sendusage)
-  * [$BASE_URL/getusage](#base_url-getusage)
+  * [/](#/)
+  * [/sendusage](#sendusage)
+  * [/getusage](#getusage)
 * [Additional information](#additional-information)
   * [Abacus pipeline, plan, measure, metrics](#abacus-pipeline-plan-measure-metrics)
   * [Submitting in demo application](#submitting-in-demo-application)
@@ -32,7 +34,7 @@ Notes:
 ## Building, deploying, and configuring the demo
 In this section we'll explain how to build, deploy and configure the demo. Additionally there is a section describing how to run the demo app on your local machine.
 
-## Prerequisites
+### Prerequisites
 * a recent version of [Java 8 JDK](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [Apache Maven](http://maven.apache.org/) installed and available on the path
 * a recent version of [Cloud Foundry CLI](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html) installed and available on the path
@@ -54,8 +56,6 @@ REPORTING_URL: https://abacus-usage-reporting.<domain>/v1/metering/organizations
 
 You can access your org guid by executing `cf org <name> --guid` or you can put a random guid-like string there.
 
-If you want to send different kind of usage you can configure it from `webapp/App.js`, by replacing the following variable: `usageModelData`.
-
 By default the app sends:
   ```
   [
@@ -63,21 +63,26 @@ By default the app sends:
   ]
   ```
 
+If you want to send different usage you can configure it from [`webapp/App.js`](https://github.com/cloudfoundry-incubator/cf-abacus-broker/blob/master/demo/java-demo-client/src/main/webapp/App.js#L12-L14).
+
 ### Deploying
-At this point you will have to have configured the `manifest.yml`. You can deploy the app to a Cloud Foundry space of your choice with
+At this point you will have to have configured the `manifest.yml`. You can deploy the app to a Cloud Foundry space of your choice with the following steps:
 ```bash
+# Deploy demo app
 cf push
+# Create metering service
+cf create-service metering standard mymetering
+# Bind metering service to your demo app
+cf bind-service metering-abacus-usage-example mymetering
 ```
-After deploying the demo app:
-* create a metering service from the cf-abacus-broker
-* bind the created service to the app
-* open the service dashboard and define your own measures and metrics.
+
+Now open the service dashboard and define your own measures and metrics.
 
 ## Using the demo app
 After opening the UI of the demo app in your browser, you will see three tables on the top of the screen. We will discuss each of them in a separate section in the following. In each section we describe the information shown in the table, what it is used for, where does it come from, and what actions can be triggered. After this walk through you are able to understand the information shown and the basic functionality of the demo app.
 
 
-## App details from CF runtime
+### App details from CF runtime
 
 **Table: App Details from CF Runtime**
 
@@ -92,7 +97,7 @@ The table shows IDs that the CF runtime environment issued to the demo app, the 
 The app ID and the space ID are provided by the CF runtime environment in the `VCAP_APPLICATION` environment variable. The organization ID is provided as `User-Provided` variable (The one we put in the manifest).
 
 
-## Usage data to send
+### Usage data to send
 
 **Table: Usage Data to send**
 
@@ -132,7 +137,7 @@ Usage document sent to Abacus:
 }
 ```
 
-## Monthly Aggregates for Organization
+### Monthly Aggregates for Organization
 
 **Table: Monthly Aggregates for Organization**
 
@@ -141,7 +146,7 @@ Usage document sent to Abacus:
 | thousand_api_calls       |  unknown |
 
 
-When we report new usage data for the resource given by the metering service, Abacus will update its stored aggregated usage data for that resource immediately. One of the aggregates that Abacus updates is the monthly consumption of the resource by the organization we report in the usage document. We can query the current monthly usage using the tile **"Get Consumption Report from Abacus"** in the UI. After pressing this tile you can see the current monthly consumption reported by Abacus in the table (column "Quantity" will be updated from "unknown" to show the reported values).
+When we report new usage data for the resource given by the metering service, Abacus will update its stored aggregated usage data for that resource. One of the aggregates that Abacus updates is the monthly consumption of the resource by the organization we report in the usage document. We can query the current monthly usage using the tile **"Get Consumption Report from Abacus"** in the UI. After pressing this tile you can see the current monthly consumption reported by Abacus in the table (column "Quantity" will be updated from "unknown" to show the reported values).
 
 To get the aggregates from Abacus, a "usage summary report" is requested via the Abacus API. Request API and structure of returned document are described [here](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/doc/api.md#usage-summary-report). We use the same user we send usage with. And send the request to the REPORTING_URL, provided in the `manifest.yml`
 
@@ -168,7 +173,7 @@ Raw response from Abacus:
 
 Please note, that the `metrics` received from Abacus are different from the `measures` sent to Abacus. Metrics are calculated based on the measures sent to Abacus. How this is done is defined by the used `plan`.
 
-## Testing the Abacus roundtrip
+### Testing the Abacus roundtrip
 
 To test the Abacus roundtrip, i.e. sending updates on the usage/consumption of your resource and then requesting the updated aggregates, do the following:
 * Submit multiple usage documents by pressing the tile "Create and send usage document to Abacus" (you can modify the reported usage by adjusting the values in the table "Usage Data to send").
@@ -187,8 +192,8 @@ In the following, let's assume that `$BASE_URL` is the URL where the web app has
 Now let's go through the REST endpoints and the functionality that is made available via those.
 
 
-### $BASE_URL/
-Any HTTP GET to this URL returns an HTML document with JavaScript that provides the UI5-based UI.
+### /
+HTTP GET to this URL returns an HTML document with JavaScript that provides the UI5-based UI.
 
 This endpoint is intended to be called with a browser to access the UI of the demo. The controller will fetch the HTML template contained in `src\main\resources\templates\index.html`, will pass the `com.metering.cf.demo.config.Configuration` singleton to the model, which is then used by the Thymeleaf template engine to insert some detected configuration details to JavaScript variables. The values passed to variables are the IDs of the app, the space, and the organization. The values of these variables are then used to build up the content shown in table "App Details from CF Runtime" of the UI.
 
@@ -196,7 +201,7 @@ REST implementation:
  - Controller: `com.metering.cf.demo.controllers.MainController`
  - Function: `String index(Model model)`
 
-### $BASE_URL/sendusage
+### /sendusage
 Send submitted measures and quantities in a usage document to Abacus.
 
 An HTTP POST to this URL with a JSON array holding measure and quantity tuple objects will instruct the backend to create a usage document that includes these values, to sent it to Abacus and return the HTML response code, as well as the sent usage document.
@@ -216,7 +221,7 @@ REST implementation:
  - Function: `JsonNode sendUsage(Model model, @RequestBody List<AbacusUsageDocumentMeasuredUsage> measuredUsageList)`
 
 
-### $BASE_URL/getusage
+### /getusage
 
 Get current monthly aggregated usage report for the organization the demo app is running in.
 
