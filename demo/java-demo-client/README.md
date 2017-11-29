@@ -23,7 +23,7 @@ Notes:
   * [Monthly aggregates for organization](#monthly-aggregates-for-organization)
   * [Testing the abacus roundtrip](#testing-the-abacus-roundtrip)
 * [REST API](#rest-api)
-  * [/](#/)
+  * [/](#)
   * [/sendusage](#sendusage)
   * [/getusage](#getusage)
 * [Additional information](#additional-information)
