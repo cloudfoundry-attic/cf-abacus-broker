@@ -1,7 +1,7 @@
 'use-strict';
 
 const moment = require('abacus-moment');
-const cmdline = require('abacus-cmdline');
+const cmdline = require('abacus-ext-cmdline');
 const testUtils = require('abacus-ext-test-utils');
 const request = require('abacus-request');
 

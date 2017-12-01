@@ -31,7 +31,7 @@
     "pub": "publish"
   },
   "dependencies": {
-    "abacus-cmdline": "file:../../abacus/tools/cmdline",
+    "abacus-ext-cmdline": "file:../../tools/cmdline",
     "abacus-ext-test-utils": "file:../test-utils",
     "abacus-moment": "file:../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../abacus/lib/utils/oauth",

@@ -1,6 +1,6 @@
 'use strict';
 
-const execute = require('abacus-cmdline').execute;
+const execute = require('abacus-ext-cmdline').execute;
 
 const createUaaClient = (resourceId, clientSecret) => {
   try {
@@ -14,7 +14,7 @@ const createUaaClient = (resourceId, clientSecret) => {
       `abacus.usage.${resourceId}.read ` +
       '--authorized_grant_types client_credentials ' +
       `--authorities abacus.usage.${resourceId}.write,` +
-      `abacus.usage.${resourceId}.read`,
+      `abacus.usage.${resourceId}.read`, 
     false);
   }
 };

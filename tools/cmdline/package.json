@@ -1,10 +1,10 @@
 {
-  "name": "abacus-ext-test-app-utils",
-  "description": "Abacus Broker Test App Utils",
+  "name": "abacus-ext-cmdline",
+  "description": "Command line execution utility",
   "license": "Apache-2.0",
-  "version": "0.0.6-dev.8",
+  "version": "0.0.6-dev.9",
   "private": true,
-  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/test/test-utils",
+  "homepage": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/tools/cmdline",
   "bugs": {
     "url": "https://github.com/cloudfoundry-incubator/cf-abacus-broker/issues"
   },
@@ -18,19 +18,21 @@
     "broker"
   ],
   "files": [
-    "src/",
-    "test-app"
+    ".apprc",
+    ".npmrc",
+    "manifest.yml",
+    "src/"
   ],
   "main": "src/index.js",
   "scripts": {
-    "itest": "eslint && mocha",
-    "test": "eslint",
+    "test": "eslint && mocha",
     "lint": "eslint",
     "pub": "publish"
   },
-  "dependencies": {
-    "abacus-ext-cmdline": "file:../../../../../tools/cmdline",
-    "abacus-moment": "file:../../../../../abacus/lib/utils/moment"
+  "devDependencies": {
+    "abacus-eslint": "file:../../abacus/tools/eslint",
+    "abacus-mocha": "file:../../abacus/tools/mocha",
+    "tmp": "0.0.31"
   },
   "engines": {
     "node": ">=6.11.4 <9.0.0",
