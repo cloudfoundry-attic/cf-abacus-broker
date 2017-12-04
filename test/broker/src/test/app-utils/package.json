@@ -29,7 +29,7 @@
     "pub": "publish"
   },
   "dependencies": {
-    "abacus-ext-cmdline": "file:../../../../../tools/cmdline",
+    "abacus-cmdline": "file:../../abacus/tools/cmdline",
     "abacus-moment": "file:../../../../../abacus/lib/utils/moment"
   },
   "engines": {

@@ -1,6 +1,6 @@
 'use strict';
 
-const cmdline = require('abacus-ext-cmdline');
+const cmdline = require('abacus-cmdline');
 const moment = require('abacus-moment');
 const oauth = require('abacus-oauth');
 const _ = require('underscore');
