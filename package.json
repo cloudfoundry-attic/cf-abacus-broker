@@ -100,7 +100,6 @@
     "abacus-vcapenv": "file:abacus/lib/utils/vcapenv",
     "abacus-webapp": "file:abacus/lib/utils/webapp",
     "abacus-yieldable": "file:abacus/lib/utils/yieldable",
-    "npm": "^4.6.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
