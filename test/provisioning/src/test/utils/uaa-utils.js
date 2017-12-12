@@ -6,8 +6,7 @@ const createUaaClient = (resourceId, clientSecret) => {
   try {
     execute(`uaac client get ${resourceId}`);
     console.log('Skip creating UAA client. Already exists.');
-  }
-  catch (e) {
+  } catch (e) {
     execute(`uaac client add ${resourceId} ` +
       `--secret ${clientSecret} ` +
       `--scope abacus.usage.${resourceId}.write,` +
@@ -22,8 +21,7 @@ const createUaaClient = (resourceId, clientSecret) => {
 const removeUaaClient = (resourceId) => {
   try {
     execute(`uaac client delete ${resourceId}`);
-  }
-  catch (e) {
+  } catch (e) {
     if (e.stdout.toString().indexOf('CF::UAA::NotFound') !== -1) {
       console.log('Skip deleting UAA client. Not Found ...');
       return;
