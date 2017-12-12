@@ -116,6 +116,18 @@ body {
         font-size: 16px;
     }
     .upload-inp > input{
-		border: 1px solid #ccc;
-	}
+        border: 1px solid #ccc;
+        color: transparent;
+    }
+    .upload-inp > input::before {
+        color: #333;
+        background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+        border: 1px solid #ccc;
+    }
+    .upload-inp > input:hover::before {
+        border-color: #ccc;
+    }
+    .upload-inp > input:active::before {
+        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+    }
 }
