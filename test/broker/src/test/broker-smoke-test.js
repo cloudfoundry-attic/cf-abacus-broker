@@ -40,7 +40,7 @@ describe('Abacus Broker Smoke test', function() {
   before(() => app.deploy());
 
   it('should validate standard metering service instance',
-    yieldable.functioncb(function *() {
+    yieldable.functioncb(function*() {
       const createResult = standardInstance.create().trim();
       expect(createResult.endsWith('OK')).to.equal(true,
         'service instance was not created successfully');

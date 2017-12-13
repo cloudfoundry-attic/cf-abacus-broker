@@ -47,6 +47,7 @@
     "abacus-dbclient": "file:../../../abacus/lib/utils/dbclient",
     "abacus-debug": "file:../../../abacus/lib/utils/debug",
     "abacus-launcher": "file:../../../abacus/lib/utils/launcher",
+    "abacus-moment": "file:../../../abacus/lib/utils/moment",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
     "abacus-vcapenv": "file:../../../abacus/lib/utils/vcapenv",
     "abacus-webapp": "file:../../../abacus/lib/utils/webapp",

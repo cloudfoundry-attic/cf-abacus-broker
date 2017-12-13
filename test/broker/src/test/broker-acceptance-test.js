@@ -126,7 +126,7 @@ describe('Abacus Broker Acceptance test', function() {
     createdInstance.destroy();
   });
 
-  const validateInstance = function *(instance, measuredUsage) {
+  const validateInstance = function*(instance, measuredUsage) {
     instance.bind(app.appName);
     app.restart();
 
@@ -183,7 +183,7 @@ describe('Abacus Broker Acceptance test', function() {
 
   };
 
-  const validateMapping = function *(instance, resourceProvider) {
+  const validateMapping = function*(instance, resourceProvider) {
     const getResponse =
       yield yieldable(testUtils.mappingApi().getServiceMappings);
     expect(getResponse.statusCode).to.equal(200);
@@ -208,7 +208,7 @@ describe('Abacus Broker Acceptance test', function() {
     });
 
     it('should execute the steps needed to validate the instances',
-      yieldable.functioncb(function *() {
+      yieldable.functioncb(function*() {
         const createResult = createdInstance.create(sampleMeteringPlan).trim();
         expect(createResult.endsWith('OK')).to.be.true;
         let status = createdInstance.status();
@@ -257,7 +257,7 @@ describe('Abacus Broker Acceptance test', function() {
     });
 
     it('should create metering plan and service mapping',
-      yieldable.functioncb(function *() {
+      yieldable.functioncb(function*() {
         const createResult =
           createdInstance.create(serviceMappingMeteringPlan).trim();
         expect(createResult.endsWith('OK')).to.be.true;
