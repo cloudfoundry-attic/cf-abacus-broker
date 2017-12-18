@@ -32,21 +32,15 @@ module.exports = (testEnvironment) => {
           cb(err, response.body[Object.keys(response.body)[0]][0].credentials);
         });
 
-      const start = () => cfUtils.startApplication(appName);
-
-      const restart = () => cfUtils.restartApplication(appName);
-
-      const deploy = (opts = '--no-start') => {
-        cfUtils.deployApplication(appName, `-f ${appManifest} ${opts}`);
-      };
-
-      const destroy = () => {
-        cfUtils.deleteApplication(appName, true);
-      };
-
-      const orgGuid = () => cfUtils.getOrgId(testEnv.org);
-
-      const spaceGuid = () => cfUtils.getSpaceId(testEnv.space);
+      const start = () => cfUtils.application.start(appName);
+      const restart = () => cfUtils.application.restart(appName);
+      const deploy = () => cfUtils.application.deploy(appName, {
+        manifest: appManifest,
+        noStart: true
+      });
+      const destroy = () => cfUtils.application.delete(appName, true);
+      const orgGuid = () => cfUtils.org.getId(testEnv.org);
+      const spaceGuid = () => cfUtils.space.getId(testEnv.space);
 
       const postUsage = (usageBody, cb) =>
         request.post('https://:app_name.:app_domain/usage', {
@@ -69,25 +63,19 @@ module.exports = (testEnvironment) => {
         postUsage
       };
     },
-    Service: (instanceName, testEnvironment) => {
 
+    Service: (instanceName, testEnvironment) => {
       const name = instanceName || `test-${moment.utc().valueOf()}`;
 
       const create = (parameters) =>
-        cfUtils.createServiceInstance(testEnv.serviceName,
+        cfUtils.serviceInstance.create(testEnv.serviceName,
           testEnv.servicePlan, name, parameters ?
             stringifyPlan(parameters) : undefined);
-
-      const status = () => cfUtils.getServiceStatus(name);
-
-      const update = (parameters) =>
-        cfUtils.updateServiceInstance(name, stringifyPlan(parameters));
-
-      const bind = (app) => cfUtils.bindServiceInstance(name, app);
-
-      const unbind = (app) => cfUtils.unbindServiceInstance(name, app);
-
-      const destroy = () => cfUtils.deleteServiceInstance(name);
+      const status = () => cfUtils.serviceInstance.getStatus(name);
+      const update = (parameters) => cfUtils.serviceInstance.update(name, stringifyPlan(parameters));
+      const bind = (app) => cfUtils.serviceInstance.bind(name, app);
+      const unbind = (app) => cfUtils.serviceInstance.unbind(name, app);
+      const destroy = () => cfUtils.serviceInstance.delete(name);
 
       return {
         create,

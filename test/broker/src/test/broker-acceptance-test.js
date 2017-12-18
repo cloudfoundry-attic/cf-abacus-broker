@@ -5,9 +5,10 @@
 const _ = require('underscore');
 const findWhere = _.findWhere;
 
-const oauth = require('abacus-oauth');
 const moment = require('abacus-moment');
-const yieldable = require('abacus-yieldable');
+const oauth = require('abacus-oauth');
+const request = require('abacus-request');
+const { yieldable, functioncb } = require('abacus-yieldable');
 
 const testUtils = require('abacus-ext-test-utils');
 const appUtils = require('abacus-ext-test-app-utils')();
@@ -183,70 +184,52 @@ describe('Abacus Broker Acceptance test', function() {
 
   };
 
-  const validateMapping = function*(instance, resourceProvider) {
-    const getResponse =
-      yield yieldable(testUtils.mappingApi().getServiceMappings);
-    expect(getResponse.statusCode).to.equal(200);
-
-    const data = getResponse.body;
-    expect(data.length).to.equal(1);
-
-    const mappingValue = data[0][1];
-
-    expect(mappingValue).to.deep.equal({
-      'organization_guid': orgId,
-      'space_guid': spaceId,
-      'service_name': testServiceName,
-      'service_plan_name': testServicePlanName
-    });
-  };
-
   context('when service configuration parameters are provided', () => {
     after(() => {
       updatedInstance.unbind(app.appName);
       updatedInstance.destroy();
     });
 
-    it('should execute the steps needed to validate the instances',
-      yieldable.functioncb(function*() {
-        const createResult = createdInstance.create(sampleMeteringPlan).trim();
-        expect(createResult.endsWith('OK')).to.be.true;
-        let status = createdInstance.status();
-        expect(status).to.equal('create succeeded');
+    it('should execute the steps needed to validate the instances', functioncb(function*() {
+      const createResult = createdInstance.create(sampleMeteringPlan).trim();
+      expect(createResult.endsWith('OK')).to.be.true;
+      let status = createdInstance.status();
+      expect(status).to.equal('create succeeded');
 
-        updatedInstance.create(sampleMeteringPlan);
-        const updateResult = updatedInstance.update(complexMeteringPlan).trim();
-        expect(updateResult.endsWith('OK')).to.be.true;
-        status = updatedInstance.status();
-        expect(status).to.equal('update succeeded');
+      updatedInstance.create(sampleMeteringPlan);
+      const updateResult = updatedInstance.update(complexMeteringPlan).trim();
+      expect(updateResult.endsWith('OK')).to.be.true;
+      status = updatedInstance.status();
+      expect(status).to.equal('update succeeded');
 
-        yield validateInstance(createdInstance,
-          [{
-            measure: 'storage',
-            quantity: 1073741824
-          }]);
+      yield validateInstance(createdInstance,
+        [{
+          measure: 'storage',
+          quantity: 1073741824
+        }]);
 
-        yield validateInstance(updatedInstance,
-          [{
-            measure: 'storage',
-            quantity: 1073741824
-          }, {
-            measure: 'light_api_calls',
-            quantity: 1000
-          }, {
-            measure: 'heavy_api_calls',
-            quantity: 100
-          }]);
+      yield validateInstance(updatedInstance,
+        [{
+          measure: 'storage',
+          quantity: 1073741824
+        }, {
+          measure: 'light_api_calls',
+          quantity: 1000
+        }, {
+          measure: 'heavy_api_calls',
+          quantity: 100
+        }]);
 
-      }));
+    }));
   });
 
   context('when service mapping API is configured', () => {
-
+    const mappingAppName = 'service-mapping-test-app';
     let mappingApp;
 
     before(() => {
-      mappingApp = appUtils.App('service-mapping-test-app',
+      mappingApp = appUtils.App(
+        mappingAppName,
         `${__dirname}/app-utils/test-mapping-app/manifest.yml`);
       mappingApp.deploy();
       mappingApp.start();
@@ -256,16 +239,39 @@ describe('Abacus Broker Acceptance test', function() {
       mappingApp.destroy();
     });
 
-    it('should create metering plan and service mapping',
-      yieldable.functioncb(function*() {
-        const createResult =
-          createdInstance.create(serviceMappingMeteringPlan).trim();
-        expect(createResult.endsWith('OK')).to.be.true;
-        const status = createdInstance.status();
-        expect(status).to.equal('create succeeded');
+    const getServiceMappings = function*() {
+      const yGet = yieldable(request.get);
+      return yield yGet('https://:appName.:host/v1/provisioning/mappings/services', {
+        appName: mappingAppName,
+        host: testEnv.appsDomain
+      });
+    };
 
-        yield validateMapping(createdInstance,
-          serviceMappingMeteringPlan.resource_provider);
-      }));
+    const validateMapping = function*(instance, resourceProvider) {
+      const getResponse = yield getServiceMappings();
+      expect(getResponse.statusCode).to.equal(200);
+
+      const data = getResponse.body;
+      expect(data.length).to.equal(1);
+
+      const mappingValue = data[0][1];
+
+      expect(mappingValue).to.deep.equal({
+        'organization_guid': orgId,
+        'space_guid': spaceId,
+        'service_name': testServiceName,
+        'service_plan_name': testServicePlanName
+      });
+    };
+
+    it('should create metering plan and service mapping', functioncb(function*() {
+      const createResult = createdInstance.create(serviceMappingMeteringPlan).trim();
+      expect(createResult.endsWith('OK')).to.be.true;
+      const status = createdInstance.status();
+      expect(status).to.equal('create succeeded');
+
+      yield validateMapping(createdInstance,
+        serviceMappingMeteringPlan.resource_provider);
+    }));
   });
 });

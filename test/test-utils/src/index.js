@@ -83,12 +83,6 @@ const getOrganizationUsage = (token, orgId, callback) => {
     }, callback);
 };
 
-const getServiceMappings = (callback) => {
-  request.get(':url/v1/provisioning/mappings/services', {
-    url: process.env.MAPPING_API
-  }, callback);
-};
-
 const getUsage = (token, opts, callback) => {
 
   const url = ':reporting_url/v1/metering/' +
@@ -142,12 +136,6 @@ const abacus = (provisioningAppUrl, collectorAppUrl, reportingAppUrl) => {
   };
 };
 
-const mappingApi = () => {
-  return {
-    getServiceMappings: getServiceMappings
-  };
-};
-
 const readTestEnvironmentConfig = () => ({
   api: process.env.CF_API,
   user: process.env.CF_ADMIN_USER,
@@ -158,11 +146,9 @@ const readTestEnvironmentConfig = () => ({
   collectorUrl: process.env.COLLECTOR_URL,
   reportingUrl: process.env.REPORTING_URL,
   provisioningUrl: process.env.PROVISIONING_URL,
-  mappingApiUrl: process.env.MAPPING_API,
   serviceName: process.env.SERVICE_NAME,
   servicePlan: process.env.SERVICE_PLAN
 });
 
 module.exports = abacus;
 module.exports.envConfig = readTestEnvironmentConfig();
-module.exports.mappingApi = mappingApi;
