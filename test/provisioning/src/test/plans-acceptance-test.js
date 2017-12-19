@@ -247,8 +247,8 @@ describe('Create and update plans acceptance test', () => {
 
     before(() => {
       cfUtils.target(org, space);
-      orgId = cfUtils.getOrgId(org);
-      spaceId = cfUtils.getSpaceId(space);
+      orgId = cfUtils.org.getId(org);
+      spaceId = cfUtils.space.getId(space);
       const now = moment.utc().valueOf();
       usageBody = {
         start: now,
