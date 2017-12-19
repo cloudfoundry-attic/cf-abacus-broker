@@ -69,8 +69,8 @@ module.exports = (testEnvironment) => {
 
       const create = (parameters) =>
         cfUtils.serviceInstance.create(testEnv.serviceName,
-          testEnv.servicePlan, name, parameters ?
-            stringifyPlan(parameters) : undefined);
+          testEnv.servicePlan, name,
+          parameters ? stringifyPlan(parameters) : undefined);
       const status = () => cfUtils.serviceInstance.getStatus(name);
       const update = (parameters) => cfUtils.serviceInstance.update(name, stringifyPlan(parameters));
       const bind = (app) => cfUtils.serviceInstance.bind(name, app);

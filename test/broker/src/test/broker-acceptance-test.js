@@ -114,118 +114,137 @@ describe('Abacus Broker Acceptance test', function() {
   this.timeout(totalTimeout);
 
   const app = TestApp();
-  const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
-  const updatedInstance = TestService(`updated-${moment.utc().valueOf()}`);
-
   const orgId = app.orgGuid();
   const spaceId = app.spaceGuid();
-  let now = moment.utc().valueOf();
 
-  before(() => app.deploy());
-  afterEach(() => {
-    createdInstance.unbind(app.appName);
-    createdInstance.destroy();
-  });
+  before(app.deploy);
+  after(app.destroy);
 
-  const validateInstance = function*(instance, measuredUsage) {
-    instance.bind(app.appName);
-    app.restart();
+  context('when "Resource provider" is not prvodied', () => {
 
-    const credentials = yield yieldable(app.getCredentials);
+    const validateInstance = function*(instance, measuredUsage) {
+      instance.bind(app.appName);
+      app.restart();
 
-    expect(credentials).to.have.property('client_id');
-    expect(credentials).to.have.property('client_secret');
-    expect(credentials).to.have.property('resource_id');
-    expect(credentials).to.have.property('plans');
+      const credentials = yield yieldable(app.getCredentials);
 
-    const resourceId = credentials.resource_id;
-    const clientId = credentials.client_id;
-    const clientSecret = credentials.client_secret;
+      expect(credentials).to.have.property('client_id');
+      expect(credentials).to.have.property('client_secret');
+      expect(credentials).to.have.property('resource_id');
+      expect(credentials).to.have.property('plans');
 
-    const usageToken = oauth.cache(testEnv.api, clientId, clientSecret,
-      `abacus.usage.${resourceId}.write,abacus.usage.${resourceId}.read`);
+      const resourceId = credentials.resource_id;
+      const clientId = credentials.client_id;
+      const clientSecret = credentials.client_secret;
 
-    yield yieldable(usageToken.start);
+      const usageToken = oauth.cache(testEnv.api, clientId, clientSecret,
+        `abacus.usage.${resourceId}.write,abacus.usage.${resourceId}.read`);
 
-    now++;
-    const resourceInstanceId = `${now}-151-413-121-110987654321d`;
-    const consumerId = `app:${resourceInstanceId}`;
-    const usageBody = {
-      start: now,
-      end: now,
-      organization_id: orgId,
-      space_id: spaceId,
-      resource_id: resourceId,
-      plan_id: 'standard',
-      consumer_id: consumerId,
-      resource_instance_id: resourceInstanceId,
-      measured_usage: measuredUsage
+      yield yieldable(usageToken.start);
+
+      const now = moment.utc().valueOf();
+      const resourceInstanceId = `${now}-151-413-121-110987654321d`;
+      const consumerId = `app:${resourceInstanceId}`;
+      const usageBody = {
+        start: now,
+        end: now,
+        organization_id: orgId,
+        space_id: spaceId,
+        resource_id: resourceId,
+        plan_id: 'standard',
+        consumer_id: consumerId,
+        resource_instance_id: resourceInstanceId,
+        measured_usage: measuredUsage
+      };
+
+      const postResponse = yield yieldable(app.postUsage)(usageBody);
+      expect(postResponse.statusCode).to.be.oneOf([201, 409]);
+
+      const getResponse = yield yieldable(abacusUtils.getOrganizationUsage)(usageToken, orgId);
+      expect(getResponse.statusCode).to.equal(200);
+      expect(getResponse.body.resources.length).to.equal(1);
+
+      const expectedSpace = findWhere(getResponse.body.spaces, { space_id: spaceId });
+      expect(expectedSpace.resources.length).to.equal(1);
+
+      const expectedConsumer = findWhere(expectedSpace.consumers, { consumer_id: consumerId });
+      expect(expectedConsumer.resources.length).to.equal(1);
+
+      const expectedResources = findWhere(getResponse.body.resources, { resource_id: resourceId });
+      expect(expectedResources.resource_id).to.equal(resourceId);
     };
 
-    const postResponse = yield yieldable(app.postUsage)(usageBody);
-    expect(postResponse.statusCode).to.be.oneOf([201, 409]);
+    context('when service is created', () => {
+      const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
+      let creationResult;
 
-    const getResponse =
-      yield yieldable(abacusUtils.getOrganizationUsage)(usageToken, orgId);
-    expect(getResponse.statusCode).to.equal(200);
-    expect(getResponse.body.resources.length).to.equal(1);
+      before(() => {
+        creationResult = createdInstance.create(sampleMeteringPlan).trim();
+      });
 
-    const expectedSpace = findWhere(
-      getResponse.body.spaces, { space_id: spaceId });
-    expect(expectedSpace.resources.length).to.equal(1);
+      after(() => {
+        createdInstance.unbind(app.appName);
+        createdInstance.destroy();
+      });
 
-    const expectedConsumer = findWhere(
-      expectedSpace.consumers, { consumer_id: consumerId });
-    expect(expectedConsumer.resources.length).to.equal(1);
 
-    const expectedResources = findWhere(
-      getResponse.body.resources, { resource_id: resourceId });
-    expect(expectedResources.resource_id).to.equal(resourceId);
+      it('should return creation success', () => {
+        expect(creationResult.endsWith('OK')).to.be.true;
+        const status = createdInstance.status();
+        expect(status).to.equal('create succeeded');
+      });
 
-  };
-
-  context('when service configuration parameters are provided', () => {
-    after(() => {
-      updatedInstance.unbind(app.appName);
-      updatedInstance.destroy();
+      it('instance should successfully process usage', functioncb(function*() {
+        yield validateInstance(createdInstance,
+          [{
+            measure: 'storage',
+            quantity: 1073741824
+          }]);
+      }));
     });
 
-    it('should execute the steps needed to validate the instances', functioncb(function*() {
-      const createResult = createdInstance.create(sampleMeteringPlan).trim();
-      expect(createResult.endsWith('OK')).to.be.true;
-      let status = createdInstance.status();
-      expect(status).to.equal('create succeeded');
+    context('when service is updated', () => {
+      const updatedInstance = TestService(`updated-${moment.utc().valueOf()}`);
+      let updateResult;
 
-      updatedInstance.create(sampleMeteringPlan);
-      const updateResult = updatedInstance.update(complexMeteringPlan).trim();
-      expect(updateResult.endsWith('OK')).to.be.true;
-      status = updatedInstance.status();
-      expect(status).to.equal('update succeeded');
+      before(() => {
+        updatedInstance.create(sampleMeteringPlan);
+        updateResult = updatedInstance.update(complexMeteringPlan).trim();
+      });
 
-      yield validateInstance(createdInstance,
-        [{
-          measure: 'storage',
-          quantity: 1073741824
-        }]);
+      after(() => {
+        updatedInstance.unbind(app.appName);
+        updatedInstance.destroy();
+      });
 
-      yield validateInstance(updatedInstance,
-        [{
-          measure: 'storage',
-          quantity: 1073741824
-        }, {
-          measure: 'light_api_calls',
-          quantity: 1000
-        }, {
-          measure: 'heavy_api_calls',
-          quantity: 100
-        }]);
+      it('should return update success', () => {
+        expect(updateResult.endsWith('OK')).to.be.true;
+        const status = updatedInstance.status();
+        expect(status).to.equal('update succeeded');
+      });
 
-    }));
+      it('instance should successfully process usage', functioncb(function*() {
+        yield validateInstance(updatedInstance,
+          [{
+            measure: 'storage',
+            quantity: 1073741824
+          }, {
+            measure: 'light_api_calls',
+            quantity: 1000
+          }, {
+            measure: 'heavy_api_calls',
+            quantity: 100
+          }]);
+      }));
+    });
   });
 
-  context('when service mapping API is configured', () => {
+  context('when "Resource provider" is prvodied', () => {
+    const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
     const mappingAppName = 'service-mapping-test-app';
+
     let mappingApp;
+    let creationResult;
 
     before(() => {
       mappingApp = appUtils.App(
@@ -233,21 +252,28 @@ describe('Abacus Broker Acceptance test', function() {
         `${__dirname}/app-utils/test-mapping-app/manifest.yml`);
       mappingApp.deploy();
       mappingApp.start();
+
+      creationResult = createdInstance.create(serviceMappingMeteringPlan).trim();
     });
 
     after(() => {
+      createdInstance.unbind(app.appName);
+      createdInstance.destroy();
       mappingApp.destroy();
     });
 
     const getServiceMappings = function*() {
       const yGet = yieldable(request.get);
-      return yield yGet('https://:appName.:host/v1/provisioning/mappings/services', {
-        appName: mappingAppName,
-        host: testEnv.appsDomain
-      });
+      return yield yGet(`${mappingApp.getUrl()}/v1/provisioning/mappings/services`);
     };
 
-    const validateMapping = function*(instance, resourceProvider) {
+    it('should return success creation status', functioncb(function*() {
+      expect(creationResult.endsWith('OK')).to.be.true;
+      const status = createdInstance.status();
+      expect(status).to.equal('create succeeded');
+    }));
+
+    it('Mapping API has recieved resource provider data', functioncb(function*() {
       const getResponse = yield getServiceMappings();
       expect(getResponse.statusCode).to.equal(200);
 
@@ -262,16 +288,6 @@ describe('Abacus Broker Acceptance test', function() {
         'service_name': testServiceName,
         'service_plan_name': testServicePlanName
       });
-    };
-
-    it('should create metering plan and service mapping', functioncb(function*() {
-      const createResult = createdInstance.create(serviceMappingMeteringPlan).trim();
-      expect(createResult.endsWith('OK')).to.be.true;
-      const status = createdInstance.status();
-      expect(status).to.equal('create succeeded');
-
-      yield validateMapping(createdInstance,
-        serviceMappingMeteringPlan.resource_provider);
     }));
   });
 });

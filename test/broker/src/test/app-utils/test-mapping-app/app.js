@@ -32,8 +32,6 @@ app.post('/v1/provisioning/mappings/services/resource/:resource/plan/:plan', (re
   const response = getStatus(body, expectedValues);
 
   const statusCode = response.statusCode;
-  console.log('-----');
-  console.log(statusCode);
   const message = response.message;
 
   if (statusCode === 200)
