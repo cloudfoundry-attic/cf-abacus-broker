@@ -27,7 +27,8 @@
   "scripts": {
     "start": "launch webapp start",
     "stop": "webapp stop",
-    "test": "eslint && mocha",
+    "test": "eslint && nyc mocha",
+    "generate-coverage": "nyc report --reporter=lcovonly",
     "lint": "eslint",
     "pub": "publish",
     "cfpack": "cfpack",

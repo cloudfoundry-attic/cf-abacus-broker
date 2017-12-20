@@ -22,7 +22,8 @@
     "smoke": "eslint && mocha -f broker-smoke-test.js",
     "acceptance": "eslint && mocha -f broker-acceptance-test.js",
     "lint": "eslint",
-    "test": "mocha",
+    "test": "eslint && nyc mocha",
+    "generate-coverage": "nyc report --reporter=lcovonly",
     "pub": "publish"
   },
   "dependencies": {
