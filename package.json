@@ -37,7 +37,7 @@
     "rebuild": "npm run clean && npm run build",
     "lint": "foreach abacus-ext :path npm run lint",
     "hint": "foreach abacus-ext :path jshint src",
-    "test": "foreach abacus-ext node_modules/:name npm test && coverage",
+    "test": "foreach abacus-ext node_modules/:name npm test",
     "citest": "bin/citest",
     "cftest": "bin/cftest",
     "cibuild": "npm run build && npm run citest && npm run cftest",
@@ -105,7 +105,6 @@
   "devDependencies": {
     "abacus-cfpack": "file:abacus/tools/cfpack",
     "abacus-cfpush": "file:abacus/tools/cfpush",
-    "abacus-coverage": "file:abacus/tools/coverage",
     "abacus-eslint": "file:abacus/tools/eslint",
     "abacus-etc": "file:abacus/etc",
     "abacus-mddoc": "file:abacus/tools/mddoc",
