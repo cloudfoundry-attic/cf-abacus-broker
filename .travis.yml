@@ -50,10 +50,7 @@ matrix:
 
 install: echo "install"
 
-script: npm run build
-
-after_script:
-  - travis_retry npm run generate-coverage && npm run report-coverage
+script: npm run build && npm run generate-coverage && npm run report-coverage
 
 notifications:
   irc:
