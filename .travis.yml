@@ -53,7 +53,7 @@ install: echo "install"
 script: npm run build
 
 after_script:
-  - travis_retry npm run coveralls
+  - travis_retry npm run generate-coverage && npm run report-coverage
 
 notifications:
   irc:
