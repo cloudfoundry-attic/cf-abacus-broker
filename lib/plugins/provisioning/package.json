@@ -65,6 +65,16 @@
     "abacus-request": "file:../../../abacus/lib/utils/request",
     "jsonwebtoken": "^5.0.5"
   },
+  "nyc": {
+    "cache": true,
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "src/test/**"
+    ]
+  },
   "engines": {
     "node": ">=6.11.4 <9.0.0",
     "npm": "<5.0.0"

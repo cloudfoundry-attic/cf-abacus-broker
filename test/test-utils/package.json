@@ -27,7 +27,7 @@
   "scripts": {
     "itest": "eslint && mocha",
     "test": "eslint",
-    "generate-coverage": "test",
+    "generate-coverage": "true",
     "lint": "eslint",
     "pub": "publish"
   },

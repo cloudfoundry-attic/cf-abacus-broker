@@ -62,6 +62,16 @@
     "abacus-publish": "file:../../../abacus/tools/publish",
     "abacus-request": "file:../../../abacus/lib/utils/request"
   },
+  "nyc": {
+    "cache": true,
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "src/test/**"
+    ]
+  },
   "engines": {
     "node": ">=6.11.4 <9.0.0",
     "npm": "<5.0.0"

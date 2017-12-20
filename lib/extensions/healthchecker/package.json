@@ -59,6 +59,16 @@
     "abacus-mocha": "file:../../../abacus/tools/mocha",
     "abacus-publish": "file:../../../abacus/tools/publish"
   },
+  "nyc": {
+    "cache": true,
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "src/test/**"
+    ]
+  },
   "engines": {
     "node": ">=6.11.4 <9.0.0",
     "npm": "<5.0.0"
