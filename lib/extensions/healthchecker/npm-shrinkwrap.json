@@ -510,9 +510,9 @@
       "resolved": "https://registry.npmjs.org/encodeurl/-/encodeurl-1.0.1.tgz"
     },
     "encoding-down": {
-      "version": "3.0.0",
+      "version": "3.0.1",
       "from": "encoding-down@>=3.0.0 <3.1.0",
-      "resolved": "https://registry.npmjs.org/encoding-down/-/encoding-down-3.0.0.tgz",
+      "resolved": "https://registry.npmjs.org/encoding-down/-/encoding-down-3.0.1.tgz",
       "dependencies": {
         "abstract-leveldown": {
           "version": "3.0.0",
@@ -1034,9 +1034,9 @@
       }
     },
     "moment": {
-      "version": "2.20.0",
+      "version": "2.20.1",
       "from": "moment@>=2.12.0 <3.0.0",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.20.0.tgz"
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz"
     },
     "mongodb": {
       "version": "2.2.33",
