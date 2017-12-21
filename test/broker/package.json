@@ -39,6 +39,7 @@
   "devDependencies": {
     "abacus-eslint": "file:../../abacus/tools/eslint",
     "abacus-mocha": "file:../../abacus/tools/mocha",
+    "nyc": "^11.4.1",
     "eslint-plugin-nodate": "file:../../abacus/tools/eslint-plugin-nodate",
     "abacus-yieldable": "file:../../abacus/lib/utils/yieldable",
     "eslint-plugin-mocha": "^4.8.0"

@@ -110,6 +110,7 @@
     "abacus-etc": "file:abacus/etc",
     "abacus-mddoc": "file:abacus/tools/mddoc",
     "abacus-mocha": "file:abacus/tools/mocha",
+    "nyc": "^11.4.1",
     "abacus-publish": "file:abacus/tools/publish",
     "codecov": "^3.0.0",
     "chai-http": "3.0.0",
