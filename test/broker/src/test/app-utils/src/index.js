@@ -5,8 +5,10 @@ const cmdline = require('abacus-cmdline');
 const testUtils = require('abacus-ext-test-utils');
 const request = require('abacus-request');
 
-const stringifyPlan = (plan) =>
-  JSON.stringify(plan).replace(/"/g,'\\"');
+const stringifyPlan = (plan) => JSON.stringify(plan).replace(/"/g,'\\"');
+const trim = (value) => value ? value.trim() : undefined;
+
+
 
 module.exports = (testEnvironment) => {
   const testEnv = testEnvironment || testUtils.envConfig;
@@ -32,15 +34,15 @@ module.exports = (testEnvironment) => {
           cb(err, response.body[Object.keys(response.body)[0]][0].credentials);
         });
 
-      const start = () => cfUtils.application.start(appName).trim();
-      const restart = () => cfUtils.application.restart(appName).trim();
-      const deploy = () => cfUtils.application.deploy(appName, {
+      const start = () => trim(cfUtils.application.start(appName));
+      const restart = () => trim(cfUtils.application.restart(appName));
+      const deploy = () => trim(cfUtils.application.deploy(appName, {
         manifest: appManifest,
         noStart: true
-      }).trim();
-      const destroy = () => cfUtils.application.delete(appName, true).trim();
-      const orgGuid = () => cfUtils.org.getId(testEnv.org).trim();
-      const spaceGuid = () => cfUtils.space.getId(testEnv.space).trim();
+      }));
+      const destroy = () => trim(cfUtils.application.delete(appName, true));
+      const orgGuid = () => trim(cfUtils.org.getId(testEnv.org));
+      const spaceGuid = () => trim(cfUtils.space.getId(testEnv.space));
 
       const postUsage = (usageBody, cb) =>
         request.post('https://:app_name.:app_domain/usage', {
@@ -68,14 +70,14 @@ module.exports = (testEnvironment) => {
       const name = instanceName || `test-${moment.utc().valueOf()}`;
 
       const create = (parameters) =>
-        cfUtils.serviceInstance.create(testEnv.serviceName,
+        trim(cfUtils.serviceInstance.create(testEnv.serviceName,
           testEnv.servicePlan, name,
-          parameters ? stringifyPlan(parameters) : undefined).trim();
-      const status = () => cfUtils.serviceInstance.getStatus(name).trim();
-      const update = (parameters) => cfUtils.serviceInstance.update(name, stringifyPlan(parameters)).trim();
-      const bind = (app) => cfUtils.serviceInstance.bind(name, app).trim();
-      const unbind = (app) => cfUtils.serviceInstance.unbind(name, app).trim();
-      const destroy = () => cfUtils.serviceInstance.delete(name).trim();
+          parameters ? stringifyPlan(parameters) : undefined));
+      const status = () => trim(cfUtils.serviceInstance.getStatus(name));
+      const update = (parameters) => trim(cfUtils.serviceInstance.update(name, stringifyPlan(parameters)));
+      const bind = (app) => trim(cfUtils.serviceInstance.bind(name, app));
+      const unbind = (app) => trim(cfUtils.serviceInstance.unbind(name, app));
+      const destroy = () => trim(cfUtils.serviceInstance.delete(name));
 
       return {
         create,
