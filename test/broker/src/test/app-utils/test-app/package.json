@@ -3,10 +3,10 @@
   "version": "0.0.6-dev.9",
   "dependencies": {
     "abacus-oauth": "1.0.0",
-    "abacus-request": "1.0.0",
     "body-parser": "^1.17.1",
     "express": "4.15.5",
-    "request-debug": "^0.2.0"
+    "request-debug": "^0.2.0",
+    "request-promise-native": "1.0.0"
   },
   "engines": {
     "node": ">=8.0.0",
