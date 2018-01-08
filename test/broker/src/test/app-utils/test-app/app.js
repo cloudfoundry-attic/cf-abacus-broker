@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
   res.status(200).send(servicesEnv);
 });
 
-app.get('/summary/:orgid', async (req, res) => {
+app.get('/summary/:orgid', async(req, res) => {
   console.log(`Requesting summary report for ${req.params.orgid}`);
   try {
     const response = await request.get(`${reportingURL}/${req.params.orgid}/aggregated/usage`, {
@@ -47,7 +47,7 @@ app.get('/summary/:orgid', async (req, res) => {
   }
 });
 
-app.post('/usage', async (req, res) => {
+app.post('/usage', async(req, res) => {
   const usage = req.body;
   console.log(`Posting usage ${JSON.stringify(usage)} to collector ${collectorURL}`);
   try {
