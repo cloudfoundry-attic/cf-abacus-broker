@@ -51,7 +51,8 @@ app.post('/usage', async(req, res) => {
   const usage = req.body;
   console.log(`Posting usage ${JSON.stringify(usage)} to collector ${collectorURL}`);
   try {
-    const response = await request.post(collectorURL, {
+    const response = await request.post({
+      uri: collectorURL,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': usageToken()
