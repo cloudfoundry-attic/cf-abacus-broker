@@ -1,6 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const request = require('request-promise-native').defaults({ resolveWithFullResponse: true });
+const request = require('request-promise-native').defaults({
+  resolveWithFullResponse: true,
+  json: true,
+  rejectUnauthorized: false
+});
 const oauth = require('abacus-oauth');
 const app = express();
 require('request-debug')(request);
@@ -35,10 +39,7 @@ app.get('/summary/:orgid', async(req, res) => {
   console.log(`Requesting summary report for ${req.params.orgid}`);
   try {
     const response = await request.get(`${reportingURL}/${req.params.orgid}/aggregated/usage`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': usageToken()
-      }
+      headers: { 'Authorization': usageToken() }
     });
     res.status(response.statusCode).send(JSON.parse(response.body));
   } catch (e) {
@@ -53,10 +54,7 @@ app.post('/usage', async(req, res) => {
   try {
     const response = await request.post({
       uri: collectorURL,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': usageToken()
-      },
+      headers: { 'Authorization': usageToken() },
       body: usage
     });
     res.status(response.statusCode).send(response.message);
