@@ -9,13 +9,14 @@ app.use(bodyParser.json());
 
 const data = [];
 
-const getStatus = (object, properties) => {
+const getMissingProperties = (body) => {
+  const expectedProperties = ['organization_guid', 'space_guid', 'service_name', 'service_plan_name'];
+  const missingProperties = [];
+  for(let property of expectedProperties)
+    if(!body.hasOwnProperty(property))
+      missingProperties.push(property);
 
-  for(let property of properties)
-    if(!object.hasOwnProperty(property))
-      return { statusCode: 500, message: `No ${property} found in body` };
-
-  return { statusCode: 200 };
+  return missingProperties;
 };
 
 app.post('/v1/provisioning/mappings/services/resource/:resource/plan/:plan', (req, res) => {
@@ -24,20 +25,13 @@ app.post('/v1/provisioning/mappings/services/resource/:resource/plan/:plan', (re
 
   console.log(`Test mapping api POST : resource: ${resource} and plan: ${plan}`);
 
-  const body = req.body;
+  const missingProperties = getMissingProperties(req.body);
+  if (missingProperties.length == 0) {
+    data.push([{ resource, plan }, req.body]);
+    return res.status(200).send();
+  }
 
-  const expectedValues = ['organization_guid', 'space_guid', 'service_name',
-    'service_plan_name'];
-
-  const response = getStatus(body, expectedValues);
-
-  const statusCode = response.statusCode;
-  const message = response.message;
-
-  if (statusCode === 200)
-    data.push([{ resource, plan }, body]);
-
-  res.status(statusCode).send(message ? { message } : undefined);
+  return res.status(500).send(`No '${missingProperties}' found in request body`);
 });
 
 app.get('/v1/provisioning/mappings/services', (req, res) => {
