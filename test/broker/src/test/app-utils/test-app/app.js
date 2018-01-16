@@ -41,7 +41,7 @@ app.get('/summary/:orgid', async(req, res) => {
     const response = await request.get(`${reportingURL}/${req.params.orgid}/aggregated/usage`, {
       headers: { 'Authorization': usageToken() }
     });
-    res.status(response.statusCode).send(JSON.parse(response.body));
+    res.status(response.statusCode).send(response.body);
   } catch (e) {
     console.log(`Error getting report: ${e}`);
     res.status(500).send(e);
