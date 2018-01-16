@@ -40,7 +40,7 @@
     "generate-coverage": "true",
     "combinecoverage": "cat src/test/frontend/coverage/lcov.info >> ./.coverage/lcov.info && node --harmony src/test/combineJson.js",
     "backend-coverage": "node ./node_modules/istanbul-harmony/lib/cli.js cover  --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 src/test/backend/ && node --harmony ./node_modules/istanbul-harmony/lib/cli.js report --dir src/test/backend/coverage --root coverage html",
-    "coverage": "karma start src/test/frontend/karma.conf.js && node ./node_modules/istanbul-harmony/lib/cli.js cover  --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 src/test/backend/ && node --harmony ./node_modules/istanbul-harmony/lib/cli.js report --dir src/test/backend/coverage --root coverage html && node --harmony src/test/computeCoverage.js"
+    "coverage": "karma start src/test/frontend/karma.conf.js && node ./node_modules/istanbul-harmony/lib/cli.js cover  --hook-run-in-context ./node_modules/mocha/bin/_mocha -- --ui bdd -R spec -t 5000 src/test/*-test.js && node --harmony ./node_modules/istanbul-harmony/lib/cli.js report --dir src/test/backend/coverage --root coverage html"
   },
   "dependencies": {
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
@@ -77,6 +77,7 @@
     "abacus-cfpush": "file:../../../abacus/tools/cfpush",
     "abacus-eslint": "file:../../../abacus/tools/eslint",
     "abacus-mocha": "file:../../../abacus/tools/mocha",
+    "nyc": "^11.4.1",
     "abacus-publish": "file:../../../abacus/tools/publish",
     "istanbul-harmony": "0.3.16",
     "chai": "3.5.0",

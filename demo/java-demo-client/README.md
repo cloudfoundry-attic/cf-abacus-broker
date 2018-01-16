@@ -41,15 +41,18 @@ In this section we'll explain how to build, deploy and configure the demo. Addit
 
 
 ### Building
-Clone or download the demo app from this git repository to a directory of your choice. To do a fresh build of the app, issue the following command on the commandline in the root of the project dir:
-
 ```bash
+# Clone the demo app
+git clone https://github.com/cloudfoundry-incubator/cf-abacus-broker.git
+
+# Build the app
+cd cf-abacus-broker/demo/java-demo-client/
 mvn clean package
 ```
 
 ### Configuration
 Replace the following variables in the `manifest.yml`:
-```
+```yaml
 ORG_GUID: your-org-guid-here
 REPORTING_URL: https://abacus-usage-reporting.<domain>/v1/metering/organizations
 ```
@@ -57,7 +60,7 @@ REPORTING_URL: https://abacus-usage-reporting.<domain>/v1/metering/organizations
 You can access your org guid by executing `cf org <name> --guid` or you can put a random guid-like string there.
 
 By default the app sends:
-  ```
+  ```json
   [
     {"measure": "api_calls", "quantity": 250}
   ]
@@ -67,7 +70,7 @@ If you want to send different usage you can configure it from [`webapp/App.js`](
 
 ### Deploying
 At this point you will have to have configured the `manifest.yml`. You can deploy the app to a Cloud Foundry space of your choice with the following steps:
-```bash
+```sh
 # Deploy demo app
 cf push
 # Create metering service
