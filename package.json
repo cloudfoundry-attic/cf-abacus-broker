@@ -104,6 +104,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "abacus-cfpack": "file:abacus/tools/cfpack",
     "abacus-cfpush": "file:abacus/tools/cfpush",
     "abacus-eslint": "file:abacus/tools/eslint",
     "abacus-etc": "file:abacus/etc",

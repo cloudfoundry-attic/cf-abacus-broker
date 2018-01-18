@@ -29,6 +29,7 @@
     "stop": "webapp stop",
     "lint": "eslint",
     "pub": "publish",
+    "cfpack": "cfpack",
     "cfpush": "cfpush",
     "jsdoc": "jsdoc -c jsdoc.json",
     "jshint": "jshint --exclude coverage,docs,jsdoc,node_modules,webapp,test,tmp  --reporter=node_modules/jshint-stylish .",
@@ -72,6 +73,7 @@
     "uuid": "3.1.0"
   },
   "devDependencies": {
+    "abacus-cfpack": "file:../../../abacus/tools/cfpack",
     "abacus-cfpush": "file:../../../abacus/tools/cfpush",
     "abacus-eslint": "file:../../../abacus/tools/eslint",
     "abacus-mocha": "file:../../../abacus/tools/mocha",

@@ -14,6 +14,7 @@ log*
 *.zip
 *.swp
 *.out
+**/.cfpack/**
 **/.cfpush/**
 .publish/**
 **/.publish/**
