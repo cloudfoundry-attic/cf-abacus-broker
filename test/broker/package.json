@@ -1,6 +1,6 @@
 {
-  "name": "abacus-ext-cf-broker-smoke",
-  "description": "Abacus Broker Smoke test",
+  "name": "abacus-ext-cf-broker-tests",
+  "description": "Abacus Broker Smoke & Acceptance test",
   "license": "Apache-2.0",
   "version": "0.0.6-dev.9",
   "private": true,
@@ -17,20 +17,23 @@
     "abacus",
     "broker"
   ],
+  "files": [
+    ".npmrc",
+    "src/"
+  ],
   "main": "src/index.js",
   "scripts": {
-    "smoke": "eslint && mocha -f broker-smoke-test.js",
-    "acceptance": "eslint && mocha -f broker-acceptance-test.js",
+    "smoke": "mocha -f broker-smoke-test.js",
+    "acceptance": "mocha -f broker-acceptance-test.js",
     "lint": "eslint",
-    "test": "eslint && nyc mocha",
-    "generate-coverage": "nyc report --reporter=lcovonly",
+    "test": "eslint",
+    "generate-coverage": "true",
     "pub": "publish"
   },
   "dependencies": {
     "abacus-ext-cf-broker": "file:../../lib/cf/broker",
     "abacus-cmdline": "file:../../abacus/tools/cmdline",
     "abacus-ext-test-utils": "file:../test-utils",
-    "abacus-ext-test-app-utils": "file:./src/test/app-utils",
     "abacus-moment": "file:../../abacus/lib/utils/moment",
     "abacus-oauth": "file:../../abacus/lib/utils/oauth",
     "abacus-request": "file:../../abacus/lib/utils/request",

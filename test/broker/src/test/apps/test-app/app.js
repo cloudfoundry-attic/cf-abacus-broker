@@ -14,13 +14,13 @@ const port = process.env.PORT || 3000;
 const servicesEnv = JSON.parse(process.env.VCAP_SERVICES);
 const applicationEnv = JSON.parse(process.env.VCAP_APPLICATION);
 
-const credentials = servicesEnv[Object.keys(servicesEnv)[0]][0].credentials;
+const meteringServiceCredentials = servicesEnv[Object.keys(servicesEnv)[0]][0].credentials;
 
-const clientId = credentials.client_id;
-const clientSecret = credentials.client_secret;
-const collectorURL = credentials.collector_url;
+const clientId = meteringServiceCredentials.client_id;
+const clientSecret = meteringServiceCredentials.client_secret;
+const collectorURL = meteringServiceCredentials.collector_url;
 const reportingURL = collectorURL.replace('collector', 'reporting').replace('collected/usage', 'organizations');
-const resourceId = credentials.resource_id;
+const resourceId = meteringServiceCredentials.resource_id;
 
 const usageToken = oauth.cache(
   applicationEnv.cf_api,
@@ -31,8 +31,8 @@ const usageToken = oauth.cache(
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  res.status(200).send(servicesEnv);
+app.get('/credentials', (req, res) => {
+  res.status(200).send(meteringServiceCredentials);
 });
 
 app.get('/summary/:orgid', async(req, res) => {

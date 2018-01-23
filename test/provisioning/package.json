@@ -18,9 +18,7 @@
     "broker"
   ],
   "files": [
-    ".apprc",
     ".npmrc",
-    "manifest.yml",
     "src/"
   ],
   "main": "src/index.js",

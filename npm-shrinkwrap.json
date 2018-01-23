@@ -226,6 +226,11 @@
         }
       }
     },
+    "abacus-ext-cf-broker-tests": {
+      "version": "0.0.6-dev.8",
+      "from": "test/broker",
+      "resolved": "file:test/broker"
+    },
     "abacus-ext-test-utils": {
       "version": "0.0.6-dev.8",
       "from": "test/test-utils",

@@ -29,6 +29,7 @@
     "lib/"
   ],
   "scripts": {
+    "acceptance": "export JOBS=1 && foreach tests node_modules/:name npm run acceptance --",
     "bootstrap": "npm install check-node-version && check-node-version --package",
     "update": "bin/module-update",
     "provision": "npm run bootstrap && npm install && cp etc/apps.rc node_modules/abacus-etc",
@@ -52,7 +53,7 @@
     "dupe": "bin/dupe",
     "perf": "bin/perf",
     "itest": "export JOBS=1 && foreach itest node_modules/:name npm run itest --",
-    "smoke": "export JOBS=1 && foreach smoke node_modules/:name npm run smoke --",
+    "smoke": "export JOBS=1 && foreach tests node_modules/:name npm run smoke --",
     "pub": "foreach abacus-ext :path npm run pub && publish",
     "cfpush": "bin/cfpush",
     "cfstage": "bin/cfstage",
@@ -80,6 +81,7 @@
     "abacus-ext-provisioning-itest": "file:test/provisioning",
     "abacus-ext-provisioning-plugin": "file:lib/plugins/provisioning",
     "abacus-ext-service-dashboard": "file:lib/cf/dashboard",
+    "abacus-ext-cf-broker-tests": "file:test/broker",
     "abacus-ext-test-utils": "file:test/test-utils",
     "abacus-hystrix": "file:abacus/lib/utils/hystrix",
     "abacus-launcher": "file:abacus/lib/utils/launcher",
@@ -110,7 +112,6 @@
     "abacus-etc": "file:abacus/etc",
     "abacus-mddoc": "file:abacus/tools/mddoc",
     "abacus-mocha": "file:abacus/tools/mocha",
-    "nyc": "^11.4.1",
     "abacus-publish": "file:abacus/tools/publish",
     "codecov": "^3.0.0",
     "chai-http": "3.0.0",

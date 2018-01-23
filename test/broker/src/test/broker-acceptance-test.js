@@ -11,14 +11,32 @@ const request = require('abacus-request');
 const { yieldable, functioncb } = require('abacus-yieldable');
 
 const testUtils = require('abacus-ext-test-utils');
-const appUtils = require('abacus-ext-test-app-utils')();
+const createTestAppClient = require('./test-app-client');
 
-const TestApp = appUtils.App;
-const TestService = appUtils.Service;
+const testEnv = {
+  api: process.env.CF_API,
+  user: process.env.CF_ADMIN_USER,
+  password: process.env.CF_ADMIN_PASSWORD,
+  org: process.env.BROKER_TEST_ORG,
+  space: process.env.CF_SPACE,
+  collectorUrl: process.env.COLLECTOR_URL,
+  reportingUrl: process.env.REPORTING_URL,
+  provisioningUrl: process.env.PROVISIONING_URL,
+  serviceName: process.env.SERVICE_NAME,
+  servicePlan: process.env.SERVICE_PLAN
+};
 
-const testEnv = testUtils.envConfig;
-const abacusUtils = testUtils(testEnv.provisioningUrl, testEnv.collectorUrl,
-  testEnv.reportingUrl);
+const { App, Service } = testUtils.cf({
+  api: testEnv.api,
+  user: testEnv.user,
+  password: testEnv.password
+});
+
+const abacusClient = testUtils.abacusClient(
+  testEnv.provisioningUrl,
+  testEnv.collectorUrl,
+  testEnv.reportingUrl
+);
 
 const totalTimeout = process.env.TOTAL_TIMEOUT || 300000;
 
@@ -39,10 +57,6 @@ const testPlan = {
         end < from || end >= to ? null : Math.max(a, qty))
         .toString()
     }]
-};
-
-const sampleMeteringPlan = {
-  plans: [{ plan: testPlan }]
 };
 
 const complexMeteringPlan = {
@@ -95,38 +109,40 @@ const complexMeteringPlan = {
   ]
 };
 
-const testServiceName = 'test-service';
-const testServicePlanName = 'test-service-plan-name';
-
-const serviceMappingMeteringPlan = {
-  plans: [
-    {
-      plan: testPlan,
-      resource_provider: {
-        service_name: testServiceName,
-        service_plan_name: testServicePlanName
-      }
-    }
-  ]
-};
-
 describe('Abacus Broker Acceptance test', function() {
   this.timeout(totalTimeout);
 
-  const app = TestApp();
-  const orgId = app.orgGuid();
-  const spaceId = app.spaceGuid();
+  let app;
+  let orgId;
+  let spaceId;
+  let testAppClient;
 
-  before(app.deploy);
-  after(app.destroy);
+  before(() => {
+    app = App.deploy({
+      target:{
+        orgName: testEnv.org,
+        spaceName: testEnv.space
+      },
+      app: {
+        name: `${moment.utc().valueOf()}-test-app`,
+        manifest: `${__dirname}/apps/test-app/manifest.yml`
+      }
+    });
+
+    orgId = app.orgGuid;
+    spaceId = app.spaceGuid;
+    testAppClient = createTestAppClient(app.getUrl());
+  });
+
+  after(() => app.destroy());
 
   context('when "Resource provider" is not prvodied', () => {
 
     const validateInstance = function*(instance, measuredUsage) {
-      instance.bind(app.appName);
+      instance.bind(app.guid);
       app.restart();
 
-      const credentials = yield yieldable(app.getCredentials);
+      const credentials = yield yieldable(testAppClient.getCredentials);
 
       expect(credentials).to.have.property('client_id');
       expect(credentials).to.have.property('client_secret');
@@ -157,10 +173,10 @@ describe('Abacus Broker Acceptance test', function() {
         measured_usage: measuredUsage
       };
 
-      const postResponse = yield yieldable(app.postUsage)(usageBody);
+      const postResponse = yield yieldable(testAppClient.postUsage)(usageBody);
       expect(postResponse.statusCode).to.be.oneOf([201, 409]);
 
-      const getResponse = yield yieldable(abacusUtils.getOrganizationUsage)(usageToken, orgId);
+      const getResponse = yield yieldable(abacusClient.getOrganizationUsage)(usageToken, orgId);
       expect(getResponse.statusCode).to.equal(200);
       expect(getResponse.body.resources.length).to.equal(1);
 
@@ -174,28 +190,31 @@ describe('Abacus Broker Acceptance test', function() {
       expect(expectedResources.resource_id).to.equal(resourceId);
     };
 
+    const noResourceProviderParameters = {
+      plans: [{ plan: testPlan }]
+    };
+
     context('when service is created', () => {
-      const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
-      let creationResult;
+      let serviceInstance;
 
       before(() => {
-        creationResult = createdInstance.create(sampleMeteringPlan).trim();
+        serviceInstance = Service.createInstance({
+          spaceGuid: spaceId,
+          instanceName: `create-test-${moment.utc().valueOf()}`,
+          service: {
+            name: testEnv.serviceName,
+            plan: testEnv.servicePlan
+          },
+          parameters: noResourceProviderParameters
+        });
       });
 
       after(() => {
-        createdInstance.unbind(app.appName);
-        createdInstance.destroy();
-      });
-
-
-      it('should return creation success', () => {
-        expect(creationResult.endsWith('OK')).to.be.true;
-        const status = createdInstance.status();
-        expect(status).to.equal('create succeeded');
+        serviceInstance.destroy();
       });
 
       it('instance should successfully process usage', functioncb(function*() {
-        yield validateInstance(createdInstance,
+        yield validateInstance(serviceInstance,
           [{
             measure: 'storage',
             quantity: 1073741824
@@ -204,27 +223,30 @@ describe('Abacus Broker Acceptance test', function() {
     });
 
     context('when service is updated', () => {
-      const updatedInstance = TestService(`updated-${moment.utc().valueOf()}`);
+      let serviceInstance;
       let updateResult;
 
       before(() => {
-        updatedInstance.create(sampleMeteringPlan);
-        updateResult = updatedInstance.update(complexMeteringPlan).trim();
+        serviceInstance = Service.createInstance({
+          spaceGuid: spaceId,
+          instanceName: `update-test-${moment.utc().valueOf()}`,
+          service: {
+            name: testEnv.serviceName,
+            plan: testEnv.servicePlan
+          },
+          parameters: noResourceProviderParameters
+        });
+        updateResult = serviceInstance.update(complexMeteringPlan);
       });
 
-      after(() => {
-        updatedInstance.unbind(app.appName);
-        updatedInstance.destroy();
-      });
+      after(() => serviceInstance.destroy());
 
       it('should return update success', () => {
-        expect(updateResult.endsWith('OK')).to.be.true;
-        const status = updatedInstance.status();
-        expect(status).to.equal('update succeeded');
+        expect(updateResult.entity.last_operation.state).to.equal('succeeded');
       });
 
       it('instance should successfully process usage', functioncb(function*() {
-        yield validateInstance(updatedInstance,
+        yield validateInstance(serviceInstance,
           [{
             measure: 'storage',
             quantity: 1073741824
@@ -240,25 +262,50 @@ describe('Abacus Broker Acceptance test', function() {
   });
 
   context('when "Resource provider" is prvodied', () => {
-    const createdInstance = TestService(`created-${moment.utc().valueOf()}`);
+    const testServiceName = 'test-service';
+    const testServicePlanName = 'test-service-plan-name';
     const mappingAppName = 'service-mapping-test-app';
 
+    let serviceInstance;
     let mappingApp;
-    let creationResult;
 
     before(() => {
-      mappingApp = appUtils.App(
-        mappingAppName,
-        `${__dirname}/app-utils/test-mapping-app/manifest.yml`);
-      mappingApp.deploy();
+      mappingApp = App.deploy({
+        target: {
+          orgName: testEnv.org,
+          spaceName: testEnv.space
+        },
+        app: {
+          name: mappingAppName,
+          manifest: `${__dirname}/apps/test-mapping-app/manifest.yml`
+        }
+      });
       mappingApp.start();
 
-      creationResult = createdInstance.create(serviceMappingMeteringPlan).trim();
+      const parameters = {
+        plans: [
+          {
+            plan: testPlan,
+            resource_provider: {
+              service_name: testServiceName,
+              service_plan_name: testServicePlanName
+            }
+          }
+        ]
+      };
+      serviceInstance = Service.createInstance({
+        spaceGuid: spaceId,
+        instanceName: `with-resource-provider-${moment.utc().valueOf()}`,
+        service: {
+          name: testEnv.serviceName,
+          plan: testEnv.servicePlan
+        },
+        parameters
+      });
     });
 
     after(() => {
-      createdInstance.unbind(app.appName);
-      createdInstance.destroy();
+      serviceInstance.destroy();
       mappingApp.destroy();
     });
 
@@ -266,12 +313,6 @@ describe('Abacus Broker Acceptance test', function() {
       const yGet = yieldable(request.get);
       return yield yGet(`${mappingApp.getUrl()}/v1/provisioning/mappings/services`);
     };
-
-    it('should return success creation status', functioncb(function*() {
-      expect(creationResult.endsWith('OK')).to.be.true;
-      const status = createdInstance.status();
-      expect(status).to.equal('create succeeded');
-    }));
 
     it('Mapping API has recieved resource provider data', functioncb(function*() {
       const getResponse = yield getServiceMappings();
