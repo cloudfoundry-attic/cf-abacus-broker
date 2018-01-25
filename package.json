@@ -55,7 +55,7 @@
     "itest": "export JOBS=1 && foreach itest node_modules/:name npm run itest --",
     "smoke": "export JOBS=1 && foreach tests node_modules/:name npm run smoke --",
     "pub": "foreach abacus-ext :path npm run pub && publish",
-    "cfpush": "bin/cfpush",
+    "cfpush": "cfpush",
     "cfstage": "bin/cfstage",
     "cfdelete": "bin/cfdelete",
     "cfstart": "bin/cfstart",
@@ -106,7 +106,6 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "abacus-cfpack": "file:abacus/tools/cfpack",
     "abacus-cfpush": "file:abacus/tools/cfpush",
     "abacus-eslint": "file:abacus/tools/eslint",
     "abacus-etc": "file:abacus/etc",
