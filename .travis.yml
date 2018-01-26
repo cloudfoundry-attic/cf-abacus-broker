@@ -8,9 +8,8 @@ cache:
   directories:
     - travis_phantomjs
 
+# Upgrade PhantomJS to v2.1.1.
 before_install:
-  - npm i -g npm@latest-4
-  # Upgrade PhantomJS to v2.1.1.
   - "export PHANTOMJS_VERSION=2.1.1"
   - "export PATH=$PWD/travis_phantomjs/phantomjs-$PHANTOMJS_VERSION-linux-x86_64/bin:$PATH"
   - "if [ $(phantomjs --version) != $PHANTOMJS_VERSION ]; then rm -rf $PWD/travis_phantomjs; mkdir -p $PWD/travis_phantomjs; fi"
@@ -27,9 +26,9 @@ env:
 
 matrix:
   include:
-    - node_js: "8.9.0"
+    - node_js: "8.9.4"
       env: DESCRIPTION="pouchdb"
-    - node_js: "8.9.0"
+    - node_js: "8.9.4"
       env:
         - DESCRIPTION="couchdb"
         - JOBS=1
@@ -37,7 +36,7 @@ matrix:
         - DB=http://localhost:5984
       services:
         - couchdb
-    - node_js: "8.9.0"
+    - node_js: "8.9.4"
       env:
         - DESCRIPTION="mongodb"
         - JOBS=1
@@ -50,7 +49,7 @@ matrix:
 
 install: echo "install"
 
-script: npm run build && npm run generate-coverage && npm run report-coverage
+script: yarn run build && yarn run generate-coverage && yarn run report-coverage
 
 notifications:
   irc:
