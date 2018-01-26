@@ -1,6 +1,6 @@
 {
-  "name": "abacus-ext-test-utils",
-  "description": "Abacus Broker Test Utils",
+  "name": "abacus-ext-test-app-utils",
+  "description": "Abacus Broker Test App Utils",
   "license": "Apache-2.0",
   "version": "0.0.6-dev.8",
   "private": true,
@@ -18,23 +18,19 @@
     "broker"
   ],
   "files": [
-    ".apprc",
-    ".npmrc",
-    "manifest.yml",
-    "src/"
+    "src/",
+    "test-app"
   ],
   "main": "src/index.js",
   "scripts": {
     "itest": "abacus-eslint && abacus-mocha",
     "test": "abacus-eslint",
-    "generate-coverage": "true",
     "lint": "abacus-eslint",
     "pub": "publish"
   },
   "dependencies": {
     "abacus-cmdline": "file:../../abacus/tools/cmdline",
-    "abacus-moment": "file:../../abacus/lib/utils/moment",
-    "underscore": "^1.8.3"
+    "abacus-moment": "file:../../../../../abacus/lib/utils/moment"
   },
   "engines": {
     "node": ">=8.9.4",

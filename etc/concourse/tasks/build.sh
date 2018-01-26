@@ -8,7 +8,7 @@ pushd cf-abacus-broker
   git submodule init
   git submodule update
   cd abacus
-  npm run provision
+  yarn run provision
   cd ..
-  npm run build
+  yarn run build
 popd
