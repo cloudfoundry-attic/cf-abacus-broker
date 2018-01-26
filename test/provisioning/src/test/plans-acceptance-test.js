@@ -8,8 +8,8 @@ const extend = _.extend;
 
 const debug = require('abacus-debug')('abacus-ext-provisioning-itest');
 
-const uaaHelper = require('./utils/uaa-utils.js');
-const testHelper = require('abacus-ext-test-utils');
+const createUaaUtils = require('./utils/uaa-utils.js');
+const testUtils = require('abacus-ext-test-utils');
 
 const api = process.env.API;
 const authServer = process.env.AUTH_SERVER;
@@ -18,8 +18,8 @@ const adminUserPassword = process.env.CF_ADMIN_PASSWORD;
 const uaaAdminSecret = process.env.UAA_SECRET;
 const abacusSysUser = process.env.SYSTEM_CLIENT_ID;
 const abacusSysPassword = process.env.SYSTEM_CLIENT_SECRET;
-const org = process.env.CF_ORG;
-const space = process.env.CF_SPACE;
+const orgName = process.env.CF_ORG;
+const spaceName = process.env.CF_SPACE;
 const provisioningUrl = process.env.PROVISIONING_URL;
 const collectorUrl = process.env.COLLECTOR_URL;
 const reportingUrl = process.env.REPORTING_URL;
@@ -28,8 +28,8 @@ const clientSecret = process.env.CLIENT_SECRET;
 describe('Create and update plans acceptance test', () => {
 
   const cfUtils = cmdline.cfutils(api, adminUser, adminUserPassword);
-  const uaaUtils = uaaHelper(authServer, uaaAdminSecret);
-  const abacusUtils = testHelper(provisioningUrl, collectorUrl, reportingUrl);
+  const uaaUtils = createUaaUtils(authServer, uaaAdminSecret);
+  const abacusClient = testUtils.abacusClient(provisioningUrl, collectorUrl, reportingUrl);
 
   const prefix = moment.utc().valueOf();
   const resourceId = `${prefix}-test-resource-id`;
@@ -58,7 +58,7 @@ describe('Create and update plans acceptance test', () => {
   });
 
   const getPlan = (resourceType, planBody, planId, done) => {
-    abacusUtils.getPlan(systemToken, resourceType, planId, (err, val) => {
+    abacusClient.getPlan(systemToken, resourceType, planId, (err, val) => {
       expect(err).to.equal(undefined);
       debug('\n       GET  %s', val.request.uri.href);
       expect(val.statusCode).to.equal(200);
@@ -68,7 +68,7 @@ describe('Create and update plans acceptance test', () => {
   };
 
   const createPlan = (resourceType, planBody, done) => {
-    abacusUtils.createPlan(systemToken, resourceType, planBody, (err, val) => {
+    abacusClient.createPlan(systemToken, resourceType, planBody, (err, val) => {
       expect(err).to.equal(undefined);
       debug('\n       POST %s', val.request.uri.href);
       expect(val.statusCode).to.equal(201);
@@ -77,7 +77,7 @@ describe('Create and update plans acceptance test', () => {
   };
 
   const updatePlan = (resourceType, planBody, planId, done) => {
-    abacusUtils.updatePlan(systemToken, resourceType,
+    abacusClient.updatePlan(systemToken, resourceType,
       planId, planBody, (err, val) => {
         expect(err).to.equal(undefined);
         debug('\n       PUT  %s', val.request.uri.href);
@@ -87,7 +87,7 @@ describe('Create and update plans acceptance test', () => {
   };
 
   const getMapping = (resourceType, planId, done) => {
-    abacusUtils.getMapping(systemToken, resourceType, resourceId,
+    abacusClient.getMapping(systemToken, resourceType, resourceId,
       (err, val) => {
         expect(err).to.equal(undefined);
         debug('\n       GET  %s', val.request.uri.href);
@@ -98,7 +98,7 @@ describe('Create and update plans acceptance test', () => {
   };
 
   const createMapping = (resourceType, planId, done) => {
-    abacusUtils.createMapping(systemToken, resourceType, resourceId, planId,
+    abacusClient.createMapping(systemToken, resourceType, resourceId, planId,
       (err, val) => {
         expect(err).to.equal(undefined);
         debug('\n       POST %s', val.request.uri.href);
@@ -246,9 +246,11 @@ describe('Create and update plans acceptance test', () => {
     let usageBody;
 
     before(() => {
-      cfUtils.target(org, space);
-      orgId = cfUtils.org.getId(org);
-      spaceId = cfUtils.space.getId(space);
+      const org = cfUtils.org.get(orgName);
+      orgId = org.metadata.guid;
+      const space = cfUtils.space.get(orgId, spaceName);
+      spaceId = space.metadata.guid;
+
       const now = moment.utc().valueOf();
       usageBody = {
         start: now,
@@ -269,7 +271,7 @@ describe('Create and update plans acceptance test', () => {
     });
 
     it('should be created or already exists', (done) => {
-      abacusUtils.postUsage(usageToken, usageBody, (err, val) => {
+      abacusClient.postUsage(usageToken, usageBody, (err, val) => {
         expect(err).to.equal(undefined);
         debug('\n       POST %s', val.request.uri.href);
         expect(val.statusCode).to.be.oneOf([201, 409]);
@@ -295,7 +297,7 @@ describe('Create and update plans acceptance test', () => {
     };
 
     it('should exist', (done) => {
-      abacusUtils.getOrganizationUsage(systemToken, orgId, (err, response) => {
+      abacusClient.getOrganizationUsage(systemToken, orgId, (err, response) => {
         const filter = {
           space_id: spaceId,
           consumer_id: consumerId,
@@ -306,14 +308,14 @@ describe('Create and update plans acceptance test', () => {
           pricing_plan_id: pricingPlanId
         };
         const timeBasedKey =
-          abacusUtils.getTimeBasedKeyProperty(response.body, filter);
+          abacusClient.getTimeBasedKeyProperty(response.body, filter);
 
         extend(filter, {
           org_id: orgId,
           resource_instance_id: resourceInstanceId,
           time_based_key: timeBasedKey });
 
-        abacusUtils.getUsage(usageToken, filter, (err, response) => {
+        abacusClient.getUsage(usageToken, filter, (err, response) => {
           expect(err).to.equal(undefined);
           debug('\n       GET  %s', response.request.uri.href);
           expect(response.statusCode).to.equal(200);
