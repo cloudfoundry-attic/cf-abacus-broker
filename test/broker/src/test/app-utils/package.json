@@ -33,7 +33,7 @@
     "abacus-moment": "file:../../../../../abacus/lib/utils/moment"
   },
   "engines": {
-    "node": ">=8.9.4",
+    "node": ">=8.9.4 <9.0.0",
     "yarn": ">=1.2.1"
   }
 }
