@@ -29,9 +29,9 @@
     "lib/"
   ],
   "scripts": {
-    "acceptance": "export JOBS=1 && foreach tests node_modules/:name yarn run acceptance --",
+    "acceptance": "export JOBS=1 && foreach tests node_modules/:name yarn run acceptance",
     "bootstrap": "yarn add check-node-version && check-node-version --package",
-    "update": "bin/module-update",
+    "update-dependencies": "bin/update-dependencies",
     "provision": "yarn run bootstrap && yarn install && cp etc/apps.rc node_modules/abacus-etc",
     "build": "yarn run provision && yarn test",
     "clean": "git clean -df",
@@ -52,10 +52,10 @@
     "demo": "bin/demo",
     "dupe": "bin/dupe",
     "perf": "bin/perf",
-    "itest": "export JOBS=1 && foreach itest node_modules/:name yarn run itest --",
-    "smoke": "export JOBS=1 && foreach smoke node_modules/:name yarn run smoke --",
+    "itest": "export JOBS=1 && foreach itest node_modules/:name yarn run itest",
+    "smoke": "export JOBS=1 && foreach smoke node_modules/:name yarn run smoke",
     "pub": "foreach abacus-ext :path yarn run pub && publish",
-    "cfpush": "bin/cfpush",
+    "cfpush": "cfpush",
     "cfstage": "bin/cfstage",
     "cfdelete": "bin/cfdelete",
     "cfstart": "bin/cfstart",
@@ -133,6 +133,7 @@
   },
   "engines": {
     "node": ">=8.9.4 <9.0.0",
+    "npm": "<5.0.0",
     "yarn": ">=1.2.1"
   }
 }

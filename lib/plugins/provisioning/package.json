@@ -46,6 +46,7 @@
     "abacus-partition": "file:../../../abacus/lib/utils/partition",
     "abacus-plan-mappings": "file:../../../abacus/lib/config/mappings",
     "abacus-provisioning-plugin": "file:../../../abacus/lib/plugins/provisioning",
+    "abacus-request": "file:../../../abacus/lib/utils/request",
     "abacus-retry": "file:../../../abacus/lib/utils/retry",
     "abacus-router": "file:../../../abacus/lib/utils/router",
     "abacus-urienv": "file:../../../abacus/lib/utils/urienv",
@@ -61,7 +62,6 @@
     "abacus-abacus-mocha": "file:../../../abacus/tools/abacus-mocha",
     "nyc": "^11.4.1",
     "abacus-publish": "file:../../../abacus/tools/publish",
-    "abacus-request": "file:../../../abacus/lib/utils/request",
     "jsonwebtoken": "^5.0.5"
   },
   "nyc": {
@@ -76,6 +76,7 @@
   },
   "engines": {
     "node": ">=8.9.4 <9.0.0",
+    "npm": "<5.0.0",
     "yarn": ">=1.2.1"
   }
 }
