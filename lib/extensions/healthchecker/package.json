@@ -54,7 +54,7 @@
   "devDependencies": {
     "abacus-cfpush": "file:../../../abacus/tools/cfpush",
     "abacus-eslint": "file:../../../abacus/tools/eslint",
-    "abacus-abacus-mocha": "file:../../../abacus/tools/abacus-mocha",
+    "abacus-mocha": "file:../../../abacus/tools/abacus-mocha",
     "nyc": "^11.4.1",
     "abacus-publish": "file:../../../abacus/tools/publish"
   },
