@@ -5,7 +5,7 @@
 
 	<groupId>com.metering</groupId>
 	<artifactId>metering-abacus-usage-example</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.6-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>metering-abacus-usage-example</name>
