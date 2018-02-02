@@ -134,7 +134,9 @@ describe('Abacus Broker Acceptance test', function() {
     testAppClient = createTestAppClient(app.getUrl());
   });
 
-  after(() => app.destroy());
+  after(() => {
+    if (app) app.destroy();
+  });
 
   context('when "Resource provider" is not prvodied', () => {
 
