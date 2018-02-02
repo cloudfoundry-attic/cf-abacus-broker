@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "abacus-eslint": "../../abacus/tools/eslint",
-    "abacus-mocha": "../../abacus/tools/abacus-mocha"
+    "abacus-mocha": "../../abacus/tools/mocha"
   },
   "engines": {
     "node": ">=8.9.4 <9.0.0",

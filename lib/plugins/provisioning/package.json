@@ -59,7 +59,7 @@
     "abacus-cfpush": "file:../../../abacus/tools/cfpush",
     "abacus-cluster": "file:../../../abacus/lib/utils/cluster",
     "abacus-eslint": "file:../../../abacus/tools/eslint",
-    "abacus-mocha": "file:../../../abacus/tools/abacus-mocha",
+    "abacus-mocha": "file:../../../abacus/tools/mocha",
     "nyc": "^11.4.1",
     "abacus-publish": "file:../../../abacus/tools/publish",
     "jsonwebtoken": "^5.0.5"
