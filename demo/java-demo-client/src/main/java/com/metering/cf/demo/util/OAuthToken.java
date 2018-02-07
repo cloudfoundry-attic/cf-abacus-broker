@@ -32,14 +32,14 @@ public class OAuthToken {
    * - tokenValidity: The point in time (in milliseconds since January 1, 1970, 00:00:00 GMT) when the token turns invalid.
    * <p>
    * Note: Value of tokenValidity is calculated by adding the parameter expiresIn to the current time,
-   * and then subtracting a buffer of 60000 milliseconds (1 minute).
+   * and then subtracting a buffer of 1000 milliseconds (1 second).
    *
    * @param token     Token itself as a String
    * @param expiresIn Time in milliseconds from now, when the token will expire
    */
   public OAuthToken(String tokenString, long expiresIn) {
     this.setTokenString(tokenString);
-    this.setTokenValidity(new Date().getTime() + expiresIn - 60000);
+    this.setTokenValidity(new Date().getTime() + expiresIn - 1000);
   }
 
   // --------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ public class OAuthToken {
   // --------------------------------------------------------------------------------
 
   public boolean isValid() {
-    boolean result = (new Date().getTime() - this.tokenValidity > 0);
+    boolean result = (new Date().getTime() < this.tokenValidity);
     logger.debug("OAuthToken.isValid(): " + result);
     return result;
   }

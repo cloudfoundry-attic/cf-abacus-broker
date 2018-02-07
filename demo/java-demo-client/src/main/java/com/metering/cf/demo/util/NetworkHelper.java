@@ -98,7 +98,7 @@ public class NetworkHelper {
         if (responseJson.has("token_type") && responseJson.has("access_token") && responseJson.has("expires_in")) {
           String tokenString = responseJson.get("token_type").asText() + " " + responseJson.get("access_token").asText();
           long expiresIn = responseJson.get("expires_in").asLong();
-          result = new OAuthToken(tokenString, expiresIn);
+          result = new OAuthToken(tokenString, expiresIn * 1000);
         } else {
           logger.warn("Something went wrong getting new OAuth access token for user '" + user + "' from token URL '" + tokenUrl + "'. Received unexpected response content: '" + responseString + "'");
         }

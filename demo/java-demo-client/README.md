@@ -62,7 +62,7 @@ You can access your org guid by executing `cf org <name> --guid` or you can put 
 By default the app sends:
   ```json
   [
-    {"measure": "api_calls", "quantity": 250}
+    {"measure": "sampleName", "quantity": 250}
   ]
   ```
 
@@ -106,13 +106,13 @@ The app ID and the space ID are provided by the CF runtime environment in the `V
 
 | Measure         | Quantity    |
 | --------------- | -----------:|
-| api_calls       |         250 |
+| sampleName      |         250 |
 
 The table holds the measures with according quantity that will be sent to Abacus as the reported usage, the next time a new usage document is created and sent. Feel free to change the quantity values to any positive integer values you like.
 
 The names of the measures can't be changed.
 
-When you click in the UI on the tile **"Create and send usage document to Abacus"**, then a usage document will be created that contains the measures with according quantities as defined in the table. As source of consumption the IDs shown in the table "App Details from CF Runtime" will be used. The assembled document will be sent to the COLLECTOR_URL you have provided in the manifest. For submitting the usage document the user and password provided by the metering service bonded to the application are used.
+When you click in the UI on the tile **"Create and send usage document to Abacus"**, then a usage document will be created that contains the measures with according quantities as defined in the table. As source of consumption the IDs shown in the table "App Details from CF Runtime" will be used. For submitting the usage document the collector URL, user, and password provided by the metering service bonded to the application are used.
 
 The text area in the lower section of the UI shows the result of sending the usage document to Abacus. After a successful request, a return code of `201` should be shown, as well as the sent usage document.
 
@@ -133,7 +133,7 @@ Usage document sent to Abacus:
   "end": 1495554531210,
   "measured_usage": [
     {
-      "measure": "api_calls",
+      "measure": "sampleName",
       "quantity": 250
     }
   ]
@@ -144,14 +144,14 @@ Usage document sent to Abacus:
 
 **Table: Monthly Aggregates for Organization**
 
-| Metric                   | Quantity |
-| ------------------------ | --------:|
-| thousand_api_calls       |  unknown |
+| Metric           | Quantity |
+| ---------------- | --------:|
+| sampleName       |  unknown |
 
 
 When we report new usage data for the resource given by the metering service, Abacus will update its stored aggregated usage data for that resource. One of the aggregates that Abacus updates is the monthly consumption of the resource by the organization we report in the usage document. We can query the current monthly usage using the tile **"Get Consumption Report from Abacus"** in the UI. After pressing this tile you can see the current monthly consumption reported by Abacus in the table (column "Quantity" will be updated from "unknown" to show the reported values).
 
-To get the aggregates from Abacus, a "usage summary report" is requested via the Abacus API. Request API and structure of returned document are described [here](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/doc/api.md#usage-summary-report). We use the same user we send usage with. And send the request to the REPORTING_URL, provided in the `manifest.yml`
+To get the aggregates from Abacus, a "usage summary report" is requested via the Abacus API. Request API and structure of returned document are described [here](https://github.com/cloudfoundry-incubator/cf-abacus/blob/master/doc/api.md#usage-summary-report). We use the same user we send usage with. And send the request to the `REPORTING_URL`, provided in the `manifest.yml`
 
 After getting the results from Abacus, the text area in the lower section will show the raw results. After a successful request a return code of `200` should be shown, then the extracted aggregated values that are also shown in the table, followed by the raw document we received from Abacus.
 
@@ -162,7 +162,7 @@ Abacus return code: 200
 Aggregated monthly usage for whole organization:
 [
   {
-    "metric": "thousand_api_calls",
+    "metric": "sampleName",
     "quantity": 8.697
   }
 ]
@@ -174,7 +174,7 @@ Raw response from Abacus:
 }
 ```
 
-Please note, that the `metrics` received from Abacus are different from the `measures` sent to Abacus. Metrics are calculated based on the measures sent to Abacus. How this is done is defined by the used `plan`.
+Metrics are calculated based on the measures sent to Abacus. How this is done is defined by the used `plan`.
 
 ### Testing the Abacus roundtrip
 
@@ -212,7 +212,7 @@ An HTTP POST to this URL with a JSON array holding measure and quantity tuple ob
 Example input:
 
 	[
-		{"measure":"api_calls", "quantity":250}
+		{"measure":"sampleName", "quantity":250}
 	]
 
 Example result: See example already shown in section [Usage Data to send](#usage-data-to-send).
