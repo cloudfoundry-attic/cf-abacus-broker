@@ -10,10 +10,10 @@ sap.ui.getCore().attachInit(function() {
   // ---------------------------------------------------------------------------
   const oUsageReportAggregatesModel = new sap.ui.model.json.JSONModel();
   const usageModelData = [
-    { 'measure': 'api_calls', 'quantity': 250 }
+    { 'measure': 'sampleName', 'quantity': 250 }
   ];
   let usageReportAggregatesData = [
-    { 'metric': 'api_calls', 'quantity': 'unknown' }
+    { 'metric': 'sampleName', 'quantity': 'unknown' }
   ];
 
   // ---------------------------------------------------------------------------
