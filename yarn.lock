@@ -3,13 +3,13 @@
 
 
 "abacus-audit@file:abacus/lib/utils/audit":
-  version "1.0.0"
+  version "1.1.0"
 
 "abacus-basic@file:abacus/lib/utils/basic":
-  version "1.0.0"
+  version "1.1.0"
 
 "abacus-batch@file:abacus/lib/utils/batch":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-moment "file:../../Library/Caches/Yarn/v1/moment"
@@ -18,7 +18,7 @@
     underscore "^1.8.3"
 
 "abacus-breaker@file:abacus/lib/utils/breaker":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-moment "file:../../Library/Caches/Yarn/utils/moment"
@@ -27,7 +27,7 @@
     underscore "^1.8.3"
 
 "abacus-cfpush@file:abacus/tools/cfpush":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     commander "^2.8.1"
     fs-extra "^3.0.1"
@@ -36,7 +36,7 @@
     underscore "^1.8.3"
 
 "abacus-client@file:abacus/lib/utils/client":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-batch "file:../../Library/Caches/Yarn/utils/batch"
     abacus-breaker "file:../../Library/Caches/Yarn/utils/breaker"
@@ -49,7 +49,7 @@
     underscore "^1.8.3"
 
 "abacus-cluster@file:abacus/lib/utils/cluster":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-events "file:../../Library/Caches/Yarn/v1/events"
@@ -58,10 +58,10 @@
     underscore "^1.8.3"
 
 "abacus-cmdline@file:abacus/tools/cmdline":
-  version "1.0.0"
+  version "1.1.0"
 
 "abacus-couchclient@file:abacus/lib/utils/couchclient":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-dbcommons "file:../../Library/Caches/Yarn/v1/dbcommons"
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
@@ -76,7 +76,7 @@
     underscore "^1.8.3"
 
 "abacus-couchstore@file:abacus/lib/utils/couchstore":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-dbclient "file:../../Library/Caches/Yarn/v1/dbclient"
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
@@ -84,7 +84,7 @@
     express-session "1.15.2"
 
 "abacus-dataflow@file:abacus/lib/utils/dataflow":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-audit "file:../../Library/Caches/Yarn/v1/audit"
     abacus-batch "file:../../Library/Caches/Yarn/v1/batch"
@@ -112,19 +112,19 @@
     underscore "^1.8.3"
 
 "abacus-dbclient@file:abacus/lib/utils/dbclient":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-couchclient "file:../../Library/Caches/Yarn/v1/couchclient"
     abacus-dbcommons "file:../../Library/Caches/Yarn/v1/dbcommons"
     abacus-mongoclient "file:../../Library/Caches/Yarn/v1/mongoclient"
 
 "abacus-dbcommons@file:abacus/lib/utils/dbcommons":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-transform "file:../../Library/Caches/Yarn/v1/transform"
 
 "abacus-debug@file:abacus/lib/utils/debug":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-events "file:../../Library/Caches/Yarn/v1/events"
     abacus-moment "file:../../Library/Caches/Yarn/v1/moment"
@@ -132,7 +132,7 @@
     underscore "^1.8.3"
 
 "abacus-dedupe@file:abacus/lib/utils/dedupe":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-lrucache "file:../../Library/Caches/Yarn/v1/lrucache"
@@ -140,7 +140,7 @@
     underscore "^1.8.3"
 
 "abacus-eslint@file:abacus/tools/eslint":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     commander "^2.8.1"
     eslint "~4.13.0"
@@ -149,7 +149,7 @@
     optionator "^0.6.0"
 
 "abacus-etc@file:abacus/etc":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     commander "^2.8.1"
     js-yaml "^3.4.3"
@@ -157,7 +157,7 @@
     underscore "^1.8.3"
 
 "abacus-eureka-plugin@file:abacus/lib/plugins/eureka":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-batch "file:../../Library/Caches/Yarn/utils/batch"
     abacus-breaker "file:../../Library/Caches/Yarn/utils/breaker"
@@ -175,21 +175,21 @@
     underscore "^1.8.3"
 
 "abacus-eureka@file:abacus/lib/utils/eureka":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-request "file:../../Library/Caches/Yarn/v1/request"
     abacus-urienv "file:../../Library/Caches/Yarn/v1/urienv"
 
 "abacus-events@file:abacus/lib/utils/events":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     emit-stream "^0.1.2"
     through "^2.3.4"
     underscore "^1.8.3"
 
 "abacus-express@file:abacus/lib/utils/express":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-events "file:../../Library/Caches/Yarn/v1/events"
@@ -208,7 +208,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-account-plugin@file:lib/plugins/account":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-batch "file:../../Library/Caches/abacus/lib/utils/batch"
     abacus-breaker "file:../../Library/Caches/abacus/lib/utils/breaker"
@@ -230,7 +230,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-cf-broker-tests@file:test/broker":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-cmdline "file:../../Library/Caches/Yarn/abacus/tools/cmdline"
     abacus-ext-cf-broker "file:../../Library/Caches/Yarn/lib/cf/broker"
@@ -241,7 +241,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-cf-broker@file:lib/cf/broker":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-breaker "file:../../Library/Caches/abacus/lib/utils/breaker"
     abacus-cluster "file:../../Library/Caches/abacus/lib/utils/cluster"
@@ -267,7 +267,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-healthchecker@file:lib/extensions/healthchecker":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-client "file:../../Library/Caches/abacus/lib/utils/client"
     abacus-cluster "file:../../Library/Caches/abacus/lib/utils/cluster"
@@ -287,7 +287,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-housekeeper@file:lib/extensions/housekeeper":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-client "file:../../Library/Caches/abacus/lib/utils/client"
     abacus-cluster "file:../../Library/Caches/abacus/lib/utils/cluster"
@@ -306,7 +306,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-provisioning-itest@file:test/provisioning":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-cmdline "file:../../Library/Caches/Yarn/abacus/tools/cmdline"
     abacus-ext-test-utils "file:../../Library/Caches/Yarn/v1/test-utils"
@@ -319,7 +319,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-provisioning-plugin@file:lib/plugins/provisioning":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-batch "file:../../Library/Caches/abacus/lib/utils/batch"
     abacus-breaker "file:../../Library/Caches/abacus/lib/utils/breaker"
@@ -342,7 +342,7 @@
     underscore "^1.8.3"
 
 "abacus-ext-service-dashboard@file:lib/cf/dashboard":
-  version "0.0.6-dev.9"
+  version "1.1.0"
   dependencies:
     abacus-cluster "file:../../Library/Caches/abacus/lib/utils/cluster"
     abacus-couchstore "file:../../Library/Caches/abacus/lib/utils/couchstore"
@@ -373,14 +373,14 @@
     winston "2.3.1"
 
 "abacus-ext-test-utils@file:test/test-utils":
-  version "0.0.6-dev.8"
+  version "1.1.0"
   dependencies:
     abacus-cmdline "file:../../Library/Caches/Yarn/abacus/tools/cmdline"
     abacus-moment "file:../../Library/Caches/Yarn/abacus/lib/utils/moment"
     underscore "^1.8.3"
 
 "abacus-hystrix@file:abacus/lib/utils/hystrix":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-basic "file:../../Library/Caches/Yarn/v1/basic"
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
@@ -391,7 +391,7 @@
     underscore "^1.8.3"
 
 "abacus-launcher@file:abacus/lib/utils/launcher":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-rc "file:../../Library/Caches/Yarn/v1/rc"
@@ -400,20 +400,20 @@
     underscore "^1.8.3"
 
 "abacus-lock@file:abacus/lib/utils/lock":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     lock "^0.1.2"
 
 "abacus-lrucache@file:abacus/lib/utils/lrucache":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     lru-cache "^2.6.5"
     underscore "^1.8.3"
 
 "abacus-mddoc@file:abacus/tools/mddoc":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     bootstrap "^3.3.5"
     commander "^2.8.1"
@@ -427,7 +427,7 @@
     underscore "^1.8.3"
 
 "abacus-mocha@file:abacus/tools/mocha":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     async "^2.1.4"
     chai "^3.0.0"
@@ -439,12 +439,12 @@
     underscore "^1.8.3"
 
 "abacus-moment@file:abacus/lib/utils/moment":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     moment "^2.17.1"
 
 "abacus-mongoclient@file:abacus/lib/utils/mongoclient":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-dbcommons "file:../../Library/Caches/Yarn/v1/dbcommons"
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
@@ -457,7 +457,7 @@
     underscore "^1.8.3"
 
 "abacus-oauth@file:abacus/lib/utils/oauth":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-basic "file:../../Library/Caches/Yarn/v1/basic"
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
@@ -468,7 +468,7 @@
     underscore "^1.8.3"
 
 "abacus-partition@file:abacus/lib/utils/partition":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-moment "file:../../Library/Caches/Yarn/v1/moment"
@@ -477,7 +477,7 @@
     underscore "^1.8.3"
 
 "abacus-perf@file:abacus/lib/utils/perf":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-events "file:../../Library/Caches/Yarn/v1/events"
@@ -485,12 +485,12 @@
     underscore "^1.8.3"
 
 "abacus-plan-mappings@file:abacus/lib/config/mappings":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     underscore "^1.8.3"
 
 "abacus-provisioning-plugin@file:abacus/lib/plugins/provisioning":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-batch "file:../../Library/Caches/Yarn/utils/batch"
     abacus-breaker "file:../../Library/Caches/Yarn/utils/breaker"
@@ -511,13 +511,13 @@
     underscore "^1.8.3"
 
 "abacus-publish@file:abacus/tools/publish":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     commander "^2.8.1"
     underscore "^1.8.3"
 
 "abacus-rc@file:abacus/lib/utils/rc":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     js-yaml "^3.4.3"
@@ -526,7 +526,7 @@
     underscore "^1.8.3"
 
 "abacus-request@file:abacus/lib/utils/request":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-lock "file:../../Library/Caches/Yarn/v1/lock"
@@ -538,7 +538,7 @@
     underscore "^1.8.3"
 
 "abacus-retry@file:abacus/lib/utils/retry":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-yieldable "file:../../Library/Caches/Yarn/v1/yieldable"
@@ -546,7 +546,7 @@
     underscore "^1.8.3"
 
 "abacus-router@file:abacus/lib/utils/router":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-transform "file:../../Library/Caches/Yarn/v1/transform"
@@ -555,7 +555,7 @@
     underscore "^1.8.3"
 
 "abacus-schema@file:abacus/lib/utils/schema":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     eslint "~4.13.0"
@@ -563,14 +563,14 @@
     is-my-json-valid "^2.12.0"
 
 "abacus-seqid@file:abacus/lib/utils/seqid":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-cluster "file:../../Library/Caches/Yarn/v1/cluster"
     abacus-moment "file:../../Library/Caches/Yarn/v1/moment"
     abacus-vcapenv "file:../../Library/Caches/Yarn/v1/vcapenv"
 
 "abacus-throttle@file:abacus/lib/utils/throttle":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-moment "file:../../Library/Caches/Yarn/v1/moment"
@@ -578,33 +578,33 @@
     underscore "^1.8.3"
 
 "abacus-transform@file:abacus/lib/utils/transform":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-yieldable "file:../../Library/Caches/Yarn/v1/yieldable"
     underscore "^1.8.3"
 
 "abacus-urienv@file:abacus/lib/utils/urienv":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     abacus-vcapenv "file:../../Library/Caches/Yarn/v1/vcapenv"
     underscore "^1.8.3"
 
 "abacus-usage-schemas@file:abacus/lib/config/schemas":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-schema "file:../../Library/Caches/Yarn/utils/schema"
     underscore "^1.8.3"
 
 "abacus-vcapenv@file:abacus/lib/utils/vcapenv":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-debug "file:../../Library/Caches/Yarn/v1/debug"
     underscore "^1.8.3"
 
 "abacus-webapp@file:abacus/lib/utils/webapp":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     abacus-basic "file:../../Library/Caches/Yarn/v1/basic"
     abacus-cluster "file:../../Library/Caches/Yarn/v1/cluster"
@@ -621,7 +621,7 @@
     underscore "^1.8.3"
 
 "abacus-yieldable@file:abacus/lib/utils/yieldable":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     co "^3.0.6"
     thunkify "^2.1.2"
@@ -1243,6 +1243,12 @@ cfenv@1.0.3:
     ports "1.1.x"
     underscore "1.8.x"
 
+chai-as-promised@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.1.tgz#08645d825deb8696ee61725dbf590c012eb00ca0"
+  dependencies:
+    check-error "^1.0.2"
+
 chai-http@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/chai-http/-/chai-http-3.0.0.tgz#5460d8036e1f1a12b0b5b5cbd529e6dc1d31eb4b"
@@ -1288,6 +1294,10 @@ character-parser@^2.1.1:
 chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
+
+check-error@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/check-error/-/check-error-1.0.2.tgz#574d312edd88bb5dd8912e9286dd6c0aed4aac82"
 
 check-node-version@^3.2.0:
   version "3.2.0"
@@ -2050,7 +2060,7 @@ eslint-plugin-mocha@^4.8.0:
     ramda "^0.24.1"
 
 "eslint-plugin-nodate@file:abacus/tools/eslint-plugin-nodate":
-  version "1.0.0"
+  version "1.1.0"
   dependencies:
     requireindex "~1.1.0"
 
