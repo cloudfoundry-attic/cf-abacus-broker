@@ -112,6 +112,7 @@
     "abacus-mddoc": "file:abacus/tools/mddoc",
     "abacus-mocha": "file:abacus/tools/mocha",
     "abacus-publish": "file:abacus/tools/publish",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "3.0.0",
     "check-node-version": "^3.2.0",
     "codecov": "^3.0.0",
